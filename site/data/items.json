@@ -43,6 +43,13 @@
    "dept": "학생복지과(장학)",
    "dept_board": null,
    "deadline": "2026-12-29",
+   "deadline_src": "ai",
+   "attachments": [
+    {
+     "name": "2027-1 국가장학금 1차 신청 안내문.jpg",
+     "url": "https://www.jejunu.ac.kr/ara/noticesurvey/outEvent.htm"
+    }
+   ],
    "also_posted": [],
    "first_seen": "2026-11-18T07:17:00+09:00"
   },
@@ -57,6 +64,17 @@
    "dept": "학생복지과(장학)",
    "dept_board": null,
    "deadline": "2026-11-28",
+   "deadline_src": "ai",
+   "attachments": [
+    {
+     "name": "자매국수 장학생 선발 공고.pdf",
+     "url": "https://www.jejunu.ac.kr/ara/noticesurvey/outEvent.htm"
+    },
+    {
+     "name": "추천서 양식.hwp",
+     "url": "https://www.jejunu.ac.kr/ara/noticesurvey/outEvent.htm"
+    }
+   ],
    "also_posted": [
     "약학대학",
     "간호대학"
@@ -74,6 +92,8 @@
    "dept": "학생복지과(장학)",
    "dept_board": null,
    "deadline": null,
+   "deadline_src": null,
+   "attachments": [],
    "also_posted": [],
    "first_seen": "2026-11-12T07:17:00+09:00"
   },
@@ -88,6 +108,17 @@
    "dept": "학생복지과(장학)",
    "dept_board": null,
    "deadline": "2026-11-26",
+   "deadline_src": "ai",
+   "attachments": [
+    {
+     "name": "선발 요강.pdf",
+     "url": "https://www.jejunu.ac.kr/ara/noticesurvey/outEvent.htm"
+    },
+    {
+     "name": "지원서.hwp",
+     "url": "https://www.jejunu.ac.kr/ara/noticesurvey/outEvent.htm"
+    }
+   ],
    "also_posted": [],
    "first_seen": "2026-11-04T07:17:00+09:00"
   },
@@ -102,6 +133,8 @@
    "dept": "학사과",
    "dept_board": null,
    "deadline": null,
+   "deadline_src": null,
+   "attachments": [],
    "also_posted": [],
    "first_seen": "2026-11-22T07:17:00+09:00"
   },
@@ -116,6 +149,8 @@
    "dept": "학사과",
    "dept_board": null,
    "deadline": "2027-01-30",
+   "deadline_src": "ai",
+   "attachments": [],
    "also_posted": [],
    "first_seen": "2026-11-22T07:17:00+09:00"
   },
@@ -124,12 +159,14 @@
    "source": "jnu",
    "source_name": "본부 공지사항",
    "category": "등록",
-   "title": "[예시] 동기 계절수업 등록금 납부 안내",
+   "title": "[예시] 동기 계절수업 등록금 납부 안내(~11.27.)",
    "url": "https://www.jejunu.ac.kr/ara/noticesurvey/outEvent.htm?category=322",
    "date": "2026-11-19",
    "dept": "재무과",
    "dept_board": null,
    "deadline": "2026-11-27",
+   "deadline_src": "title",
+   "attachments": [],
    "also_posted": [],
    "first_seen": "2026-11-19T07:17:00+09:00"
   },
@@ -138,12 +175,14 @@
    "source": "jnu",
    "source_name": "본부 공지사항",
    "category": "학사",
-   "title": "[예시] 2027학년도 교직과정 이수 예정자 선발 안내",
+   "title": "[예시] 2027학년도 교직과정 이수 예정자 선발 안내(~12.5.)",
    "url": "https://www.jejunu.ac.kr/ara/noticesurvey/outEvent.htm?category=320",
    "date": "2026-11-13",
    "dept": "학사과",
    "dept_board": null,
    "deadline": "2026-12-05",
+   "deadline_src": "title",
+   "attachments": [],
    "also_posted": [],
    "first_seen": "2026-11-13T07:17:00+09:00"
   },
@@ -158,6 +197,8 @@
    "dept": "학생지원과",
    "dept_board": null,
    "deadline": "2026-12-01",
+   "deadline_src": "ai",
+   "attachments": [],
    "also_posted": [],
    "first_seen": "2026-11-17T07:17:00+09:00"
   },
@@ -166,12 +207,14 @@
    "source": "jnu",
    "source_name": "본부 공지사항",
    "category": "봉사",
-   "title": "[예시] 겨울방학 해외봉사단 단원 모집",
+   "title": "[예시] 겨울방학 해외봉사단 단원 모집(~11.28.)",
    "url": "https://www.jejunu.ac.kr/ara/noticesurvey/outEvent.htm?category=197",
    "date": "2026-11-14",
    "dept": "학생지원과",
    "dept_board": null,
    "deadline": "2026-11-28",
+   "deadline_src": "title",
+   "attachments": [],
    "also_posted": [],
    "first_seen": "2026-11-14T07:17:00+09:00"
   },
@@ -186,6 +229,8 @@
    "dept": "학생지원과",
    "dept_board": null,
    "deadline": null,
+   "deadline_src": null,
+   "attachments": [],
    "also_posted": [],
    "first_seen": "2026-11-16T07:17:00+09:00"
   },
@@ -200,6 +245,8 @@
    "dept": "시설과",
    "dept_board": null,
    "deadline": null,
+   "deadline_src": null,
+   "attachments": [],
    "also_posted": [],
    "first_seen": "2026-11-10T07:17:00+09:00"
   },
@@ -214,6 +261,17 @@
    "dept": null,
    "dept_board": null,
    "deadline": "2026-11-24",
+   "deadline_src": "ai",
+   "attachments": [
+    {
+     "name": "자가 점검표.hwp",
+     "url": "https://dormitory.jejunu.ac.kr/dormitory/notice/notice.htm"
+    },
+    {
+     "name": "안내문.pdf",
+     "url": "https://dormitory.jejunu.ac.kr/dormitory/notice/notice.htm"
+    }
+   ],
    "also_posted": [],
    "first_seen": "2026-11-17T07:17:00+09:00"
   },
@@ -222,12 +280,14 @@
    "source": "dormitory",
    "source_name": "학생생활관",
    "category": null,
-   "title": "[예시] 2027학년도 1학기 생활관 입사 신청 안내",
+   "title": "[예시] 2027학년도 1학기 생활관 입사 신청 안내(~12.3.)",
    "url": "https://dormitory.jejunu.ac.kr/dormitory/notice/notice.htm",
    "date": "2026-11-22",
    "dept": null,
    "dept_board": null,
    "deadline": "2026-12-03",
+   "deadline_src": "title",
+   "attachments": [],
    "also_posted": [],
    "first_seen": "2026-11-22T07:17:00+09:00"
   },
@@ -242,6 +302,8 @@
    "dept": null,
    "dept_board": null,
    "deadline": null,
+   "deadline_src": null,
+   "attachments": [],
    "also_posted": [],
    "first_seen": "2026-11-19T07:17:00+09:00"
   },
@@ -256,6 +318,8 @@
    "dept": null,
    "dept_board": null,
    "deadline": "2026-11-30",
+   "deadline_src": "ai",
+   "attachments": [],
    "also_posted": [],
    "first_seen": "2026-11-10T07:17:00+09:00"
   },
@@ -270,6 +334,17 @@
    "dept": null,
    "dept_board": null,
    "deadline": "2026-11-29",
+   "deadline_src": "ai",
+   "attachments": [
+    {
+     "name": "모집 공고.pdf",
+     "url": "https://clip.jejunu.ac.kr/clip/community/notice.htm"
+    },
+    {
+     "name": "포스터.jpg",
+     "url": "https://clip.jejunu.ac.kr/clip/community/notice.htm"
+    }
+   ],
    "also_posted": [],
    "first_seen": "2026-11-12T07:17:00+09:00"
   },
@@ -284,6 +359,8 @@
    "dept": null,
    "dept_board": null,
    "deadline": "2026-11-26",
+   "deadline_src": "ai",
+   "attachments": [],
    "also_posted": [],
    "first_seen": "2026-11-18T07:17:00+09:00"
   },
@@ -298,6 +375,8 @@
    "dept": null,
    "dept_board": null,
    "deadline": "2026-11-28",
+   "deadline_src": "field",
+   "attachments": [],
    "also_posted": [],
    "first_seen": "2026-11-15T07:17:00+09:00"
   },
@@ -312,6 +391,8 @@
    "dept": null,
    "dept_board": null,
    "deadline": "2026-12-05",
+   "deadline_src": "field",
+   "attachments": [],
    "also_posted": [],
    "first_seen": "2026-11-09T07:17:00+09:00"
   },
@@ -326,6 +407,8 @@
    "dept": null,
    "dept_board": null,
    "deadline": null,
+   "deadline_src": null,
+   "attachments": [],
    "also_posted": [],
    "first_seen": "2026-11-18T07:17:00+09:00"
   },
@@ -340,6 +423,8 @@
    "dept": null,
    "dept_board": "https://pharmacy.jejunu.ac.kr/pharmacy/community/notice.htm",
    "deadline": null,
+   "deadline_src": null,
+   "attachments": [],
    "also_posted": [],
    "first_seen": "2026-11-03T07:17:00+09:00"
   },
@@ -354,6 +439,8 @@
    "dept": null,
    "dept_board": "https://pharmacy.jejunu.ac.kr/pharmacy/community/notice.htm",
    "deadline": null,
+   "deadline_src": null,
+   "attachments": [],
    "also_posted": [],
    "first_seen": "2026-10-28T07:17:00+09:00"
   },
@@ -362,12 +449,14 @@
    "source": "dept",
    "source_name": "학과 게시판",
    "category": null,
-   "title": "[예시] 약학대학 튜터링 프로그램 튜터 모집",
+   "title": "[예시] 약학대학 튜터링 프로그램 튜터 모집(~11.30.)",
    "url": "https://pharmacy.jejunu.ac.kr/pharmacy/community/notice.htm",
    "date": "2026-11-21",
    "dept": null,
    "dept_board": "https://pharmacy.jejunu.ac.kr/pharmacy/community/notice.htm",
    "deadline": "2026-11-30",
+   "deadline_src": "title",
+   "attachments": [],
    "also_posted": [],
    "first_seen": "2026-11-22T07:17:00+09:00"
   },
@@ -382,6 +471,8 @@
    "dept": null,
    "dept_board": "https://nursing.jejunu.ac.kr/nursing/degree/notice.htm",
    "deadline": null,
+   "deadline_src": null,
+   "attachments": [],
    "also_posted": [],
    "first_seen": "2026-11-17T07:17:00+09:00"
   },
@@ -396,6 +487,8 @@
    "dept": null,
    "dept_board": "https://chinese.jejunu.ac.kr/chinese/community/notice.htm",
    "deadline": null,
+   "deadline_src": null,
+   "attachments": [],
    "also_posted": [],
    "first_seen": "2026-11-10T07:17:00+09:00"
   },
@@ -410,6 +503,8 @@
    "dept": null,
    "dept_board": "https://chinese.jejunu.ac.kr/chinese/community/notice.htm",
    "deadline": null,
+   "deadline_src": null,
+   "attachments": [],
    "also_posted": [],
    "first_seen": "2026-11-05T07:17:00+09:00"
   },
@@ -424,6 +519,8 @@
    "dept": null,
    "dept_board": "https://chinese.jejunu.ac.kr/chinese/community/notice.htm",
    "deadline": null,
+   "deadline_src": null,
+   "attachments": [],
    "also_posted": [],
    "first_seen": "2026-10-30T07:17:00+09:00"
   },
@@ -438,6 +535,17 @@
    "dept": null,
    "dept_board": "https://archieng.jejunu.ac.kr/archieng/community/notice.htm",
    "deadline": "2026-11-24",
+   "deadline_src": "ai",
+   "attachments": [
+    {
+     "name": "모집 안내.pdf",
+     "url": "https://archieng.jejunu.ac.kr/archieng/community/notice.htm"
+    },
+    {
+     "name": "신청서.hwp",
+     "url": "https://archieng.jejunu.ac.kr/archieng/community/notice.htm"
+    }
+   ],
    "also_posted": [],
    "first_seen": "2026-11-15T07:17:00+09:00"
   },
@@ -452,6 +560,8 @@
    "dept": null,
    "dept_board": "https://archieng.jejunu.ac.kr/archieng/community/notice.htm",
    "deadline": null,
+   "deadline_src": null,
+   "attachments": [],
    "also_posted": [],
    "first_seen": "2026-11-08T07:17:00+09:00"
   },
@@ -466,6 +576,8 @@
    "dept": null,
    "dept_board": "https://dba.jejunu.ac.kr/dba/index/degree/notice.htm",
    "deadline": null,
+   "deadline_src": null,
+   "attachments": [],
    "also_posted": [],
    "first_seen": "2026-11-02T07:17:00+09:00"
   },
@@ -474,12 +586,14 @@
    "source": "dept",
    "source_name": "학과 게시판",
    "category": null,
-   "title": "[예시] 경영학과 국가근로장학생 추가 모집",
+   "title": "[예시] 경영학과 국가근로장학생 추가 모집(~11.25.)",
    "url": "https://dba.jejunu.ac.kr/dba/index/degree/notice.htm",
    "date": "2026-11-20",
    "dept": null,
    "dept_board": "https://dba.jejunu.ac.kr/dba/index/degree/notice.htm",
    "deadline": "2026-11-25",
+   "deadline_src": "title",
+   "attachments": [],
    "also_posted": [],
    "first_seen": "2026-11-22T07:17:00+09:00"
   },
@@ -494,6 +608,8 @@
    "dept": null,
    "dept_board": "https://tourism.jejunu.ac.kr/tourism/index/community/notice.htm",
    "deadline": null,
+   "deadline_src": null,
+   "attachments": [],
    "also_posted": [],
    "first_seen": "2026-11-11T07:17:00+09:00"
   },
@@ -508,6 +624,8 @@
    "dept": null,
    "dept_board": "https://bioedu.jejunu.ac.kr/bioedu/community/notice.htm",
    "deadline": null,
+   "deadline_src": null,
+   "attachments": [],
    "also_posted": [],
    "first_seen": "2026-11-06T07:17:00+09:00"
   },
@@ -522,6 +640,8 @@
    "dept": null,
    "dept_board": "https://history.jejunu.ac.kr/history/community/notice.htm",
    "deadline": null,
+   "deadline_src": null,
+   "attachments": [],
    "also_posted": [],
    "first_seen": "2026-11-12T07:17:00+09:00"
   },
@@ -536,6 +656,8 @@
    "dept": null,
    "dept_board": "https://politics.jejunu.ac.kr/politics/index/community/notice.htm",
    "deadline": null,
+   "deadline_src": null,
+   "attachments": [],
    "also_posted": [],
    "first_seen": "2026-10-20T07:17:00+09:00"
   },
@@ -550,6 +672,8 @@
    "dept": null,
    "dept_board": "https://fineart.jejunu.ac.kr/fineart/index/community/notice.htm",
    "deadline": null,
+   "deadline_src": null,
+   "attachments": [],
    "also_posted": [],
    "first_seen": "2026-11-14T07:17:00+09:00"
   },
@@ -564,6 +688,8 @@
    "dept": null,
    "dept_board": "https://physics.jejunu.ac.kr/physics/index/community/notice.htm",
    "deadline": null,
+   "deadline_src": null,
+   "attachments": [],
    "also_posted": [],
    "first_seen": "2026-11-09T07:17:00+09:00"
   },
@@ -578,6 +704,8 @@
    "dept": null,
    "dept_board": "https://chemeng.jejunu.ac.kr/chemeng/community/notice.htm",
    "deadline": null,
+   "deadline_src": null,
+   "attachments": [],
    "also_posted": [],
    "first_seen": "2026-11-07T07:17:00+09:00"
   }

@@ -63,7 +63,7 @@
 
   function blankPrefs() {
     return { v: 1, depts: [], level: "학부", campus: "아라", dorm: false, teach: false, cats: [], rest: [],
-      marks: { newOn: true, dueOn: true, off: [] }, kwIn: [], kwOut: [], hidden: [], touched: false, done: false };
+      marks: { newOn: true, dueOn: true, off: [] }, kwIn: [], kwOut: [], hidden: [], bm: {}, touched: false, done: false };
   }
 
   function applyDefaults(p) {
@@ -160,6 +160,7 @@
       else if (d <= 7) bits.push(`<span class="badge due">${d === 0 ? "오늘 마감" : "D-" + d}</span>`);
       else bits.push(`<span class="badge due far">~${md(it.deadline)}</span>`);
     }
+    if (it.deadline && it.deadline_src === "ai" && P.marks.dueOn && !marksOff) bits.push(`<span class="badge ai" title="첨부 문서를 AI 가 읽어 추정한 마감일이에요. 원문에서 꼭 확인하세요">AI 추정</span>`);
     if (P.marks.newOn && !marksOff && isNew(it)) bits.push(`<span class="badge new">새 글</span>`);
     if (it._tags) {
       const multi = P.depts.length > 1 && it._who !== "교직";
@@ -168,9 +169,15 @@
     }
     const src = it.source === "dept" ? it._who || "학과 게시판" : it.source_name;
     const hide = it.source === "dept" ? "" : `<button class="hide-btn" data-hide="${esc(it.source)}" title="${esc(it.source_name)} 글을 숨깁니다">숨기기</button>`;
+    const bm = P.bm[it.id];
+    const star = `<button class="star${bm ? " on" : ""}" data-bm="${esc(it.id)}" aria-pressed="${bm ? "true" : "false"}" aria-label="${bm ? "북마크 빼기" : "북마크"}" title="${bm ? "북마크 빼기" : "북마크해서 달력에 넣기"}">${bm ? "★" : "☆"}</button>`;
+    const att = it.attachments && it.attachments.length ? `<span title="${esc(it.attachments.map((a) => a.name).join(", "))}">첨부 ${it.attachments.length}</span>` : "";
+    const ask = bm && !it.deadline
+      ? `<label class="bm-date">달력에 넣을 날짜 <input type="date" data-bmdate="${esc(it.id)}" id="bmd-${esc(it.id)}" value="${esc(bm.date || "")}"></label>` : "";
     return `<li class="item">
-      <a class="t" href="${esc(it.url)}" target="_blank" rel="noopener">${esc(it.title)}</a>
-      <div class="meta">${bits.join("")}<span>${esc(src)}${it.dept ? " · " + esc(it.dept) : ""}</span><span>${md(it.date)}</span>${it._note ? `<span>${esc(it._note)}</span>` : ""}${hide}</div>
+      <div class="t-row"><a class="t" href="${esc(it.url)}" target="_blank" rel="noopener">${esc(it.title)}</a>${star}</div>
+      <div class="meta">${bits.join("")}<span>${esc(src)}${it.dept ? " · " + esc(it.dept) : ""}</span><span>${md(it.date)}</span>${att}${it._note ? `<span>${esc(it._note)}</span>` : ""}${hide}</div>
+      ${ask}
     </li>`;
   }
 
@@ -183,7 +190,7 @@
   }
 
   function catbar(current) {
-    const tabs = [["home", "홈"], ["c-dept", "내 학과"]];
+    const tabs = [["home", "홈"], ["schedule", "일정"], ["c-dept", "내 학과"]];
     if (P.kwIn.length) tabs.push(["c-kw", "내 키워드"]);
     D.cfg.categories.forEach((c) => { if (P.cats.includes(c.id)) tabs.push(["c-" + c.id, c.label]); });
     tabs.push(["c-meal", "학식"]);
@@ -192,7 +199,151 @@
   }
 
   function sampleNote() {
-    return `<p class="sample-note">시안이에요. 글 제목은 11/21 수집 기록과 학과 조사에서 가져왔고, [예시] 글과 날짜·마감일 일부는 화면 시험용으로 넣은 값이에요. 날짜 기준은 ${md(D.meta.generated_at)}입니다.</p>`;
+    return `<p class="sample-note">시안이에요. 글 제목은 11/21 수집 기록과 학과 조사에서 가져왔고, [예시] 글, 학사일정, 날짜·마감일 일부("AI 추정" 포함)는 화면 시험용으로 넣은 값이에요. 날짜 기준은 ${md(D.meta.generated_at)}입니다.</p>`;
+  }
+
+  // ---------- 일정 (마감·학사일정·북마크) ----------
+  let selDay = null;   // 일정 탭에서 고른 날
+  let calMonth = null; // "YYYY-MM"
+  const ymd = (dt) => dt.toISOString().slice(0, 10);
+  const addDays = (iso, n) => { const d = new Date(iso.slice(0, 10) + "T12:00:00Z"); d.setUTCDate(d.getUTCDate() + n); return ymd(d); };
+  const weekday = (iso) => new Date(iso.slice(0, 10) + "T12:00:00Z").getUTCDay();
+
+  function myItems() {
+    // 지금 설정으로 사용자에게 보이는 글 전부 (중복 없이)
+    const seen = new Map();
+    deptItems().forEach((it) => seen.set(it.id, it));
+    kwItems().forEach((it) => seen.has(it.id) || seen.set(it.id, it));
+    D.cfg.categories.forEach((c) => {
+      if (!P.cats.includes(c.id) || (c.dorm_only && !P.dorm)) return;
+      catItems(c).forEach((it) => seen.has(it.id) || seen.set(it.id, it));
+    });
+    return [...seen.values()];
+  }
+
+  function events() {
+    // { date, end?, kind: due|acad|bm, title, url, src, it? }
+    const out = [];
+    const mine = myItems();
+    const byId = new Map(D.items.map((it) => [it.id, it]));
+    const mineIds = new Set(mine.map((it) => it.id));
+    for (const it of mine) {
+      if (it.deadline) out.push({ date: it.deadline, kind: P.bm[it.id] ? "bm" : "due", title: it.title, url: it.url, src: it.source === "dept" ? it._who || "학과" : it.source_name, ai: it.deadline_src === "ai" });
+    }
+    for (const [id, b] of Object.entries(P.bm)) {
+      const it = byId.get(id);
+      if (it && it.deadline && mineIds.has(id)) continue; // 위에서 이미 넣음
+      const date = (it && it.deadline) || b.date;
+      if (date) out.push({ date, kind: "bm", title: (it && it.title) || b.title, url: (it && it.url) || b.url, src: "북마크", ai: it && it.deadline_src === "ai" });
+    }
+    for (const e of D.academic.events) out.push({ date: e.start, end: e.end, kind: "acad", title: e.title, url: D.academic.source, src: "학사일정" });
+    return out;
+  }
+
+  const onDay = (e, iso) => e.end ? e.date <= iso && iso <= e.end : e.date === iso;
+  const kindOrder = { due: 0, bm: 1, acad: 2 };
+  function eventsOn(evs, iso) { return evs.filter((e) => onDay(e, iso)).sort((a, b) => kindOrder[a.kind] - kindOrder[b.kind]); }
+
+  function dots(evs) {
+    const k = new Set(evs.map((e) => e.kind));
+    return ["due", "acad", "bm"].filter((x) => k.has(x)).map((x) => x === "bm" ? `<i class="dot bm">★</i>` : `<i class="dot ${x}"></i>`).join("");
+  }
+
+  function evRow(e, showDate) {
+    const lbl = { due: "마감", acad: "학사", bm: "북마크" }[e.kind];
+    const when = showDate ? `<span class="ev-date">${md(e.date)}${e.end && e.end !== e.date ? "~" + md(e.end) : ""}</span>` : "";
+    return `<li class="ev">${when}<span class="badge k-${e.kind}">${lbl}</span>${e.ai ? `<span class="badge ai">AI 추정</span>` : ""}
+      <a href="${esc(e.url)}" target="_blank" rel="noopener">${esc(e.title)}</a><span class="ev-src">${esc(e.src)}</span></li>`;
+  }
+
+  function weekStrip() {
+    const evs = events();
+    const start = addDays(TODAY, -((weekday(TODAY) + 6) % 7)); // 월요일
+    const cells = [];
+    for (let i = 0; i < 7; i++) {
+      const d = addDays(start, i), es = eventsOn(evs, d);
+      cells.push(`<button class="wk-day${d === TODAY.slice(0, 10) ? " today" : ""}" data-day="${d}" aria-label="${mdw(d)} 일정 ${es.length}개">
+        <span class="wd">${WD[weekday(d)]}</span><span class="dn">${+d.slice(8)}</span><span class="dots">${dots(es)}</span></button>`);
+    }
+    const today = eventsOn(evs, TODAY.slice(0, 10));
+    const line = today.length ? today.slice(0, 2).map((e) => `${{ due: "마감", acad: "학사", bm: "북마크" }[e.kind]} ${esc(e.title.replace(/^\[예시\]\s*/, ""))}`).join(" · ") + (today.length > 2 ? ` 외 ${today.length - 2}` : "") : "오늘 마감·학사일정은 없어요";
+    return `<section class="week">
+      <div class="card-head"><span class="lbl">이번 주</span><a href="#schedule">일정 탭 →</a></div>
+      <div class="wk">${cells.join("")}</div>
+      <p class="wk-today"><b>오늘</b> ${line}</p>
+    </section>`;
+  }
+
+  function viewSchedule() {
+    const evs = events();
+    const today = TODAY.slice(0, 10);
+    const sel = selDay || today;
+    const ym = calMonth || sel.slice(0, 7);
+    const [y, m] = ym.split("-").map(Number);
+    const first = `${ym}-01`;
+    const lead = weekday(first);
+    const days = new Date(Date.UTC(y, m, 0)).getUTCDate();
+    const cells = [];
+    for (let i = 0; i < lead; i++) cells.push(`<span class="cd pad"></span>`);
+    for (let d = 1; d <= days; d++) {
+      const iso = `${ym}-${String(d).padStart(2, "0")}`, es = eventsOn(evs, iso), wd = weekday(iso);
+      cells.push(`<button class="cd${iso === today ? " today" : ""}${iso === sel ? " sel" : ""}${wd === 0 ? " sun" : wd === 6 ? " sat" : ""}" data-day="${iso}" aria-label="${mdw(iso)} 일정 ${es.length}개"${iso === sel ? ' aria-current="date"' : ""}>
+        <span class="dn">${d}</span><span class="dots">${dots(es)}</span></button>`);
+    }
+    const prev = new Date(Date.UTC(y, m - 2, 1)).toISOString().slice(0, 7), next = new Date(Date.UTC(y, m, 1)).toISOString().slice(0, 7);
+    const selEvs = eventsOn(evs, sel);
+    const mealLines = sel === today ? todayMeals() : [];
+    const monthEvs = evs.filter((e) => (e.date.slice(0, 7) === ym) || (e.end && e.date.slice(0, 7) < ym && e.end.slice(0, 7) >= ym))
+      .sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : kindOrder[a.kind] - kindOrder[b.kind]));
+    const bms = Object.entries(P.bm);
+    const bmDated = bms.filter(([id, b]) => { const it = D.items.find((x) => x.id === id); return (it && it.deadline) || b.date; }).length;
+
+    return header() + catbar("schedule") + `<div class="sched">
+      <section class="card cal">
+        <div class="cal-head"><button class="nav" data-month="${prev}" aria-label="이전 달">‹</button><h2>${y}년 ${m}월</h2><button class="nav" data-month="${next}" aria-label="다음 달">›</button></div>
+        <div class="cal-grid wdh">${WD.map((w, i) => `<span class="${i === 0 ? "sun" : i === 6 ? "sat" : ""}">${w}</span>`).join("")}</div>
+        <div class="cal-grid">${cells.join("")}</div>
+        <p class="legend"><span><i class="dot due"></i>마감</span><span><i class="dot acad"></i>학사일정</span><span><i class="dot bm">★</i>북마크</span></p>
+      </section>
+      <div class="side">
+        <section class="card">
+          <div class="card-head"><h2>${sel === today ? "오늘" : "고른 날"} · ${mdw(sel)}</h2>${sel !== today ? `<a href="#schedule" data-day="${today}">오늘로</a>` : ""}</div>
+          <ul class="evs">
+            <li class="ev muted-row"><span class="badge k-tt">시간표</span><span>학생정보 연동 시 여기에 그날 수업이 나와요 (개선 제안)</span></li>
+            ${selEvs.map((e) => evRow(e, false)).join("")}
+            ${mealLines.length ? `<li class="ev"><span class="badge k-meal">학식</span><a href="#c-meal">${mealLines.length}곳 식단 보기</a></li>` : ""}
+          </ul>
+          ${!selEvs.length ? `<p class="empty">이날은 마감·학사일정·북마크가 없어요.</p>` : ""}
+        </section>
+        <section class="card">
+          <div class="card-head"><h2>${m}월 안내</h2><span class="sub">${monthEvs.length}건</span></div>
+          ${monthEvs.length ? `<ul class="evs">${monthEvs.map((e) => evRow(e, true)).join("")}</ul>` : `<p class="empty">이달 일정이 없어요.</p>`}
+        </section>
+        <section class="card">
+          <div class="card-head"><h2>북마크 ${bms.length}</h2></div>
+          <p class="why">글의 ☆ 를 누르면 달력에 들어가요. 마감일을 모르는 글은 날짜를 직접 정해요.</p>
+          <div class="actions" style="margin-top:4px"><button class="btn" data-act="ics"${bmDated ? "" : " disabled"}>휴대폰 캘린더에 추가 (.ics)</button></div>
+          <p class="hint" id="ics-msg">날짜가 있는 북마크 ${bmDated}개를 파일로 받아요. 휴대폰 캘린더에 넣으면 하루 전 알림이 와요. 미리보기 링크에서는 내려받기가 막혀 있고, GitHub Pages 주소에서 동작해요.</p>
+        </section>
+      </div>
+    </div>` + footer();
+  }
+
+  function icsFile() {
+    const byId = new Map(D.items.map((it) => [it.id, it]));
+    const lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//jnu-moa//KO", "CALSCALE:GREGORIAN"];
+    const escI = (s) => String(s).replace(/[\\;,]/g, (c) => "\\" + c).replace(/\n/g, " ");
+    for (const [id, b] of Object.entries(P.bm)) {
+      const it = byId.get(id);
+      const date = (it && it.deadline) || b.date; if (!date) continue;
+      const d0 = date.replace(/-/g, ""), d1 = addDays(date, 1).replace(/-/g, "");
+      lines.push("BEGIN:VEVENT", `UID:${id}@jnu-moa`, `DTSTAMP:${D.meta.generated_at.replace(/[-:]/g, "").slice(0, 15)}`,
+        `DTSTART;VALUE=DATE:${d0}`, `DTEND;VALUE=DATE:${d1}`, `SUMMARY:${escI(((it && it.title) || b.title) + " 마감")}`,
+        `URL:${(it && it.url) || b.url}`, `DESCRIPTION:${escI("원문에서 마감일을 확인하세요")}`,
+        "BEGIN:VALARM", "ACTION:DISPLAY", "TRIGGER:-P1D", `DESCRIPTION:${escI("내일 마감")}`, "END:VALARM", "END:VEVENT");
+    }
+    lines.push("END:VCALENDAR");
+    return lines.join("\r\n");
   }
 
   function footer() {
@@ -279,7 +430,7 @@
     const used = new Set();
     const di = deptItems();
     di.forEach((it) => used.add(it.id));
-    let html = header() + sampleNote() + catbar("home");
+    let html = header() + sampleNote() + catbar("home") + weekStrip();
     const ml = todayMeals();
     if (ml.length) html += `<a class="meals" href="#c-meal"><span class="lbl">오늘 학식 · ${mdw(TODAY)}</span>${ml.join("")}</a>`;
     html += `<div class="stack">` + deptCard(di, homeTag, 5);
@@ -448,10 +599,12 @@
     if (!P || !P.done) html = viewOnboarding();
     else if (r === "setup") html = viewSetup();
     else if (r === "c-meal") html = viewMeal();
+    else if (r === "schedule") html = viewSchedule();
     else if (r.startsWith("c-")) html = viewList(r.slice(2));
     else html = viewHome();
     const keepFocus = document.activeElement && document.activeElement.id;
     const caret = keepFocus && document.activeElement.selectionStart;
+    $app.className = r === "schedule" && P && P.done ? "wide" : "";
     $app.innerHTML = html;
     if (keepFocus) {
       const el = document.getElementById(keepFocus);
@@ -476,6 +629,7 @@
     const t = e.target;
     if (t.dataset.cat) { draft.touched = true; const s = new Set(draft.cats); t.checked ? s.add(t.dataset.cat) : s.delete(t.dataset.cat); draft.cats = [...s]; render(); }
     if (t.dataset.rest) { draft.touched = true; const s = new Set(draft.rest); t.checked ? s.add(t.dataset.rest) : s.delete(t.dataset.rest); draft.rest = [...s]; }
+    if (t.dataset.bmdate) { const b = P.bm[t.dataset.bmdate]; if (b) { b.date = t.value || null; save(P); render(); } return; }
     if (t.dataset.mark) { const s = new Set(draft.marks.off); t.checked ? s.delete(t.dataset.mark) : s.add(t.dataset.mark); draft.marks.off = [...s]; }
   });
 
@@ -510,6 +664,19 @@
       render(); return;
     }
     if (ds.tag) { homeTag = ds.tag; render(); return; }
+    if (ds.bm) {
+      e.preventDefault();
+      if (P.bm[ds.bm]) delete P.bm[ds.bm];
+      else { const it = D.items.find((x) => x.id === ds.bm); P.bm[ds.bm] = { date: null, title: it ? it.title : "", url: it ? it.url : "" }; }
+      save(P); render(); return;
+    }
+    if (ds.day) {
+      e.preventDefault();
+      selDay = ds.day; calMonth = ds.day.slice(0, 7);
+      if (route() !== "schedule") location.hash = "schedule"; else render();
+      return;
+    }
+    if (ds.month) { calMonth = ds.month; render(); return; }
     if (ds.hide) {
       P.hidden = [...new Set(P.hidden.concat(ds.hide))]; save(P); render(); return;
     }
@@ -526,6 +693,16 @@
       }
       case "finish": draft.done = true; P = JSON.parse(JSON.stringify(draft)); save(P); location.hash = "home"; render(); window.scrollTo(0, 0); break;
       case "save": draft.done = true; P = JSON.parse(JSON.stringify(draft)); save(P); location.hash = "home"; break;
+      case "ics": {
+        const msg = document.getElementById("ics-msg");
+        try {
+          const url = URL.createObjectURL(new Blob([icsFile()], { type: "text/calendar;charset=utf-8" }));
+          const a = document.createElement("a"); a.href = url; a.download = "jnu-bookmarks.ics";
+          document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 2000);
+          msg.textContent = "파일을 만들었어요. 내려받기가 안 되면 GitHub Pages 주소에서 다시 눌러 주세요.";
+        } catch (err) { msg.textContent = "파일을 만들지 못했어요."; }
+        break;
+      }
       case "kw-in": addKw("kwIn", "kw-in"); break;
       case "kw-out": addKw("kwOut", "kw-out"); break;
       case "copy": {
@@ -557,12 +734,12 @@
   });
 
   // ---------- 시작 ----------
-  Promise.all(["config", "departments", "items", "meals"].map((n) => fetch(`data/${n}.json`).then((r) => { if (!r.ok) throw new Error(n); return r.json(); })))
-    .then(([cfg, deps, items, meals]) => {
-      D = { cfg, deps, items: items.items, meals, meta: items };
+  Promise.all(["config", "departments", "items", "meals", "academic"].map((n) => fetch(`data/${n}.json`).then((r) => { if (!r.ok) throw new Error(n); return r.json(); })))
+    .then(([cfg, deps, items, meals, academic]) => {
+      D = { cfg, deps, items: items.items, meals, academic, meta: items };
       TODAY = items.generated_at;
       P = load();
-      if (P) P = { ...blankPrefs(), ...P, marks: { ...blankPrefs().marks, ...(P.marks || {}) } };
+      if (P) P = { ...blankPrefs(), ...P, bm: P.bm || {}, marks: { ...blankPrefs().marks, ...(P.marks || {}) } };
       draft = P ? JSON.parse(JSON.stringify(P)) : blankPrefs();
       render();
       // 실제 수집이 붙으면 켠다. 시안은 데이터가 고정이라 켜 두면 '새 글' 표시가 다시는 안 보인다.
