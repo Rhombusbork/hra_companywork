@@ -301,7 +301,6 @@
     const monthEvs = evs.filter((e) => (e.date.slice(0, 7) === ym) || (e.end && e.date.slice(0, 7) < ym && e.end.slice(0, 7) >= ym))
       .sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : kindOrder[a.kind] - kindOrder[b.kind]));
     const bms = Object.entries(P.bm);
-    const bmDated = bms.filter(([id, b]) => { const it = D.items.find((x) => x.id === id); return (it && it.deadline) || b.date; }).length;
 
     return header() + catbar("schedule") + `<div class="sched">
       <section class="card cal">
@@ -324,11 +323,9 @@
           <div class="card-head"><h2>${m}월 안내</h2><span class="sub">${monthEvs.length}건</span></div>
           ${monthEvs.length ? `<ul class="evs">${monthEvs.map((e) => evRow(e, true)).join("")}</ul>` : `<p class="empty">이달 일정이 없어요.</p>`}
         </section>
-        <section class="card">
-          <div class="card-head"><h2>북마크 ${bms.length}</h2></div>
-          <p class="why">글의 ☆ 를 누르면 달력에 들어가요. 마감일을 모르는 글은 날짜를 직접 정해요.</p>
-          <div class="actions" style="margin-top:4px"><button class="btn" data-act="ics"${bmDated ? "" : " disabled"}>휴대폰 캘린더에 추가 (.ics)</button></div>
-          <p class="hint ics-msg">날짜가 있는 북마크 ${bmDated}개를 파일로 받아요. 휴대폰 캘린더에 넣으면 하루 전 알림이 와요. 미리보기 링크에서는 내려받기가 막혀 있고, GitHub Pages 주소에서 동작해요.</p>
+        <section class="card bm-mini">
+          <div class="card-head"><h2>북마크 ${bms.length}</h2><button class="btn" data-act="bm-open">북마크 열기</button></div>
+          <p class="why">글의 ☆ 를 누르면 달력에 ★ 로 찍혀요. 목록과 휴대폰 캘린더 내보내기는 북마크 창에 있어요.</p>
         </section>
       </div>
     </div>` + footer();
@@ -488,6 +485,7 @@
   function chipHit(ch, it, cat) {
     const m = ch.match || {};
     // 학교가 붙인 분류(수업 321·등록 322)가 있으면 그걸 따르고, 없을 때만 제목 키워드로 나눈다
+    if (m.source && m.source.includes(it.source)) return true;
     const owned = cat ? cat.chips.flatMap((x) => (x.match && x.match.source_category) || []) : [];
     if (it.source === "jnu" && owned.includes(it.category)) return !!(m.source_category && m.source_category.includes(it.category));
     if (m.keywords && has(it.title, m.keywords)) return true;
@@ -864,6 +862,7 @@
       TODAY = items.generated_at;
       P = load();
       if (P) P = { ...blankPrefs(), ...P, bm: P.bm || {}, chips: P.chips || {}, gradInDept: P.gradInDept !== false, marks: { ...blankPrefs().marks, ...(P.marks || {}) } };
+      if (P && P.cats.some((c) => c === "jedaero" || c === "event")) P.cats = [...new Set(P.cats.filter((c) => c !== "jedaero" && c !== "event").concat("program"))];
       draft = P ? JSON.parse(JSON.stringify(P)) : blankPrefs();
       render();
       // 실제 수집이 붙으면 켠다. 시안은 데이터가 고정이라 켜 두면 '새 글' 표시가 다시는 안 보인다.

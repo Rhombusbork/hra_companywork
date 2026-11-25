@@ -424,6 +424,7 @@
   function chipHit(ch, it, cat) {
     const m = ch.match || {};
     // 학교가 붙인 분류(수업 321·등록 322)가 있으면 그걸 따르고, 없을 때만 제목 키워드로 나눈다
+    if (m.source && m.source.includes(it.source)) return true;
     const owned = cat ? cat.chips.flatMap((x) => (x.match && x.match.source_category) || []) : [];
     if (it.source === "jnu" && owned.includes(it.category)) return !!(m.source_category && m.source_category.includes(it.category));
     if (m.keywords && has(it.title, m.keywords)) return true;
@@ -786,6 +787,7 @@
       TODAY = items.generated_at;
       P = load();
       if (P) P = { ...blankPrefs(), ...P, bm: P.bm || {}, chips: P.chips || {}, gradInDept: P.gradInDept !== false, marks: { ...blankPrefs().marks, ...(P.marks || {}) } };
+      if (P && P.cats.some((c) => c === "jedaero" || c === "event")) P.cats = [...new Set(P.cats.filter((c) => c !== "jedaero" && c !== "event").concat("program"))];
       draft = P ? JSON.parse(JSON.stringify(P)) : blankPrefs();
       render();
       // 실제 수집이 붙으면 켠다. 시안은 데이터가 고정이라 켜 두면 '새 글' 표시가 다시는 안 보인다.

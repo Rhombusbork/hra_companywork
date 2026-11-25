@@ -190,16 +190,49 @@
       }
     },
     {
-      "id": "jedaero",
+      "id": "program",
       "layer": 2,
-      "label": "산학 프로그램",
-      "desc": "현장실습, 경진대회 (제대로 산학1번지)",
+      "label": "프로그램·행사",
+      "desc": "산학·현장실습(제대로 산학1번지), 본부 행사·봉사",
       "default": false,
       "match": {
         "source": [
           "jedaero"
+        ],
+        "source_category": [
+          "행사",
+          "봉사"
         ]
-      }
+      },
+      "chips": [
+        {
+          "id": "sanhak",
+          "label": "산학·현장실습",
+          "match": {
+            "source": [
+              "jedaero"
+            ]
+          }
+        },
+        {
+          "id": "event",
+          "label": "행사",
+          "match": {
+            "source_category": [
+              "행사"
+            ]
+          }
+        },
+        {
+          "id": "vol",
+          "label": "봉사",
+          "match": {
+            "source_category": [
+              "봉사"
+            ]
+          }
+        }
+      ]
     },
     {
       "id": "career",
@@ -211,20 +244,41 @@
         "source": [
           "clip"
         ]
-      }
-    },
-    {
-      "id": "event",
-      "layer": 2,
-      "label": "행사·봉사",
-      "desc": "본부 행사·봉사 공지",
-      "default": false,
-      "match": {
-        "source_category": [
-          "행사",
-          "봉사"
-        ]
-      }
+      },
+      "chips": [
+        {
+          "id": "intern",
+          "label": "인턴",
+          "match": {
+            "keywords": [
+              "인턴"
+            ]
+          }
+        },
+        {
+          "id": "job",
+          "label": "채용",
+          "match": {
+            "keywords": [
+              "채용",
+              "공채"
+            ]
+          }
+        },
+        {
+          "id": "cprog",
+          "label": "진로 프로그램",
+          "match": {
+            "keywords": [
+              "특강",
+              "모의고사",
+              "프로그램",
+              "상담",
+              "캠프"
+            ]
+          }
+        }
+      ]
     },
     {
       "id": "library",
@@ -261,55 +315,55 @@
     "사회과학대학": {
       "add": [
         "intl",
-        "event"
+        "program"
       ],
       "why": "정치외교학과 등에 교류수학 안내가 올라와요"
     },
     "경상대학": {
       "add": [
         "career",
-        "event"
+        "program"
       ],
       "why": "진로상담·직무역량 프로그램 글이 많아요"
     },
     "사범대학": {
       "add": [
-        "event"
+        "program"
       ],
       "teach": true,
       "why": "교직 글을 학과 공지 위쪽에 모아 드려요"
     },
     "교육대학": {
       "add": [
-        "event"
+        "program"
       ],
       "teach": true,
       "why": "교직 글을 학과 공지 위쪽에 모아 드려요"
     },
     "생명자원과학대학": {
       "add": [
-        "jedaero",
+        "program",
         "career"
       ],
       "why": "현장실습·산학 프로그램과 채용 글이 많아요"
     },
     "해양과학대학": {
       "add": [
-        "jedaero",
+        "program",
         "career"
       ],
       "why": "현장실습·산학 프로그램과 채용 글이 많아요"
     },
     "자연과학대학": {
       "add": [
-        "jedaero",
+        "program",
         "career"
       ],
       "why": "현장실습·산학 프로그램과 채용 글이 많아요"
     },
     "공과대학": {
       "add": [
-        "jedaero",
+        "program",
         "career"
       ],
       "why": "현장실습·산학 프로그램과 채용 글이 많아요"
@@ -333,22 +387,21 @@
     "예술디자인대학": {
       "add": [
         "intl",
-        "event"
+        "program"
       ],
       "why": "미술학과 등에 해외파견 교류수학 글이 올라와요"
     },
     "미래융합대학": {
       "add": [
-        "event"
+        "program"
       ],
       "why": ""
     },
     "총장 직속": {
       "add": [
         "intl",
-        "jedaero",
-        "career",
-        "event"
+        "program",
+        "career"
       ],
       "why": "아직 전공을 정하기 전이라 넓게 골라 드려요"
     },
