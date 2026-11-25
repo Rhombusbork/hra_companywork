@@ -65,7 +65,7 @@
 
   function blankPrefs() {
     return { v: 1, depts: [], level: "학부", campus: "아라", dorm: false, teach: false, cats: [], rest: [],
-      marks: { newOn: true, dueOn: true, off: [] }, kwIn: [], kwOut: [], hidden: [], bm: {}, touched: false, done: false };
+      marks: { newOn: true, dueOn: true, off: [] }, kwIn: [], kwOut: [], hidden: [], bm: {}, gradInDept: true, chips: {}, touched: false, done: false };
   }
 
   function applyDefaults(p) {
@@ -109,6 +109,7 @@
     // 0층: 내 학과 게시판 글 + 내 학과가 다시 올린 본부 글 + (교직 이수면) 본부 교직 글
     const boards = myBoards();
     const teachWords = D.cfg.dept_tags.find((t) => t.id === "teach").include;
+    const gradWords = D.cfg.dept_tags.find((t) => t.id === "gradreq").include;
     const out = [];
     for (const it of D.items) {
       if (!visible(it)) continue;
@@ -121,6 +122,8 @@
         if (b) { who = b.label; tags = deptTags(it.title); note = "본부 글 · " + it.also_posted.join("·") + "에도 게시"; }
       }
       if (!who && P.teach && it.source !== "dept" && has(it.title, teachWords)) { who = "교직"; tags = ["teach"]; note = "본부 글"; }
+      // 졸업요건·자격: 본부·진로취업 글이라도 내 졸업과 바로 이어지니 학과 카드로 모은다
+      if (!who && P.gradInDept !== false && it.source !== "dept" && has(it.title, gradWords)) { who = "졸업요건"; tags = ["gradreq"]; note = it.source_name + " 글"; }
       if (who) out.push({ ...it, _who: who, _tags: tags, _note: note });
     }
     return sortItems(out);
@@ -165,7 +168,7 @@
     if (it.deadline && it.deadline_src === "ai" && P.marks.dueOn && !marksOff) bits.push(`<span class="badge ai" title="첨부 문서를 AI 가 읽어 추정한 마감일이에요. 원문에서 꼭 확인하세요">AI 추정</span>`);
     if (P.marks.newOn && !marksOff && isNew(it)) bits.push(`<span class="badge new">새 글</span>`);
     if (it._tags) {
-      const multi = P.depts.length > 1 && it._who !== "교직";
+      const multi = P.depts.length > 1 && !["교직", "졸업요건"].includes(it._who);
       if (multi) bits.push(`<span class="badge tag">${esc(it._who)}</span>`);
       bits.push(`<span class="badge tag">${esc(D.cfg.dept_tags.find((t) => t.id === it._tags[0]).label)}</span>`);
     }
@@ -480,16 +483,50 @@
     </section>`;
   }
 
-  function smallCard(title, items, href, catId, why) {
-    if (!items.length) return "";
+  // ---------- 카드 안 칩 (학사: 수업·등록·학적·학사일정) ----------
+  const chipSel = (id) => (P.chips && P.chips[id]) || "all";
+  function chipHit(ch, it, cat) {
+    const m = ch.match || {};
+    // 학교가 붙인 분류(수업 321·등록 322)가 있으면 그걸 따르고, 없을 때만 제목 키워드로 나눈다
+    const owned = cat ? cat.chips.flatMap((x) => (x.match && x.match.source_category) || []) : [];
+    if (it.source === "jnu" && owned.includes(it.category)) return !!(m.source_category && m.source_category.includes(it.category));
+    if (m.keywords && has(it.title, m.keywords)) return true;
+    return false;
+  }
+  function acadUpcoming() {
+    const t = TODAY.slice(0, 10);
+    return D.academic.events.filter((e) => e.end >= t).slice().sort((a, b) => (a.start < b.start ? -1 : 1));
+  }
+  function acadRows(limit) {
+    return acadUpcoming().slice(0, limit).map((e) => `<li class="item"><div class="t-row"><a class="t" href="${esc(D.academic.source)}" target="_blank" rel="noopener">${esc(e.title)}</a></div>
+      <div class="meta"><span class="badge k-acad">학사일정</span><span>${md(e.start)}${e.end !== e.start ? "~" + md(e.end) : ""}</span></div></li>`).join("");
+  }
+  function chipBar(cat, items) {
+    if (!cat || !cat.chips) return "";
+    const sel = chipSel(cat.id);
+    const btns = cat.chips.map((ch) => [ch, ch.academic ? acadUpcoming().length : items.filter((it) => chipHit(ch, it, cat)).length])
+      .filter(([, n]) => n).map(([ch, n]) => `<button class="chip${sel === ch.id ? " on" : ""}" data-chip="${cat.id}" data-val="${ch.id}">${esc(ch.label)}<span class="n">${n}</span></button>`).join("");
+    return `<div class="tagrow"><button class="chip${sel === "all" ? " on" : ""}" data-chip="${cat.id}" data-val="all">전체<span class="n">${items.length}</span></button>${btns}</div>`;
+  }
+  function chipBody(cat, items, limit, catId) {
+    const sel = cat && cat.chips ? chipSel(cat.id) : "all";
+    const ch = sel !== "all" && cat.chips.find((x) => x.id === sel);
+    if (ch && ch.academic) return { n: acadUpcoming().length, html: `<ul class="items">${acadRows(limit)}</ul>` };
+    const shown = ch ? items.filter((it) => chipHit(ch, it, cat)) : items;
+    return { n: shown.length, html: shown.length ? `<ul class="items">${shown.slice(0, limit).map((it) => itemRow(it, catId)).join("")}</ul>` : `<p class="empty">이 유형의 글이 없어요.</p>` };
+  }
+
+  function smallCard(title, items, href, catId, why, cat) {
+    if (!items.length && !(cat && cat.chips)) return "";
+    const body = chipBody(cat, items, 3, catId);
     return `<section class="card">
-      <div class="card-head"><h2>${esc(title)}</h2>${items.length > 3 ? `<a href="#${href}">더 보기 ${items.length}</a>` : ""}</div>
+      <div class="card-head"><h2>${esc(title)}</h2>${body.n > 3 ? `<a href="#${href}">더 보기 ${body.n}</a>` : ""}</div>
       ${why ? `<p class="why">${esc(why)}</p>` : ""}
-      <ul class="items">${items.slice(0, 3).map((it) => itemRow(it, catId)).join("")}</ul>
+      ${chipBar(cat, items)}
+      ${body.html}
     </section>`;
   }
 
-  let homeTag = "all";
   function viewHome() {
     const used = new Set();
     const di = deptItems();
@@ -497,7 +534,7 @@
     let html = header() + sampleNote() + catbar("home") + weekStrip();
     const ml = todayMeals();
     if (ml.length) html += `<a class="meals" href="#c-meal"><span class="lbl">오늘 학식 · ${mdw(TODAY)}</span>${ml.join("")}</a>`;
-    html += `<div class="stack">` + deptCard(di, homeTag, 5);
+    html += `<div class="stack">` + deptCard(di, chipSel("dept"), 5);
     const kw = kwItems(used); kw.forEach((it) => used.add(it.id));
     html += smallCard("내 키워드 · " + P.kwIn.join(", "), kw, "c-kw", "kw");
     const rec = recommendedBy(P);
@@ -506,13 +543,13 @@
       if (!P.cats.includes(c.id)) continue;
       if (c.dorm_only && !P.dorm) continue;
       const items = catItems(c, used); items.slice(0, 3).forEach((it) => used.add(it.id));
-      if (!items.length) continue;
+      if (!items.length && !c.chips) continue;
       if (c.layer !== lastLayer) {
         const lbl = { 1: "모두에게 필요한 것", 2: "내 학과와 가까운 것", 3: "그 밖" }[c.layer];
         html += `<p class="layer-label">${lbl}</p>`; lastLayer = c.layer;
       }
       const why = rec[c.id] ? rec[c.id].join("·") + " 추천" : "";
-      html += smallCard(c.label, items, "c-" + c.id, c.id, why);
+      html += smallCard(c.label, items, "c-" + c.id, c.id, why, c);
     }
     html += `</div>` + footer();
     return html;
@@ -523,12 +560,18 @@
     let title, items, catId = id, extra = "";
     if (id === "dept") {
       const di = deptItems();
-      return header() + catbar("c-dept") + `<div class="view-head"><a class="back" href="#home">← 홈</a></div><div class="stack">${deptCard(di, homeTag, 999)}</div>` + footer();
+      return header() + catbar("c-dept") + `<div class="view-head"><a class="back" href="#home">← 홈</a></div><div class="stack">${deptCard(di, chipSel("dept"), 999)}</div>` + footer();
     } else if (id === "kw") {
       title = "내 키워드 · " + P.kwIn.join(", "); items = kwItems();
     } else {
       const c = catById(id); if (!c) return viewHome();
       title = c.label; items = catItems(c); extra = `<p class="why">${esc(c.desc)}</p>`;
+      if (c.chips) {
+        const body = chipBody(c, items, 999, id);
+        return header() + catbar("c-" + id) +
+          `<div class="view-head"><a class="back" href="#home">← 홈</a><h2>${esc(title)}</h2></div>${extra}` +
+          `<div class="list-card">${chipBar(c, items)}${body.html}</div>` + footer();
+      }
     }
     return header() + catbar("c-" + id) +
       `<div class="view-head"><a class="back" href="#home">← 홈</a><h2>${esc(title)}</h2></div>${extra}` +
@@ -585,7 +628,8 @@
     };
     const why = draft.depts.map(depById).filter(Boolean).map((d) => D.cfg.recommend[d.college]?.why).filter(Boolean);
     return `<div class="field"><div class="lbl">내 학과 공지 <span class="req">항상 보여요</span></div>
-        <div class="opt locked"><input type="checkbox" checked disabled><span class="k">학과 게시판 글<small>졸업·학사, 근로·학과장학, 교직, 취업·채용, 실습·특강, 행사로 나눠 보여 드려요</small></span></div></div>
+        <div class="opt locked"><input type="checkbox" checked disabled><span class="k">학과 게시판 글<small>졸업·학사, 졸업요건·자격, 근로·학과장학, 교직, 취업·채용, 실습·특강, 행사로 나눠 보여 드려요</small></span></div>
+        <label class="opt"><input type="checkbox" id="gradin" data-gradin="1"${draft.gradInDept !== false ? " checked" : ""}><span class="k">졸업요건·자격 글도 함께 보기<small>본부·진로취업에 올라온 토익·자격증·모의고사 글을 학과 카드의 '졸업요건·자격' 칩으로 모아요</small></span></label></div>
       ${layer(1, "모두에게 필요한 것")}
       ${layer(2, "내 학과와 가까운 것")}
       ${why.length ? `<p class="hint" style="margin:-4px 2px 12px">${esc([...new Set(why)].join(" / "))}</p>` : ""}
@@ -698,6 +742,7 @@
     if (t.dataset.cat) { draft.touched = true; const s = new Set(draft.cats); t.checked ? s.add(t.dataset.cat) : s.delete(t.dataset.cat); draft.cats = [...s]; render(); }
     if (t.dataset.rest) { draft.touched = true; const s = new Set(draft.rest); t.checked ? s.add(t.dataset.rest) : s.delete(t.dataset.rest); draft.rest = [...s]; }
     if (t.dataset.bmdate) { const b = P.bm[t.dataset.bmdate]; if (b) { b.date = t.value || null; save(P); render(); } return; }
+    if (t.dataset.gradin) { draft.gradInDept = t.checked; return; }
     if (t.dataset.mark) { const s = new Set(draft.marks.off); t.checked ? s.delete(t.dataset.mark) : s.add(t.dataset.mark); draft.marks.off = [...s]; }
   });
 
@@ -734,7 +779,8 @@
     }
     if (ds.open) { e.preventDefault(); sheetReturn = sheet && sheet.type === "bm" ? sheet : null; sheet = { type: "item", id: ds.open }; render(); return; }
     if (b.hasAttribute("data-close")) { sheet = sheetReturn; sheetReturn = null; render(); return; }
-    if (ds.tag) { homeTag = ds.tag; render(); return; }
+    if (ds.tag) { P.chips = { ...(P.chips || {}), dept: ds.tag }; save(P); render(); return; }
+    if (ds.chip) { P.chips = { ...(P.chips || {}), [ds.chip]: ds.val }; save(P); render(); return; }
     if (ds.bm) {
       e.preventDefault();
       if (P.bm[ds.bm]) delete P.bm[ds.bm];
@@ -817,7 +863,7 @@
       D = { cfg, deps, items: items.items, meals, academic, meta: items };
       TODAY = items.generated_at;
       P = load();
-      if (P) P = { ...blankPrefs(), ...P, bm: P.bm || {}, marks: { ...blankPrefs().marks, ...(P.marks || {}) } };
+      if (P) P = { ...blankPrefs(), ...P, bm: P.bm || {}, chips: P.chips || {}, gradInDept: P.gradInDept !== false, marks: { ...blankPrefs().marks, ...(P.marks || {}) } };
       draft = P ? JSON.parse(JSON.stringify(P)) : blankPrefs();
       render();
       // 실제 수집이 붙으면 켠다. 시안은 데이터가 고정이라 켜 두면 '새 글' 표시가 다시는 안 보인다.
