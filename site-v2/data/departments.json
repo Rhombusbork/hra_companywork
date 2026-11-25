@@ -1,0 +1,1052 @@
+[
+ {
+  "id": "humanities",
+  "college": "인문대학",
+  "name": "인문대학",
+  "is_college_board": true,
+  "board": "https://humanities.jejunu.ac.kr/humanities/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "korean",
+  "college": "인문대학",
+  "name": "국어국문학과",
+  "is_college_board": false,
+  "board": "https://korean.jejunu.ac.kr/korean/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "english",
+  "college": "인문대학",
+  "name": "영어영문학과",
+  "is_college_board": false,
+  "board": "https://english.jejunu.ac.kr/english/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "japanese",
+  "college": "인문대학",
+  "name": "일어일문학과",
+  "is_college_board": false,
+  "board": "https://japanese.jejunu.ac.kr/japanese/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "chinese",
+  "college": "인문대학",
+  "name": "중어중문학과",
+  "is_college_board": false,
+  "board": "https://chinese.jejunu.ac.kr/chinese/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "ifdk",
+  "college": "인문대학",
+  "name": "독일학과",
+  "is_college_board": false,
+  "board": "https://ifdk.jejunu.ac.kr/ifdk/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "history",
+  "college": "인문대학",
+  "name": "사학과",
+  "is_college_board": false,
+  "board": "https://history.jejunu.ac.kr/history/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "sociology",
+  "college": "인문대학",
+  "name": "사회학과",
+  "is_college_board": false,
+  "board": "https://sociology.jejunu.ac.kr/sociology/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "sophia",
+  "college": "인문대학",
+  "name": "철학과",
+  "is_college_board": false,
+  "board": "https://sophia.jejunu.ac.kr/sophia/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "justice",
+  "college": "사회과학대학",
+  "name": "사회과학대학",
+  "is_college_board": true,
+  "board": "https://justice.jejunu.ac.kr/justice/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "admini",
+  "college": "사회과학대학",
+  "name": "행정학과",
+  "is_college_board": false,
+  "board": "https://admini.jejunu.ac.kr/admini/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "politics",
+  "college": "사회과학대학",
+  "name": "정치외교학과",
+  "is_college_board": false,
+  "board": "https://politics.jejunu.ac.kr/politics/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "journalism",
+  "college": "사회과학대학",
+  "name": "언론홍보학과",
+  "is_college_board": false,
+  "board": "https://journalism.jejunu.ac.kr/journalism/index/degree/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "biz",
+  "college": "경상대학",
+  "name": "경상대학",
+  "is_college_board": true,
+  "board": "https://biz.jejunu.ac.kr/biz/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "dba",
+  "college": "경상대학",
+  "name": "경영학과",
+  "is_college_board": false,
+  "board": "https://dba.jejunu.ac.kr/dba/index/degree/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "tourism",
+  "college": "경상대학",
+  "name": "관광경영학과",
+  "is_college_board": false,
+  "board": "https://tourism.jejunu.ac.kr/tourism/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "accounting",
+  "college": "경상대학",
+  "name": "회계학과",
+  "is_college_board": false,
+  "board": "https://accounting.jejunu.ac.kr/accounting/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "trade",
+  "college": "경상대학",
+  "name": "무역학과",
+  "is_college_board": false,
+  "board": "https://trade.jejunu.ac.kr/trade/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "econ",
+  "college": "경상대학",
+  "name": "경제학과",
+  "is_college_board": false,
+  "board": "https://econ.jejunu.ac.kr/econ/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "td",
+  "college": "경상대학",
+  "name": "관광개발학과",
+  "is_college_board": false,
+  "board": "https://td.jejunu.ac.kr/td/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "mis",
+  "college": "경상대학",
+  "name": "경영정보학과",
+  "is_college_board": false,
+  "board": "https://mis.jejunu.ac.kr/mis/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "education",
+  "college": "사범대학",
+  "name": "사범대학",
+  "is_college_board": true,
+  "board": "https://education.jejunu.ac.kr/education/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "koredu",
+  "college": "사범대학",
+  "name": "국어교육과",
+  "is_college_board": false,
+  "board": "https://koredu.jejunu.ac.kr/koredu/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "engedu",
+  "college": "사범대학",
+  "name": "영어교육과",
+  "is_college_board": false,
+  "board": "https://engedu.jejunu.ac.kr/engedu/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "eduethics",
+  "college": "사범대학",
+  "name": "윤리교육과",
+  "is_college_board": false,
+  "board": "https://eduethics.jejunu.ac.kr/eduethics/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "sse",
+  "college": "사범대학",
+  "name": "사회교육과",
+  "is_college_board": false,
+  "board": "https://sse.jejunu.ac.kr/sse/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "geoedu",
+  "college": "사범대학",
+  "name": "지리교육과",
+  "is_college_board": false,
+  "board": "https://geoedu.jejunu.ac.kr/geoedu/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "mathedu",
+  "college": "사범대학",
+  "name": "수학교육과",
+  "is_college_board": false,
+  "board": "https://mathedu.jejunu.ac.kr/mathedu/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "educom",
+  "college": "사범대학",
+  "name": "컴퓨터교육과",
+  "is_college_board": false,
+  "board": "https://educom.jejunu.ac.kr/educom/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "bioedu",
+  "college": "사범대학",
+  "name": "생물교육전공",
+  "is_college_board": false,
+  "board": "https://bioedu.jejunu.ac.kr/bioedu/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "eduphysics",
+  "college": "사범대학",
+  "name": "물리교육전공",
+  "is_college_board": false,
+  "board": "https://eduphysics.jejunu.ac.kr/eduphysics/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "physicaledu",
+  "college": "사범대학",
+  "name": "체육교육과",
+  "is_college_board": false,
+  "board": "https://physicaledu.jejunu.ac.kr/physicaledu/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "life",
+  "college": "생명자원과학대학",
+  "name": "생명자원과학대학",
+  "is_college_board": true,
+  "board": "https://todaud.jejunu.ac.kr/life/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "plant",
+  "college": "생명자원과학대학",
+  "name": "식물자원환경전공",
+  "is_college_board": false,
+  "board": "https://plant.jejunu.ac.kr/plant/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "hort",
+  "college": "생명자원과학대학",
+  "name": "원예환경전공",
+  "is_college_board": false,
+  "board": "https://hort.jejunu.ac.kr/hort/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "biomaterhtml",
+  "college": "생명자원과학대학",
+  "name": "바이오소재전공",
+  "is_college_board": false,
+  "board": "https://biomater.jejunu.ac.kr/biomaterhtml/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "molecula",
+  "college": "생명자원과학대학",
+  "name": "분자생명공학전공",
+  "is_college_board": false,
+  "board": "https://molecular.jejunu.ac.kr/molecula/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "animal",
+  "college": "생명자원과학대학",
+  "name": "동물생명공학전공",
+  "is_college_board": false,
+  "board": "https://animal.jejunu.ac.kr/animal/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "iae",
+  "college": "생명자원과학대학",
+  "name": "산업응용경제학과",
+  "is_college_board": false,
+  "board": "https://iae.jejunu.ac.kr/iae/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "biomedical",
+  "college": "생명자원과학대학",
+  "name": "바이오메디컬정보학과",
+  "is_college_board": false,
+  "board": "https://biomedical.jejunu.ac.kr/biomedical/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "ocean",
+  "college": "해양과학대학",
+  "name": "해양과학대학",
+  "is_college_board": true,
+  "board": "https://ocean.jejunu.ac.kr/ocean/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "mlsjeju",
+  "college": "해양과학대학",
+  "name": "해양생명과학과",
+  "is_college_board": false,
+  "board": "https://mls.jejunu.ac.kr/mlsjeju/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "aquatic",
+  "college": "해양과학대학",
+  "name": "수산생명의학과",
+  "is_college_board": false,
+  "board": "https://abs.jejunu.ac.kr/aquatic/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "coastguard",
+  "college": "해양과학대학",
+  "name": "해양산업경찰학과",
+  "is_college_board": false,
+  "board": "https://coastguard.jejunu.ac.kr/coastguard/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "earth",
+  "college": "해양과학대학",
+  "name": "지구해양과학과",
+  "is_college_board": false,
+  "board": "https://earthocean.jejunu.ac.kr/earth/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "environ",
+  "college": "해양과학대학",
+  "name": "환경공학과",
+  "is_college_board": false,
+  "board": "https://environ.jejunu.ac.kr/environ/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "civil",
+  "college": "해양과학대학",
+  "name": "토목공학과",
+  "is_college_board": false,
+  "board": "https://civil.jejunu.ac.kr/civil/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "osejeju",
+  "college": "해양과학대학",
+  "name": "해양시스템공학과",
+  "is_college_board": false,
+  "board": "https://ose.jejunu.ac.kr/osejeju/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "ns",
+  "college": "자연과학대학",
+  "name": "자연과학대학",
+  "is_college_board": true,
+  "board": "https://ns.jejunu.ac.kr/ns/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "physics",
+  "college": "자연과학대학",
+  "name": "물리학과",
+  "is_college_board": false,
+  "board": "https://physics.jejunu.ac.kr/physics/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "lifescience",
+  "college": "자연과학대학",
+  "name": "생물학과",
+  "is_college_board": false,
+  "board": "https://lifescience.jejunu.ac.kr/lifescience/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "chemcos",
+  "college": "자연과학대학",
+  "name": "화학·코스메틱스학과",
+  "is_college_board": false,
+  "board": "https://chemcos.jejunu.ac.kr/chemcos/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "foodnutrition",
+  "college": "자연과학대학",
+  "name": "식품영양학과",
+  "is_college_board": false,
+  "board": "https://foodnutrition.jejunu.ac.kr/foodnutrition/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "math",
+  "college": "자연과학대학",
+  "name": "수학과",
+  "is_college_board": false,
+  "board": "https://math.jejunu.ac.kr/math/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "computer",
+  "college": "자연과학대학",
+  "name": "데이터사이언스학과",
+  "is_college_board": false,
+  "board": "https://jupiter.jejunu.ac.kr/computer/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "fhew",
+  "college": "자연과학대학",
+  "name": "아동·생활복지전공",
+  "is_college_board": false,
+  "board": "https://homemanagement.jejunu.ac.kr/fhew/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "ns-1",
+  "college": "자연과학대학",
+  "name": "주거·가족복지전공",
+  "is_college_board": false,
+  "board": "https://ns.jejunu.ac.kr/ns/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "fashion",
+  "college": "자연과학대학",
+  "name": "패션의류학과",
+  "is_college_board": false,
+  "board": "https://fnt.jejunu.ac.kr/fashion/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "jejusports",
+  "college": "자연과학대학",
+  "name": "체육학과",
+  "is_college_board": false,
+  "board": "https://jejusports.jejunu.ac.kr/jejusports/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "engr",
+  "college": "공과대학",
+  "name": "공과대학",
+  "is_college_board": true,
+  "board": "https://engr.jejunu.ac.kr/engr/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "foodse",
+  "college": "공과대학",
+  "name": "식품생명공학과",
+  "is_college_board": false,
+  "board": "https://foodse.jejunu.ac.kr/foodse/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "mechanic",
+  "college": "공과대학",
+  "name": "기계공학전공",
+  "is_college_board": false,
+  "board": "https://mechanic.jejunu.ac.kr/mechanic/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "mechatronic",
+  "college": "공과대학",
+  "name": "메카트로닉스공학전공",
+  "is_college_board": false,
+  "board": "https://mechatronic.jejunu.ac.kr/mechatronic/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "telecom",
+  "college": "공과대학",
+  "name": "통신공학과",
+  "is_college_board": false,
+  "board": "https://telecom.jejunu.ac.kr/telecom/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "에너지공학전공",
+  "college": "공과대학",
+  "name": "에너지공학전공",
+  "is_college_board": false,
+  "board": "",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": false
+ },
+ {
+  "id": "nuclear",
+  "college": "공과대학",
+  "name": "원자력·전기에너지공학과",
+  "is_college_board": false,
+  "board": "https://nuclear.jejunu.ac.kr/nuclear/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "ce",
+  "college": "공과대학",
+  "name": "컴퓨터공학전공",
+  "is_college_board": false,
+  "board": "https://ce.jejunu.ac.kr/ce/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "comdol",
+  "college": "공과대학",
+  "name": "전자공학과",
+  "is_college_board": false,
+  "board": "https://comdol.jejunu.ac.kr/comdol/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "elec",
+  "college": "공과대학",
+  "name": "전기공학전공",
+  "is_college_board": false,
+  "board": "https://elec.jejunu.ac.kr/elec/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "chemeng",
+  "college": "공과대학",
+  "name": "화학공학과",
+  "is_college_board": false,
+  "board": "https://chemeng.jejunu.ac.kr/chemeng/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "archieng",
+  "college": "공과대학",
+  "name": "건축공학전공",
+  "is_college_board": false,
+  "board": "https://archieng.jejunu.ac.kr/archieng/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "archidesign",
+  "college": "공과대학",
+  "name": "건축학전공",
+  "is_college_board": false,
+  "board": "https://archidesign.jejunu.ac.kr/archidesign/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "mechsys",
+  "college": "공과대학",
+  "name": "기계시스템공학과",
+  "is_college_board": false,
+  "board": "https://mse.jejunu.ac.kr/mechsys/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "artificial",
+  "college": "공과대학",
+  "name": "인공지능전공",
+  "is_college_board": false,
+  "board": "https://ai.jejunu.ac.kr/artificial/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "medical",
+  "college": "의과대학",
+  "name": "의예과·의학과",
+  "is_college_board": false,
+  "board": "https://medical.jejunu.ac.kr/medical/community/notice/schnotice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "sara",
+  "college": "교육대학",
+  "name": "초등교육 (12개 전공 공통)",
+  "is_college_board": false,
+  "board": "https://sara.jejunu.ac.kr/sara/square/notice.htm",
+  "level": "학부",
+  "campus": "사라",
+  "has_board": true
+ },
+ {
+  "id": "vetmedmain",
+  "college": "수의과대학",
+  "name": "수의과대학",
+  "is_college_board": true,
+  "board": "https://vetmed.jejunu.ac.kr/vetmedmain/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "vetmedmain-1",
+  "college": "수의과대학",
+  "name": "수의학과",
+  "is_college_board": false,
+  "board": "https://vetmed.jejunu.ac.kr/vetmedmain/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "prevetmedmain",
+  "college": "수의과대학",
+  "name": "수의예과",
+  "is_college_board": false,
+  "board": "https://prevetmed.jejunu.ac.kr/prevetmedmain/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "nursing",
+  "college": "간호대학",
+  "name": "간호대학",
+  "is_college_board": true,
+  "board": "https://nursing.jejunu.ac.kr/nursing/degree/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "nursing-1",
+  "college": "간호대학",
+  "name": "간호학과",
+  "is_college_board": false,
+  "board": "https://nursing.jejunu.ac.kr/nursing/degree/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "artsdesign",
+  "college": "예술디자인대학",
+  "name": "예술디자인대학",
+  "is_college_board": true,
+  "board": "https://artdesign.jejunu.ac.kr/artsdesign/index/information/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "music",
+  "college": "예술디자인대학",
+  "name": "음악학부",
+  "is_college_board": false,
+  "board": "https://music.jejunu.ac.kr/music/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "fineart",
+  "college": "예술디자인대학",
+  "name": "미술학과",
+  "is_college_board": false,
+  "board": "https://fineart.jejunu.ac.kr/fineart/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "multi",
+  "college": "예술디자인대학",
+  "name": "멀티미디어디자인전공",
+  "is_college_board": false,
+  "board": "https://multi.jejunu.ac.kr/multi/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "culture",
+  "college": "예술디자인대학",
+  "name": "문화조형디자인전공",
+  "is_college_board": false,
+  "board": "https://culture.jejunu.ac.kr/culture/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "fc",
+  "college": "미래융합대학",
+  "name": "미래융합대학",
+  "is_college_board": true,
+  "board": "https://fc.jejunu.ac.kr/fc/community/fc_notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "beauty",
+  "college": "미래융합대학",
+  "name": "건강뷰티향장학과",
+  "is_college_board": false,
+  "board": "https://cms.jejunu.ac.kr/beauty/community/fc_notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "tc",
+  "college": "미래융합대학",
+  "name": "관광융복합학과",
+  "is_college_board": false,
+  "board": "https://cms.jejunu.ac.kr/tc/community/fc_notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "realestate",
+  "college": "미래융합대학",
+  "name": "부동산관리학과",
+  "is_college_board": false,
+  "board": "https://cms.jejunu.ac.kr/realestate/community/fc_notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "silverwelfare",
+  "college": "미래융합대학",
+  "name": "실버케어복지학과",
+  "is_college_board": false,
+  "board": "https://cms.jejunu.ac.kr/silverwelfare/community/fc_notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "pharmacy",
+  "college": "약학대학",
+  "name": "약학대학",
+  "is_college_board": true,
+  "board": "https://pharmacy.jejunu.ac.kr/pharmacy/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "pharmacy-1",
+  "college": "약학대학",
+  "name": "약학과",
+  "is_college_board": false,
+  "board": "https://pharmacy.jejunu.ac.kr/pharmacy/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "gs",
+  "college": "일반대학원",
+  "name": "일반대학원",
+  "is_college_board": false,
+  "board": "https://gs.jejunu.ac.kr/gs/community/notice.htm",
+  "level": "대학원",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "gsi",
+  "college": "전문대학원",
+  "name": "통역번역대학원",
+  "is_college_board": false,
+  "board": "https://gsi.jejunu.ac.kr/gsi/community/notice.htm",
+  "level": "대학원",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "lawschool",
+  "college": "전문대학원",
+  "name": "법학전문대학원",
+  "is_college_board": false,
+  "board": "https://lawschool.jejunu.ac.kr/lawschool/community/notice.htm",
+  "level": "대학원",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "gsedu",
+  "college": "특수대학원",
+  "name": "교육대학원",
+  "is_college_board": false,
+  "board": "https://gsedu.jejunu.ac.kr/gsedu/index/community/notice.htm",
+  "level": "대학원",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "graduate",
+  "college": "특수대학원",
+  "name": "교육대학원 초등교육학과",
+  "is_college_board": false,
+  "board": "https://graduate.jejunu.ac.kr/graduate/community/notice.htm",
+  "level": "대학원",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "jnumba",
+  "college": "특수대학원",
+  "name": "경영대학원",
+  "is_college_board": false,
+  "board": "https://jnumba.jejunu.ac.kr/jnumba/index/community/notice.htm",
+  "level": "대학원",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "gspa",
+  "college": "특수대학원",
+  "name": "행정대학원",
+  "is_college_board": false,
+  "board": "https://gspa.jejunu.ac.kr/gspa/community/notice.htm",
+  "level": "대학원",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "gsse",
+  "college": "특수대학원",
+  "name": "사회교육대학원",
+  "is_college_board": false,
+  "board": "https://gsse.jejunu.ac.kr/gsse/community/notice.htm",
+  "level": "대학원",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "gsind",
+  "college": "특수대학원",
+  "name": "산업대학원",
+  "is_college_board": false,
+  "board": "https://gsind.jejunu.ac.kr/gsind/community/notice.htm",
+  "level": "대학원",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "health",
+  "college": "특수대학원",
+  "name": "보건복지대학원",
+  "is_college_board": false,
+  "board": "https://health.jejunu.ac.kr/health/community/notice.htm",
+  "level": "대학원",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "free",
+  "college": "총장 직속",
+  "name": "자유전공",
+  "is_college_board": false,
+  "board": "https://openmajor.jejunu.ac.kr/free/index/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ },
+ {
+  "id": "globalfree",
+  "college": "총장 직속",
+  "name": "글로벌자율전공",
+  "is_college_board": false,
+  "board": "https://cms.jejunu.ac.kr/globalfree/community/notice.htm",
+  "level": "학부",
+  "campus": "아라",
+  "has_board": true
+ }
+]

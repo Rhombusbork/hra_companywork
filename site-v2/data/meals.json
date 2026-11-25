@@ -1,0 +1,39 @@
+{
+  "_note": "예시 데이터. 07 의 2절 '이번 주 식단 예시'(11/21 밤 수집 기록)를 옮겼다.",
+  "week": "2026-11-23",
+  "restaurants": {
+    "baekdu": {
+      "label": "백두관", "source": "https://www.jejunu.ac.kr/camp/stud/foodmenu/firstfixmenu.htm",
+      "days": {
+        "2026-11-23": [
+          { "meal": "중식1", "menu": ["뼈없는닭갈비", "보리밥", "얼갈이된장국", "고추마요미트볼", "청경채겉절이", "배추김치"] },
+          { "meal": "중식2", "note": "150개 한정", "menu": ["미트소스스파게티", "양송이스프", "생선까스", "모닝빵&딸기잼"] },
+          { "meal": "석식", "menu": ["우삼겹된장찌개", "쌀밥", "후르츠탕수육", "애느타리호박무침"] }
+        ],
+        "2026-11-27": [
+          { "meal": "중식1", "menu": ["멸치국수", "닭고기오븐구이"] }
+        ]
+      }
+    },
+    "six": {
+      "label": "6호관", "source": "https://www.jejunu.ac.kr/camp/stud/foodmenu/fixfirst.htm",
+      "fallback": "http://ibjejunu.co.kr/default/02/01.php",
+      "stale": true, "stale_note": "학교 페이지가 아직 지난주(11/16~22) 식단이에요. 업체 게시판에 이번 주 식단 이미지가 먼저 올라와 있어요.",
+      "days": {}
+    },
+    "one": {
+      "label": "1호관", "source": "https://chefskiss.co.kr/morning",
+      "link_only": true, "link_note": "아침(천원의 아침밥)은 업체 사이트, 점심·저녁은 업체 인스타그램에 올라와요.",
+      "days": {}
+    },
+    "sara": {
+      "label": "사라캠퍼스", "source": "https://www.jejunu.ac.kr/camp/stud/foodmenu/secondfixmenu.htm",
+      "days": {
+        "2026-11-23": [
+          { "meal": "중식", "menu": ["보리밥", "쇠고기뭇국", "제육두부김치"] },
+          { "meal": "석식", "menu": ["흑미밥", "가쓰오장국", "닭간장조림", "별미떡볶이"] }
+        ]
+      }
+    }
+  }
+}
