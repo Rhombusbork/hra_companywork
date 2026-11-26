@@ -1,6 +1,6 @@
 {
  "_note": "collector/collect.py 가 학교 식단 페이지에서 만든 데이터.",
- "generated_at": "2026-11-26T23:20:44+09:00",
+ "generated_at": "2026-11-27T07:25:19+09:00",
  "week": "2026-11-23",
  "restaurants": {
   "baekdu": {
