@@ -328,6 +328,34 @@ def parse_meals(text, cfg, year):
     return days
 
 
+ACAD_URL = "https://www.jejunu.ac.kr/admission/eduguide/degree/academyschedule/academic.htm?year={y}"
+ACAD_RE = re.compile(r"^(\d{1,2})\.\s*(\d{1,2})\s*\([^)]*\)(?:\s*~\s*(\d{1,2})\.\s*(\d{1,2})\s*\([^)]*\))?$")
+
+
+def parse_academic(text, year):
+    """학사일정 (달력 연도 1~12월). "MM.DD(요) ~ MM. DD(요)" 줄 다음 줄이 내용 (01 2-3절)."""
+    soup = BeautifulSoup(text, "html.parser")
+    lines = (soup.select_one("#sub-main-contents") or soup).get_text("\n", strip=True).split("\n")
+    out = []
+    for i, l in enumerate(lines[:-1]):
+        m = ACAD_RE.match(l.strip())
+        if not m:
+            continue
+        title = lines[i + 1].strip()
+        if ACAD_RE.match(title) or not title:
+            continue
+        try:
+            start = date(year, int(m[1]), int(m[2]))
+            end = start
+            if m[3]:
+                ey = year + 1 if int(m[3]) < int(m[1]) else year
+                end = date(ey, int(m[3]), int(m[4]))
+        except ValueError:
+            continue
+        out.append({"start": start.isoformat(), "end": end.isoformat(), "title": title})
+    return out
+
+
 # ---------- 합치기 ----------
 
 def load_prev(name):
@@ -513,8 +541,41 @@ def main():
         "restaurants": {k: rest[k] for k in order if k in rest} | {k: v for k, v in rest.items() if k not in order},
     }
 
+    print("학사일정")
+    acad_out = None
+    prev_acad = load_prev("academic.json")
+    if not prev_acad or (prev_acad.get("generated_at") or "")[:10] != TODAY.isoformat():  # 하루 한 번만 받는다
+        years = [TODAY.year] + ([TODAY.year + 1] if TODAY.month >= 11 else [])
+        events = []
+        try:
+            for y in years:
+                try:
+                    events += parse_academic(f.get(ACAD_URL.format(y=y)), y)
+                except Exception as e:
+                    if y == TODAY.year:
+                        raise
+                    print(f"  {y}: 아직 없음 ({e})")
+            if len(events) < 10:
+                raise RuntimeError(f"{len(events)}건뿐 (구조가 바뀌었을 수 있음)")
+            seen_e, uniq_e = set(), []
+            for e in sorted(events, key=lambda e: (e["start"], e["title"])):
+                k = (e["start"], e["title"])
+                if k not in seen_e:
+                    seen_e.add(k)
+                    uniq_e.append(e)
+            acad_out = {"_note": "collector/collect.py 가 학교 학사일정 페이지에서 하루 한 번 만든 데이터.",
+                        "generated_at": NOW_S, "source": ACAD_URL.format(y=TODAY.year), "events": uniq_e}
+            print(f"  {len(uniq_e)}건")
+        except Exception as e:
+            failed.append("academic")
+            print(f"  실패 {e}", file=sys.stderr)
+    else:
+        print("  오늘 이미 받음")
+
     for d in OUT_DIRS:
         d.mkdir(parents=True, exist_ok=True)
+        if acad_out:
+            (d / "academic.json").write_text(json.dumps(acad_out, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
         (d / "items.json").write_text(json.dumps(items_out, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
         (d / "meals.json").write_text(json.dumps(meals_out, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     print(f"글 {len(uniq)}건, 요청 {f.count}번, 실패 {failed or '없음'}")

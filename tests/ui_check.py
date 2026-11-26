@@ -93,6 +93,8 @@ def run_site(b, base, path, c, shots):
         if a.count():
             a.click(); pg.wait_for_timeout(400)
             c.ok(len(pg.inner_text("body")) > 200, f"{tag}: '{label}' 탭 열림")
+    pg.goto(url + "#schedule"); pg.wait_for_timeout(500)
+    c.ok("[예시]" not in pg.inner_text("body"), f"{tag}: 일정 탭에 [예시] 없음")
     shot(pg, "3_schedule")
     pg.goto(url + "#c-haksa"); pg.wait_for_timeout(500)
     chips = pg.locator(".tagrow .chip, .chipbar .chip, button.chip")
