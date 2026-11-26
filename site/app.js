@@ -110,7 +110,8 @@
     // 0층: 내 학과 게시판 글 + 내 학과가 다시 올린 본부 글 + (교직 이수면) 본부 교직 글
     const boards = myBoards();
     const teachWords = D.cfg.dept_tags.find((t) => t.id === "teach").include;
-    const gradWords = D.cfg.dept_tags.find((t) => t.id === "gradreq").include;
+    const gradTag = D.cfg.dept_tags.find((t) => t.id === "gradreq");
+    const gradWords = gradTag.include, gradNot = gradTag.exclude || [];
     const out = [];
     for (const it of D.items) {
       if (!visible(it)) continue;
@@ -124,7 +125,7 @@
       }
       if (!who && P.teach && it.source !== "dept" && has(it.title, teachWords)) { who = "교직"; tags = ["teach"]; note = "본부 글"; }
       // 졸업요건·자격: 본부·진로취업 글이라도 내 졸업과 바로 이어지니 학과 카드로 모은다
-      if (!who && P.gradInDept !== false && it.source !== "dept" && has(it.title, gradWords)) { who = "졸업요건"; tags = ["gradreq"]; note = it.source_name + " 글"; }
+      if (!who && P.gradInDept !== false && it.source !== "dept" && has(it.title, gradWords) && !has(it.title, gradNot)) { who = "졸업요건"; tags = ["gradreq"]; note = it.source_name + " 글"; }
       if (who) out.push({ ...it, _who: who, _tags: tags, _note: note });
     }
     return sortItems(out);
