@@ -335,3 +335,6 @@ a.btn { display: inline-block; text-decoration: none; }
 a.btn.link { text-decoration: underline; }
 
 .bm-sub { font-size: 13px; font-weight: 600; margin: 14px 0 2px; color: var(--muted, #666); }
+
+.dept-opt small.got { font-size: 11px; color: var(--accent, #0f6b6b); margin-left: 4px; }
+.not-yet { margin: 4px 0 8px; }

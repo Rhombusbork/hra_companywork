@@ -471,6 +471,10 @@
     const shown = tagSel && tagSel !== "all" ? items.filter((it) => it._tags.includes(tagSel)) : items;
     const tagChips = D.cfg.dept_tags.filter((t) => counts[t.id] || (t.id === "teach" && P.teach)).map((t) =>
       `<button class="chip${tagSel === t.id ? " on" : ""}" data-tag="${t.id}">${esc(t.label)}<span class="n">${counts[t.id] || 0}</span></button>`).join("");
+    // 약학·간호처럼 글을 모으는 학과가 아니면 알려 준다 (16: 학과 게시판 수집은 약학·간호만)
+    const got = new Set(D.meta.dept_boards || []);
+    const notYet = D.meta.dept_boards ? boards.filter((b) => b.board && !got.has(b.board)) : [];
+    const notYetNote = notYet.length ? `<p class="hint not-yet">${notYet.map((b) => esc(b.label)).join("·")} 게시판은 아직 모으지 않아요. 본부·센터 글 중 학과와 관련된 것만 보여요. ${notYet.map((b) => `<a href="${esc(b.board)}" target="_blank" rel="noopener">${esc(b.label)} 게시판 열기</a>`).join(" · ")}</p>` : "";
     let empty = "";
     if (!boards.length) empty = `<p class="empty">설정에서 학과를 고르면 학과 게시판 글을 여기에 모아 보여 드려요. <a href="#dept">학과 넣기</a></p>`;
     else if (!shown.length) {
@@ -479,6 +483,7 @@
     }
     return `<section class="card main">
       <div class="card-head"><div><h2>내 학과</h2><div class="sub">${esc(name)}</div></div>${items.length > limit ? `<a href="#c-dept">전체 ${items.length}개 보기</a>` : ""}</div>
+      ${notYetNote}
       ${tagChips ? `<div class="tagrow"><button class="chip${!tagSel || tagSel === "all" ? " on" : ""}" data-tag="all">전체<span class="n">${items.length}</span></button>${tagChips}</div>` : ""}
       ${empty || `<ul class="items">${shown.slice(0, limit).map((it) => itemRow(it, "dept")).join("")}</ul>`}
     </section>`;
@@ -667,12 +672,13 @@
   function deptPicker(which) {
     const q = (which === 2 ? deptQuery2 : deptQuery).trim();
     const taken = new Set(draft.depts);
+    const got = new Set(D.meta.dept_boards || []);
     const list = D.deps.filter((d) => !d.is_college_board && (!q || (d.name + d.college).includes(q)));
     const groups = {};
     list.forEach((d) => (groups[d.college] = groups[d.college] || []).push(d));
     const body = Object.entries(groups).map(([col, ds]) =>
       `<div class="dept-group">${esc(col)}</div>` + ds.map((d) =>
-        `<button class="dept-opt" data-pick="${which}" data-id="${esc(d.id)}"${taken.has(d.id) ? " disabled" : ""}>${esc(d.name)}${taken.has(d.id) ? " · 선택함" : ""}</button>`).join("")).join("");
+        `<button class="dept-opt" data-pick="${which}" data-id="${esc(d.id)}"${taken.has(d.id) ? " disabled" : ""}>${esc(d.name)}${got.has(d.board) ? ` <small class="got">게시판 모음</small>` : ""}${taken.has(d.id) ? " · 선택함" : ""}</button>`).join("")).join("");
     return `<input type="search" id="dept-q-${which}" placeholder="학과 이름으로 찾기 (예: 약학, 경영)" value="${esc(q)}" autocomplete="off">
       <div class="dept-list">${body || `<p class="empty" style="padding:10px">찾는 학과가 없어요.</p>`}</div>`;
   }

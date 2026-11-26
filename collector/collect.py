@@ -386,6 +386,16 @@ def merge_dupes(items, dept_names):
         if j:
             drop.add(id(j) if (j.get("category") in (None, "일반")) else id(it))
     items = [it for it in items if id(it) not in drop]
+    # 전용 게시판끼리 같은 글(예: 생활관·국제교류에 같이 올린 글)은 먼저 나온 하나만 남긴다
+    seen_t, keep = set(), []
+    for it in items:
+        if it["source"] not in ("jnu", "dept"):
+            k = norm_title(it["title"])
+            if k in seen_t:
+                continue
+            seen_t.add(k)
+        keep.append(it)
+    items = keep
     by_title = {}
     for it in items:
         if it["source"] != "dept":
@@ -508,6 +518,7 @@ def main():
         "_note": "collector/collect.py 가 만든 실제 수집 데이터. 제목·날짜·링크만 저장한다. 원문은 링크에서.",
         "generated_at": NOW_S,
         "sources": sources,
+        "dept_boards": sorted(dept_names),  # 글을 모으는 학과 게시판 (화면이 '아직 안 모음' 안내에 씀)
         "items": uniq,
     }
 

@@ -142,6 +142,16 @@ def run_site(b, base, path, c, shots):
         c.ok("학과 넣기" not in pg.inner_text("body"), f"{tag}: ?dept={q} 로 학과 들어감")
         ctx.close()
 
+    # 7-1. 글을 모으지 않는 학과는 안내가 뜬다
+    ctx, pg = page(PHONE)
+    pg.goto(url + "?dept=korean"); pg.wait_for_timeout(1000)
+    c.ok("아직 모으지 않아요" in pg.inner_text("body"), f"{tag}: 안 모으는 학과(국어국문) 안내")
+    ctx.close()
+    ctx, pg = page(PHONE)
+    pg.goto(url + "#dept"); pg.wait_for_timeout(1000)
+    c.ok(pg.locator("button.dept-opt small.got").count() >= 2, f"{tag}: 학과 목록에 '게시판 모음' 표시")
+    ctx.close()
+
     # 8. PC 화면
     ctx, pg = page(PC)
     pg.goto(url + "?dept=nursing-1"); pg.wait_for_timeout(1000)
