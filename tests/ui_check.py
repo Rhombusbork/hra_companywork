@@ -128,6 +128,16 @@ def run_site(b, base, path, c, shots):
             shot(pg, "5_bookmarks")
             pg.locator("[data-close]").first.click(); pg.wait_for_timeout(300)
 
+    # 5-1. 검색
+    pg.goto(url + "#search"); pg.wait_for_timeout(500)
+    q = pg.locator("#search-q")
+    c.ok(q.count() == 1, f"{tag}: 검색 화면")
+    if q.count():
+        q.type("장학"); pg.wait_for_timeout(500)
+        c.ok(pg.locator(".item").count() > 0, f"{tag}: '장학' 검색 결과")
+        c.ok(pg.evaluate("document.activeElement && document.activeElement.id") == "search-q", f"{tag}: 치는 동안 검색창 포커스 유지")
+        shot(pg, "6_search")
+
     # 6. 설정 열고 저장
     pg.goto(url + "#setup"); pg.wait_for_timeout(500)
     c.ok("저장" in pg.inner_text("body"), f"{tag}: 설정 화면")

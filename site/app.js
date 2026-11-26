@@ -14,6 +14,7 @@
   let deptQuery = "";
   let deptQuery2 = "";
   let deptFilter = "all";
+  let searchQ = "";   // 검색어 (#search)
   let confirmReset = false;
   let TODAY = null;
   let sheet = null;   // null | { type: "item", id } | { type: "bm" }
@@ -189,7 +190,7 @@
   function header(title) {
     return `<header class="top">
       <div class="brand"><h1>${esc(title || "제주대 모아보기")}</h1><small>마지막 갱신: ${md(D.meta.generated_at)} ${D.meta.generated_at.slice(11, 16)}</small></div>
-      <div class="top-btns"><button class="icon-btn" data-act="bm-open" aria-haspopup="dialog">★ 북마크 ${Object.keys(P && P.bm || {}).length}</button><a class="icon-btn" href="#setup">설정</a></div>
+      <div class="top-btns"><button class="icon-btn" data-act="bm-open" aria-haspopup="dialog">★ 북마크 ${Object.keys(P && P.bm || {}).length}</button><a class="icon-btn" href="#search" aria-label="검색">검색</a><a class="icon-btn" href="#setup">설정</a></div>
     </header>`;
   }
 
@@ -672,6 +673,25 @@
       `<div class="list-card">${items.length ? `<ul class="items">${items.map((it) => itemRow(it, catId)).join("")}</ul>` : `<p class="empty">글이 없어요.</p>`}</div>` + footer();
   }
 
+  // ---------- 검색 ----------
+  // 제목·게시판·작성 부서에서 찾는다. 띄어 쓴 낱말이 모두 들어간 글만. 숨긴 정보원·뺄 키워드도 무시하고 전부 찾는다
+  function viewSearch() {
+    const words = searchQ.toLowerCase().split(/\s+/).filter(Boolean);
+    const hit = (txt) => words.every((w) => txt.toLowerCase().includes(w));
+    let body = `<p class="hint">제목, 게시판 이름, 작성 부서에서 찾아요. 예: 근로장학, 교환학생, 계절수업</p>`;
+    if (words.length) {
+      const items = D.items.filter((it) => hit([it.title, it.source_name, it.dept || "", it.category || ""].join(" ")))
+        .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0)).slice(0, 100);
+      const acad = D.academic.events.filter((e) => hit(e.title + " 학사일정")).slice(0, 20);
+      body = `<p class="hint">${items.length}건${items.length === 100 ? " 넘게 (최근 100건만)" : ""}${acad.length ? ` · 학사일정 ${acad.length}건` : ""}</p>`
+        + (acad.length ? `<ul class="items">${acad.map((e) => `<li class="item"><div class="t-row"><a class="t" href="${esc(D.academic.source)}" target="_blank" rel="noopener">${esc(e.title)}</a></div>
+          <div class="meta"><span class="badge k-acad">학사일정</span><span>${md(e.start)}${e.end !== e.start ? "~" + md(e.end) : ""}</span></div></li>`).join("")}</ul>` : "")
+        + (items.length ? `<ul class="items">${items.map((it) => itemRow(it, "search")).join("")}</ul>` : `<p class="empty">찾는 글이 없어요. 낱말을 줄이거나 바꿔 보세요.</p>`);
+    }
+    return header() + catbar("search") + `<div class="view-head"><a class="back" href="#home">← 홈</a><h2>검색</h2></div>
+      <div class="list-card"><input type="search" id="search-q" class="search-q" placeholder="찾을 낱말 (예: 근로장학)" value="${esc(searchQ)}" autocomplete="off" enterkeyhint="search">${body}</div>` + footer();
+  }
+
   // ---------- 처음 설정 / 설정 ----------
   function deptPicker(which) {
     const q = (which === 2 ? deptQuery2 : deptQuery).trim();
@@ -804,6 +824,7 @@
     else if (r === "dept") html = viewDeptPick();
     else if (r === "c-meal") html = viewMeal();
     else if (r === "schedule") html = viewSchedule();
+    else if (r === "search") html = viewSearch();
     else if (r.startsWith("c-")) html = viewList(r.slice(2));
     else html = viewHome();
     const keepFocus = document.activeElement && document.activeElement.id;
@@ -831,6 +852,7 @@
   $app.addEventListener("input", (e) => {
     if (e.target.id === "dept-q-1") { deptQuery = e.target.value; render(); }
     if (e.target.id === "dept-q-2") { deptQuery2 = e.target.value; render(); }
+    if (e.target.id === "search-q") { searchQ = e.target.value; render(); }
   });
 
   $app.addEventListener("change", (e) => {
@@ -960,6 +982,7 @@
     sheet = null; sheetReturn = null;
     if ((route() === "setup" || route() === "dept") && P) { draft = JSON.parse(JSON.stringify(P)); confirmReset = false; deptFilter = "all"; }
     render(); window.scrollTo(0, 0);
+    if (route() === "search") { const q = document.getElementById("search-q"); if (q) q.focus(); }
   });
 
   // ---------- 시작 ----------
