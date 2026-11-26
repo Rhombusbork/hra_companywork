@@ -2,7 +2,7 @@
 """사이트를 헤드리스 브라우저로 눌러 보는 시험. 루프(16)에서 사이트를 고친 뒤 꼭 돌린다.
 
   pip install playwright && python -m playwright install chromium
-  python tests/ui_check.py            # site/ (와 site-v2/ 가 있으면 그것도)
+  python tests/ui_check.py            # site/ 와 옛 /v2/ 넘김
   python tests/ui_check.py --shots D  # 화면 캡처를 D 에 저장
 
 JS 오류가 하나라도 나거나 확인이 실패하면 종료 코드 1.
@@ -159,12 +159,17 @@ def main():
         Path(args.shots).mkdir(parents=True, exist_ok=True)
     srv, base = serve()
     c = Check()
-    paths = ["/site/"] + (["/site-v2/"] if (ROOT / "site-v2" / "index.html").exists() else [])
+    paths = ["/site/"]
     with sync_playwright() as p:
         b = p.chromium.launch()
         for path in paths:
             print(path)
             run_site(b, base, path, c, args.shots)
+        # 옛 v2 주소는 학과 링크를 들고 v1 으로 넘어가야 한다
+        pg = b.new_page(); pg.goto(base + "/site/v2/?dept=pharmacy-1"); pg.wait_for_timeout(1500)
+        c.ok(pg.url.rstrip("/").endswith("/site") or "/site/" in pg.url and "/v2" not in pg.url, "옛 /v2/ → v1 으로 넘김")
+        c.ok("학과 넣기" not in pg.inner_text("body"), "옛 /v2/?dept= 학과 들고 넘어감")
+        pg.close()
         b.close()
     srv.shutdown()
     print(f"확인 {c.n}개, 실패 {len(c.fails)}개")

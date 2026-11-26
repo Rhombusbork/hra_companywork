@@ -1,11 +1,11 @@
 # site/ 를 gh-pages 브랜치에 올린다 (GitHub Pages). main 에 push 하면 자동.
 # collect.yml 이 수집 뒤에 이 워크플로를 불러 쓴다 (봇 push 는 다른 워크플로를 깨우지 않아서).
-# site-v2/ (시안 v2) 는 같은 곳의 v2/ 아래에 함께 올린다.
+# 옛 v2 시안 주소(/v2/)는 site/v2/index.html 이 v1 주소로 넘긴다 (11/26 합침).
 name: pages
 on:
   push:
     branches: [main]
-    paths: ["site/**", "site-v2/**", ".github/workflows/pages.yml"]
+    paths: ["site/**", ".github/workflows/pages.yml"]
   workflow_dispatch:
   workflow_call:
 permissions:
@@ -19,7 +19,6 @@ jobs:
           ref: main
       - name: push site/ to gh-pages
         run: |
-          if [ -d site-v2 ]; then rm -rf site/v2 && cp -r site-v2 site/v2; fi
           cd site
           touch .nojekyll
           git init -q -b gh-pages

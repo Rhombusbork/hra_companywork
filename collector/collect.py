@@ -2,7 +2,6 @@
 """제주대 공지·학식 수집기.
 
 sources.json 에 적힌 곳의 첫 페이지만 받아 site/data/items.json, meals.json 을 만든다.
-(site-v2/data 에도 같은 파일을 쓴다.)
 
 - 학교 사이트는 robots.txt 가 전체 차단이다. 첫 페이지만, 요청 사이 2~3초, 원문 링크 필수 (07 5절).
 - 학교 서버가 중간 인증서를 보내지 않아서 certs/ 의 중간 인증서를 시스템 루트와 합쳐 검증한다.
@@ -35,7 +34,7 @@ from bs4 import BeautifulSoup
 from requests.adapters import HTTPAdapter
 
 ROOT = Path(__file__).resolve().parent.parent
-OUT_DIRS = [ROOT / "site" / "data", ROOT / "site-v2" / "data"]
+OUT_DIRS = [ROOT / "site" / "data"]
 KST = timezone(timedelta(hours=9))
 UA = "jnu-moa/0.1 (HRA student project; +https://github.com/Rhombusbork/hra_companywork)"
 KEEP_DAYS = 60

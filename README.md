@@ -27,7 +27,7 @@ GitHub Actions (하루 몇 번) → 학교 게시판·식단 읽기 → JSON →
 - 조사 5개와 종합: [07_정보원_종합.md](제주_웹서비스_MVP/07_정보원_종합.md)
 - **수집기** [collector/collect.py](collector/collect.py): 본부 공지·생활관·국제교류·clip·약학대학·간호대학·jedaero·중앙도서관, 학식 3곳(백두관·6호관·사라). 받을 곳은 [collector/sources.json](collector/sources.json)
 - **자동 갱신** [.github/workflows/collect.yml](.github/workflows/collect.yml): 하루 4번(07·12·17·22시) 수집 → 데이터 커밋 → Pages 다시 배포
-- **화면** v1 https://rhombusbork.github.io/hra_companywork/ · v2 https://rhombusbork.github.io/hra_companywork/v2/ . 처음엔 바로 홈, 학과는 "학과 넣기"로. `?dept=약학` 처럼 학과 링크
+- **화면** https://rhombusbork.github.io/hra_companywork/ (11/26 v1·v2 합침, 옛 /v2/ 는 여기로 넘어감). 제목을 누르면 상세 창, ★ 북마크 창. 처음엔 바로 홈, 학과는 "학과 넣기"로. `?dept=약학` 처럼 학과 링크
 - 문서: 테스트 질문지(12), 피드백 분석표 틀(13), 서비스 기획서 초안(14), 개선 제안 초안(15)
 - 남은 일 체크리스트: [11_남은_작업_계획.md](제주_웹서비스_MVP/11_남은_작업_계획.md)
 
@@ -43,13 +43,13 @@ GitHub Actions (하루 몇 번) → 학교 게시판·식단 읽기 → JSON →
 
 ```
 pip install -r collector/requirements.txt
-python collector/collect.py                 # site/data, site-v2/data 를 갱신
+python collector/collect.py                 # site/data 를 갱신
 python collector/collect.py --cache /tmp/c  # 받은 원본을 저장해 두고 다시 받지 않음 (고칠 때)
 ```
 
 - 학과를 늘리려면 `sources.json` 의 `departments` 에 `site/data/departments.json` 의 id 를 넣는다.
 - 한 곳이 실패하거나 0건이면 그곳은 이전 데이터를 쓰고, 끝날 때 실패로 끝난다(Actions 가 메일을 보냄). 원인은 `items.json` 의 `sources.<id>.error`.
-- 화면 보기: 저장소 맨 위에서 `python3 -m http.server` 후 `/site/` 나 `/site-v2/`.
+- 화면 보기: 저장소 맨 위에서 `python3 -m http.server` 후 `/site/`.
 
 ## 다음 할 일
 

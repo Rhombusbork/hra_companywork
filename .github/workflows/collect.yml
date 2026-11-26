@@ -1,4 +1,4 @@
-# 학교 게시판·학식을 모아 site/data, site-v2/data 를 갱신하고 Pages 에 다시 올린다.
+# 학교 게시판·학식을 모아 site/data 를 갱신하고 Pages 에 다시 올린다.
 # 하루 4번 (한국 07:17 · 12:17 · 17:17 · 22:17). cron 은 UTC 라서 9시간을 뺐다 (07 4-2절).
 # collector/ 를 고쳐 main 에 push 해도 한 번 돈다 (= Actions 러너에서 학교 사이트가 열리는지 시험).
 # 한 곳이라도 실패하면 데이터는 그대로 올리고 마지막에 실패로 끝난다 → 저장소 주인에게 GitHub 가 메일을 보낸다.
@@ -38,7 +38,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add site/data site-v2/data
+          git add site/data
           if git diff --cached --quiet; then echo "바뀐 것 없음"; exit 0; fi
           git commit -q -m "data: 자동 수집 $(TZ=Asia/Seoul date '+%m/%d %H:%M')"
           for i in 1 2 3; do git pull -q --rebase origin main && git push -q origin HEAD:main && break; sleep 5; done
