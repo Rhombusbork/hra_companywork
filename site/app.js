@@ -1,4 +1,4 @@
-// 제주대 모아보기 — 화면 시안
+// 제주대 모아보기 — v1 에 v2(상세 창·북마크 사이드바)를 합친 판 (11/26). site-v2/ 는 정리 예정.
 // 서버·로그인 없음. data/*.json 을 받아 브라우저에서 거른다. 설정은 localStorage 에만 둔다.
 (function () {
   "use strict";
@@ -16,6 +16,8 @@
   let deptFilter = "all";
   let confirmReset = false;
   let TODAY = null;
+  let sheet = null;   // null | { type: "item", id } | { type: "bm" }
+  let sheetReturn = null;
 
   // ---------- 저장 ----------
   function load() { try { const s = localStorage.getItem(KEY); return s ? JSON.parse(s) : null; } catch (e) { return null; } }
@@ -179,7 +181,7 @@
     const ask = bm && !it.deadline
       ? `<label class="bm-date">달력에 넣을 날짜 <input type="date" data-bmdate="${esc(it.id)}" id="bmd-${esc(it.id)}" value="${esc(bm.date || "")}"></label>` : "";
     return `<li class="item">
-      <div class="t-row"><a class="t" href="${esc(it.url)}" target="_blank" rel="noopener">${esc(it.title)}</a>${star}</div>
+      <div class="t-row"><a class="t" href="${esc(it.url)}" data-open="${esc(it.id)}">${esc(it.title)}</a>${star}</div>
       <div class="meta">${bits.join("")}<span>${esc(src)}${it.dept ? " · " + esc(it.dept) : ""}</span><span>${md(it.date)}</span>${att}${it._note ? `<span>${esc(it._note)}</span>` : ""}${hide}</div>
       ${ask}
     </li>`;
@@ -189,7 +191,7 @@
   function header(title) {
     return `<header class="top">
       <div class="brand"><h1>${esc(title || "제주대 모아보기")}</h1><small>마지막 갱신: ${md(D.meta.generated_at)} ${D.meta.generated_at.slice(11, 16)}</small></div>
-      <a class="icon-btn" href="#setup">설정</a>
+      <div class="top-btns"><button class="icon-btn" data-act="bm-open" aria-haspopup="dialog">★ 북마크 ${Object.keys(P && P.bm || {}).length}</button><a class="icon-btn" href="#setup">설정</a></div>
     </header>`;
   }
 
@@ -300,7 +302,6 @@
     const monthEvs = evs.filter((e) => (e.date.slice(0, 7) === ym) || (e.end && e.date.slice(0, 7) < ym && e.end.slice(0, 7) >= ym))
       .sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : kindOrder[a.kind] - kindOrder[b.kind]));
     const bms = Object.entries(P.bm);
-    const bmDated = bms.filter(([id, b]) => { const it = D.items.find((x) => x.id === id); return (it && it.deadline) || b.date; }).length;
 
     return header() + catbar("schedule") + `<div class="sched">
       <section class="card cal">
@@ -323,14 +324,74 @@
           <div class="card-head"><h2>${m}월 안내</h2><span class="sub">${monthEvs.length}건</span></div>
           ${monthEvs.length ? `<ul class="evs">${monthEvs.map((e) => evRow(e, true)).join("")}</ul>` : `<p class="empty">이달 일정이 없어요.</p>`}
         </section>
-        <section class="card">
-          <div class="card-head"><h2>북마크 ${bms.length}</h2></div>
-          <p class="why">글의 ☆ 를 누르면 달력에 들어가요. 마감일을 모르는 글은 날짜를 직접 정해요.</p>
-          <div class="actions" style="margin-top:4px"><button class="btn" data-act="ics"${bmDated ? "" : " disabled"}>휴대폰 캘린더에 추가 (.ics)</button></div>
-          <p class="hint" id="ics-msg">날짜가 있는 북마크 ${bmDated}개를 파일로 받아요. 휴대폰 캘린더에 넣으면 하루 전 알림이 와요. 미리보기 링크에서는 내려받기가 막혀 있고, GitHub Pages 주소에서 동작해요.</p>
+        <section class="card bm-mini">
+          <div class="card-head"><h2>북마크 ${bms.length}</h2><button class="btn" data-act="bm-open">북마크 열기</button></div>
+          <p class="why">글의 ☆ 를 누르면 달력에 ★ 로 찍혀요. 목록과 휴대폰 캘린더 내보내기는 북마크 창에 있어요.</p>
         </section>
       </div>
     </div>` + footer();
+  }
+
+  // ---------- 상세 창 ----------
+  function findItem(id) {
+    return deptItems().find((x) => x.id === id) || D.items.find((x) => x.id === id);
+  }
+
+  function detailSheet(id) {
+    const it = findItem(id);
+    if (!it) return "";
+    const bm = P.bm[it.id];
+    const srcLabel = { field: "게시판의 접수 마감 칸", title: "제목에 적힌 날짜", ai: "AI 추정 · 첨부 문서에서 읽음, 원문에서 꼭 확인" }[it.deadline_src] || "";
+    let due = "알 수 없음 (제목·칸에 없음)";
+    if (it.deadline) {
+      const d = diffDays(it.deadline, TODAY);
+      due = `${mdw(it.deadline)} · ${d < 0 ? "마감됨" : d === 0 ? "오늘 마감" : "D-" + d}<small>${esc(srcLabel)}</small>`;
+    }
+    const src = it.source === "dept" ? (it._who || "학과") + " 게시판" : it.source_name + (it.dept ? " · " + it.dept : "");
+    const att = (it.attachments || []).map((a) => `<li>${esc(a.name)}</li>`).join("");
+    return `<div class="scrim" data-close></div>
+    <section class="sheet" role="dialog" aria-modal="true" aria-labelledby="sh-title">
+      <div class="sheet-head"><span class="sub">${esc(src)}</span><button class="x" data-close aria-label="닫기">×</button></div>
+      <h2 id="sh-title">${esc(it.title)}</h2>
+      <dl class="facts">
+        <div><dt>게시일</dt><dd>${mdw(it.date)}</dd></div>
+        <div><dt>마감</dt><dd>${due}</dd></div>
+        ${it.also_posted && it.also_posted.length ? `<div><dt>함께 게시</dt><dd>${esc(it.also_posted.join(", "))}</dd></div>` : ""}
+        <div><dt>첨부</dt><dd>${att ? `<ul class="att">${att}</ul><small>파일은 원문 게시판에서 받아요</small>` : "없음"}</dd></div>
+      </dl>
+      <div class="ai-box"><b>AI 요약</b> · 다음 단계 기능이에요. 첨부(PDF·이미지)를 읽어 신청 기간, 대상, 제출 방법을 세 줄로 보여 줄 자리예요. 결과·명단·합격 글은 읽지 않아요.</div>
+      ${bm && !it.deadline ? `<label class="bm-date">달력에 넣을 날짜 <input type="date" data-bmdate="${esc(it.id)}" id="shd-${esc(it.id)}" value="${esc(bm.date || "")}"></label>` : ""}
+      <div class="actions">
+        <button class="btn${bm ? " on" : ""}" data-bm="${esc(it.id)}" aria-pressed="${bm ? "true" : "false"}">${bm ? "★ 북마크함" : "☆ 북마크"}</button>
+        <a class="btn primary" href="${esc(it.url)}" target="_blank" rel="noopener">원문 열기 ↗</a>
+      </div>
+      ${it.source !== "dept" ? `<button class="btn link" data-hide="${esc(it.source)}">${esc(it.source_name)} 글 숨기기</button>` : ""}
+    </section>`;
+  }
+
+  // ---------- 북마크 사이드바 ----------
+  function bmDrawer() {
+    const byId = new Map(D.items.map((it) => [it.id, it]));
+    const rows = Object.entries(P.bm).map(([id, b]) => {
+      const it = byId.get(id);
+      return { id, date: (it && it.deadline) || b.date || null, title: (it && it.title) || b.title, ai: it && it.deadline && it.deadline_src === "ai" };
+    }).sort((a, b) => (a.date && b.date ? (a.date < b.date ? -1 : 1) : a.date ? -1 : b.date ? 1 : 0));
+    const dated = rows.filter((r) => r.date).length;
+    return `<div class="scrim" data-close></div>
+    <aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="dr-title">
+      <div class="sheet-head"><h2 id="dr-title">북마크 ${rows.length}</h2><button class="x" data-close aria-label="닫기">×</button></div>
+      ${rows.length ? `<ul class="bm-list">${rows.map((r) => {
+        const d = r.date ? diffDays(r.date, TODAY) : null;
+        return `<li><span class="bm-when">${r.date ? md(r.date) : "날짜 없음"}${r.date && d >= 0 && d <= 7 ? `<span class="badge due">${d === 0 ? "오늘" : "D-" + d}</span>` : ""}${r.ai ? `<span class="badge ai">AI 추정</span>` : ""}</span>
+          <a href="#" data-open="${esc(r.id)}">${esc(r.title)}</a>
+          <button class="x small" data-bm="${esc(r.id)}" aria-label="북마크 빼기">×</button></li>`;
+      }).join("")}</ul>` : `<p class="empty">글의 ☆ 를 누르면 여기에 모여요.</p>`}
+      <div class="drawer-actions">
+        <button class="btn" data-act="ics"${dated ? "" : " disabled"}>휴대폰 캘린더에 추가 (.ics)</button>
+        <p class="hint ics-msg">날짜가 있는 북마크 ${dated}개를 파일로 받아요. 미리보기 링크에서는 내려받기가 막혀 있어요.</p>
+      </div>
+      <nav class="drawer-nav"><a href="#schedule">일정 탭에서 달력으로 보기</a><a href="#setup">설정</a></nav>
+    </aside>`;
   }
 
   function icsFile() {
@@ -734,10 +795,14 @@
     const keepFocus = document.activeElement && document.activeElement.id;
     const caret = keepFocus && document.activeElement.selectionStart;
     $app.className = r === "schedule" && P && P.done ? "wide" : "";
+    if (P && P.done && sheet) html += sheet.type === "bm" ? bmDrawer() : detailSheet(sheet.id);
+    document.body.classList.toggle("locked", !!(P && P.done && sheet));
     $app.innerHTML = html;
     if (keepFocus) {
       const el = document.getElementById(keepFocus);
       if (el && el.tagName === "INPUT") { el.focus(); try { el.setSelectionRange(caret, caret); } catch (e) {} }
+    } else if (sheet) {
+      const box = $app.querySelector(".sheet, .drawer"); const x = box && box.querySelector(".x"); if (x) x.focus();
     }
   }
 
@@ -775,6 +840,7 @@
   }
 
   $app.addEventListener("click", (e) => {
+    if (e.target.classList && e.target.classList.contains("scrim")) { sheet = sheetReturn; sheetReturn = null; render(); return; }
     const b = e.target.closest("button, a");
     if (!b) return;
     const ds = b.dataset;
@@ -793,6 +859,8 @@
       if (ds.seg === "dueOn") draft.marks.dueOn = v === "켜기";
       render(); return;
     }
+    if (ds.open) { e.preventDefault(); sheetReturn = sheet && sheet.type === "bm" ? sheet : null; sheet = { type: "item", id: ds.open }; render(); return; }
+    if (b.hasAttribute("data-close")) { sheet = sheetReturn; sheetReturn = null; render(); return; }
     if (ds.tag) { P.chips = { ...(P.chips || {}), dept: ds.tag }; save(P); render(); return; }
     if (ds.chip) { P.chips = { ...(P.chips || {}), [ds.chip]: ds.val }; save(P); render(); return; }
     if (ds.bm) {
@@ -808,7 +876,9 @@
       return;
     }
     if (ds.month) { calMonth = ds.month; render(); return; }
+    if (ds.act === "bm-open") { sheet = { type: "bm" }; sheetReturn = null; render(); return; }
     if (ds.hide) {
+      sheet = null;
       P.hidden = [...new Set(P.hidden.concat(ds.hide))]; save(P); render(); return;
     }
     if (ds.unhide) { draft.hidden = draft.hidden.filter((s) => s !== ds.unhide); render(); return; }
@@ -834,7 +904,7 @@
       case "finish": draft.done = true; P = JSON.parse(JSON.stringify(draft)); save(P); location.hash = "home"; render(); window.scrollTo(0, 0); break;
       case "save": draft.done = true; P = JSON.parse(JSON.stringify(draft)); save(P); location.hash = "home"; break;
       case "ics": {
-        const msg = document.getElementById("ics-msg");
+        const msgs = document.querySelectorAll(".ics-msg"); const msg = { set textContent(v) { msgs.forEach((m) => (m.textContent = v)); } };
         try {
           const url = URL.createObjectURL(new Blob([icsFile()], { type: "text/calendar;charset=utf-8" }));
           const a = document.createElement("a"); a.href = url; a.download = "jnu-bookmarks.ics";
@@ -868,7 +938,12 @@
     }
   });
 
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && sheet) { sheet = sheetReturn; sheetReturn = null; render(); }
+  });
+
   window.addEventListener("hashchange", () => {
+    sheet = null; sheetReturn = null;
     if ((route() === "setup" || route() === "dept") && P) { draft = JSON.parse(JSON.stringify(P)); confirmReset = false; deptFilter = "all"; }
     render(); window.scrollTo(0, 0);
   });
