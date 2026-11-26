@@ -5,6 +5,7 @@
 
   const KEY = "jnu-moa-prefs-v1";
   const SEEN_KEY = "jnu-moa-lastvisit";
+  const FEEDBACK_URL = ""; // 의견 받을 구글 폼 주소. 비어 있으면 "의견 보내기" 링크를 숨긴다
   const $app = document.getElementById("app");
   let D = null;        // { cfg, deps, items, meals, meta }
   let P = null;        // 사용자 설정
@@ -187,7 +188,7 @@
   // ---------- 머리·분류 줄 ----------
   function header(title) {
     return `<header class="top">
-      <div class="brand"><h1>${esc(title || "제주대 모아보기")}</h1><small>${mdw(D.meta.generated_at)} ${D.meta.generated_at.slice(11, 16)} 갱신</small></div>
+      <div class="brand"><h1>${esc(title || "제주대 모아보기")}</h1><small>마지막 갱신: ${md(D.meta.generated_at)} ${D.meta.generated_at.slice(11, 16)}</small></div>
       <a class="icon-btn" href="#setup">설정</a>
     </header>`;
   }
@@ -350,13 +351,12 @@
   }
 
   function footer() {
-    const src = Object.values(D.meta.sources).map((s) => {
-      const h = Math.max(0, Math.round((new Date(D.meta.generated_at) - new Date(s.updated)) / 3600000));
-      return `${esc(s.name)} ${h === 0 ? "방금" : h + "시간 전"}`;
-    }).join(" · ");
+    const at = (iso) => iso ? `${md(iso)} ${iso.slice(11, 16)}` : "아직 없음";
+    const src = Object.values(D.meta.sources).map((s) => `${esc(s.name)} ${at(s.updated)}`).join(" · ");
     return `<footer class="foot">
       <span>제주대학교 공식 서비스가 아닙니다. 글 제목과 날짜만 모으고, 내용은 모두 원문 게시판 링크로 봅니다.</span>
-      <span class="src">갱신: ${src}</span>
+      <span class="src">정보원별 갱신: ${src}</span>
+      ${FEEDBACK_URL ? `<a class="feedback" href="${esc(FEEDBACK_URL)}" target="_blank" rel="noopener">의견 보내기</a>` : ""}
     </footer>`;
   }
 
@@ -407,7 +407,7 @@
     const tagChips = D.cfg.dept_tags.filter((t) => counts[t.id] || (t.id === "teach" && P.teach)).map((t) =>
       `<button class="chip${tagSel === t.id ? " on" : ""}" data-tag="${t.id}">${esc(t.label)}<span class="n">${counts[t.id] || 0}</span></button>`).join("");
     let empty = "";
-    if (!boards.length) empty = `<p class="empty">설정에서 학과를 고르면 학과 게시판 글을 여기에 모아 보여 드려요. <a href="#setup">학과 고르기</a></p>`;
+    if (!boards.length) empty = `<p class="empty">설정에서 학과를 고르면 학과 게시판 글을 여기에 모아 보여 드려요. <a href="#dept">학과 넣기</a></p>`;
     else if (!shown.length) {
       const links = boards.map((b) => b.board ? `<a href="${esc(b.board)}" target="_blank" rel="noopener">${esc(b.label)} 게시판</a>` : esc(b.label)).join(" · ");
       empty = `<p class="empty">최근 글이 없어요. 아직 수집하지 않는 학과일 수 있어요. ${links}</p>`;
@@ -464,11 +464,92 @@
     </section>`;
   }
 
+  // ---------- 바로 시작 · 학과 넣기 ----------
+  function quickPrefs() {
+    // 처음 온 사람: 묻지 않고 바로 홈. 생활관만 빼고 다 보여 준다
+    const p = applyDefaults(blankPrefs());
+    p.cats = D.cfg.categories.map((c) => c.id).filter((id) => id !== "dorm"); p.done = true;
+    return p;
+  }
+
+  function fitDepts(p) {
+    // 고른 학과에 맞춰 학부/대학원·캠퍼스·추천 분류·식당을 맞춘다. 이미 고른 분류는 지우지 않는다
+    const main = p.depts[0] && depById(p.depts[0]);
+    if (main) { p.level = main.level; p.campus = main.campus; }
+    const cats = new Set(p.cats);
+    for (const id of p.depts) {
+      const d = depById(id); if (!d) continue;
+      const r = D.cfg.recommend[d.college]; if (!r) continue;
+      r.add.forEach((c) => cats.add(c));
+      if (r.teach) p.teach = true;
+    }
+    p.cats = [...cats];
+    if (!p.touched) p.rest = D.cfg.restaurants.filter((r) => r.campus === p.campus).map((r) => r.id);
+    return p;
+  }
+
+  function urlDept() {
+    // ?dept=<학과 id 또는 이름>
+    let q = null;
+    try { q = new URLSearchParams(location.search).get("dept"); } catch (e) {}
+    if (!q || !q.trim()) return null;
+    const s = q.trim();
+    const pool = D.deps.filter((d) => !d.is_college_board);
+    const hit = pool.find((d) => d.id === s) || pool.find((d) => d.name === s) || pool.find((d) => d.name.includes(s));
+    return hit ? hit.id : null;
+  }
+
+  function deptLink(id) { return location.origin + location.pathname + "?dept=" + encodeURIComponent(id); }
+
+  function deptBanner() {
+    if (P.depts.length) return "";
+    return `<div class="dept-banner"><span>내 학과를 넣으면 학과 공지가 맨 위에 떠요</span><a class="btn primary" href="#dept">학과 넣기</a></div>`;
+  }
+
+  function staleNote() {
+    const h = (Date.now() - new Date(D.meta.generated_at).getTime()) / 3600000;
+    if (!(h > 36)) return "";
+    const ago = h >= 48 ? Math.floor(h / 24) + "일" : Math.floor(h) + "시간";
+    return `<p class="stale-note">마지막 갱신이 ${ago} 전이에요. 갱신이 멈췄을 수 있어요. 급한 건 원문 게시판에서 확인해 주세요.</p>`;
+  }
+
+  function deptLinkBox() {
+    const id = draft.depts[0];
+    if (!id) return "";
+    return `<div class="field"><div class="lbl">내 학과 링크 <small>이 링크로 들어오면 학과를 고르지 않아도 바로 내 학과로 보여요</small></div>
+      <input type="text" id="link-out" readonly value="${esc(deptLink(id))}">
+      <div class="actions" style="margin-top:8px"><button class="btn" data-act="copy-link">내 학과 링크 복사</button><span class="hint" id="link-msg"></span></div></div>`;
+  }
+
+  function viewDeptPick() {
+    const main = draft.depts[0] ? depById(draft.depts[0]) : null;
+    const extra = draft.depts.slice(1).map(depById).filter(Boolean);
+    return header("내 학과 넣기") +
+      `<div class="view-head"><a class="back" href="#home">← 홈</a></div>
+      <div class="setup" style="padding-top:0">
+        <h2>내 학과</h2><p class="lead">고르면 학과 게시판 글이 홈 맨 위에 떠요. 나머지는 설정에서 바꿀 수 있어요.</p>
+        <div class="field">
+          <div class="lbl">주전공</div>
+          ${main ? `<div class="picked"><span class="chip on">${esc(main.college)} · ${esc(main.name)}<button data-unpick="${esc(main.id)}" aria-label="주전공 지우기">×</button></span></div>` : deptPicker(1)}
+        </div>
+        <div class="field">
+          <div class="lbl">복수전공·부전공 <small>선택</small></div>
+          ${extra.length ? `<div class="picked">${extra.map((d) => `<span class="chip on">${esc(d.name)}<button data-unpick="${esc(d.id)}" aria-label="${esc(d.name)} 지우기">×</button></span>`).join("")}</div>` : ""}
+          ${main ? (deptFilter === "open2" ? deptPicker(2) : `<button class="btn" data-act="open2" style="margin-top:6px">+ 학과 추가</button>`) : `<p class="hint">주전공을 먼저 골라 주세요.</p>`}
+        </div>
+        <div class="actions">
+          <a class="btn link" href="#home">나중에</a>
+          <button class="btn primary" data-act="dept-save"${draft.depts.length ? "" : " disabled"}>저장하고 홈으로</button>
+        </div>
+        <p class="hint">이름·학번은 묻지 않아요. 고른 값은 이 브라우저에만 저장돼요.</p>
+      </div>`;
+  }
+
   function viewHome() {
     const used = new Set();
     const di = deptItems();
     di.forEach((it) => used.add(it.id));
-    let html = header() + sampleNote() + catbar("home") + weekStrip();
+    let html = header() + staleNote() + sampleNote() + catbar("home") + deptBanner() + weekStrip();
     const ml = todayMeals();
     if (ml.length) html += `<a class="meals" href="#c-meal"><span class="lbl">오늘 학식 · ${mdw(TODAY)}</span>${ml.join("")}</a>`;
     html += `<div class="stack">` + deptCard(di, chipSel("dept"), 5);
@@ -608,7 +689,7 @@
     return header("설정") +
       `<div class="view-head"><a class="back" href="#home">← 홈</a></div>
       <div class="setup" style="padding-top:0">
-        <h2>나에 대해</h2><p class="lead">학과를 바꾸면 추천도 다시 맞춰져요.</p>${step1()}
+        <h2>나에 대해</h2><p class="lead">학과를 바꾸면 추천도 다시 맞춰져요. 학과는 비워 둬도 돼요.</p>${step1()}${deptLinkBox()}
         <h2>볼 것</h2><p class="lead">홈에 보일 분류예요.</p>${step2()}
         <h2>표시할 것</h2><p class="lead">&nbsp;</p>${step3()}
         <h2>키워드</h2><p class="lead">제목에 이 말이 있으면 따로 모으거나, 숨겨요.</p>
@@ -628,9 +709,9 @@
           <div class="actions" style="margin-top:8px"><button class="btn" data-act="import">코드로 설정 불러오기</button><span class="hint" id="import-msg"></span></div>
         </div>
         <div class="actions">
-          ${confirmReset ? `<span class="hint">설정을 모두 지우고 처음 화면으로 갈까요?</span><span><button class="btn" data-act="reset-no">취소</button> <button class="btn danger" data-act="reset-yes">지우기</button></span>`
+          ${confirmReset ? `<span class="hint">설정을 모두 지우고 처음 상태로 돌릴까요?</span><span><button class="btn" data-act="reset-no">취소</button> <button class="btn danger" data-act="reset-yes">지우기</button></span>`
                          : `<button class="btn link" data-act="reset">설정 초기화</button>`}
-          <button class="btn primary" data-act="save" ${draft.depts.length ? "" : "disabled"}>저장하고 홈으로</button>
+          <button class="btn primary" data-act="save">저장하고 홈으로</button>
         </div>
       </div>`;
   }
@@ -643,6 +724,7 @@
     let html;
     if (!P || !P.done) html = viewOnboarding();
     else if (r === "setup") html = viewSetup();
+    else if (r === "dept") html = viewDeptPick();
     else if (r === "c-meal") html = viewMeal();
     else if (r === "schedule") html = viewSchedule();
     else if (r.startsWith("c-")) html = viewList(r.slice(2));
@@ -735,8 +817,17 @@
       case "next": step = Math.min(3, step + 1); render(); window.scrollTo(0, 0); break;
       case "prev": step = Math.max(1, step - 1); render(); window.scrollTo(0, 0); break;
       case "skip": {
-        const p = applyDefaults(blankPrefs());
-        p.cats = D.cfg.categories.map((c) => c.id).filter((id) => id !== "dorm"); p.done = true; P = p; save(P); location.hash = "home"; render(); break;
+        P = quickPrefs(); save(P); location.hash = "home"; render(); break;
+      }
+      case "dept-save": {
+        const p = JSON.parse(JSON.stringify(P)); p.depts = draft.depts.slice(); fitDepts(p);
+        P = p; save(P); draft = JSON.parse(JSON.stringify(P)); location.hash = "home"; render(); window.scrollTo(0, 0); break;
+      }
+      case "copy-link": {
+        const el = document.getElementById("link-out"); const msg = document.getElementById("link-msg");
+        try { navigator.clipboard.writeText(el.value).then(() => { msg.textContent = "복사했어요"; }, () => { el.select(); msg.textContent = "선택해 뒀어요. 길게 눌러 복사하세요"; }); }
+        catch (err) { el.select(); msg.textContent = "선택해 뒀어요. 길게 눌러 복사하세요"; }
+        break;
       }
       case "finish": draft.done = true; P = JSON.parse(JSON.stringify(draft)); save(P); location.hash = "home"; render(); window.scrollTo(0, 0); break;
       case "save": draft.done = true; P = JSON.parse(JSON.stringify(draft)); save(P); location.hash = "home"; break;
@@ -771,12 +862,12 @@
       }
       case "reset": confirmReset = true; render(); break;
       case "reset-no": confirmReset = false; render(); break;
-      case "reset-yes": confirmReset = false; clearSaved(); P = null; draft = blankPrefs(); step = 1; location.hash = ""; render(); break;
+      case "reset-yes": confirmReset = false; clearSaved(); P = quickPrefs(); save(P); draft = JSON.parse(JSON.stringify(P)); step = 1; location.hash = "home"; render(); break;
     }
   });
 
   window.addEventListener("hashchange", () => {
-    if (route() === "setup" && P) { draft = JSON.parse(JSON.stringify(P)); confirmReset = false; deptFilter = "all"; }
+    if ((route() === "setup" || route() === "dept") && P) { draft = JSON.parse(JSON.stringify(P)); confirmReset = false; deptFilter = "all"; }
     render(); window.scrollTo(0, 0);
   });
 
@@ -788,7 +879,14 @@
       P = load();
       if (P) P = { ...blankPrefs(), ...P, bm: P.bm || {}, chips: P.chips || {}, gradInDept: P.gradInDept !== false, marks: { ...blankPrefs().marks, ...(P.marks || {}) } };
       if (P && P.cats.some((c) => c === "jedaero" || c === "event")) P.cats = [...new Set(P.cats.filter((c) => c !== "jedaero" && c !== "event").concat("program"))];
-      draft = P ? JSON.parse(JSON.stringify(P)) : blankPrefs();
+      // 처음 온 사람은 묻지 않고 바로 홈으로. 학과는 홈의 "학과 넣기"나 설정에서 넣는다
+      if (!P || !P.done) { P = quickPrefs(); save(P); }
+      const qd = urlDept();
+      if (qd) {
+        P.depts = [qd].concat(P.depts.filter((x) => x !== qd)); fitDepts(P); save(P);
+        try { history.replaceState(null, "", location.pathname + location.hash); } catch (e) {}
+      }
+      draft = JSON.parse(JSON.stringify(P));
       render();
       // 실제 수집이 붙으면 켠다. 시안은 데이터가 고정이라 켜 두면 '새 글' 표시가 다시는 안 보인다.
       // window.addEventListener("pagehide", markVisit);
