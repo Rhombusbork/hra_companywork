@@ -1,2 +1,4 @@
 # 올리면 안 되는 개인 자료 (카톡 캡처 등)
 _private/
+.claude/worktrees/
+__pycache__/
