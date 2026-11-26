@@ -246,10 +246,14 @@
 
   const onDay = (e, iso) => e.end ? e.date <= iso && iso <= e.end : e.date === iso;
   const kindOrder = { due: 0, bm: 1, acad: 2 };
-  function eventsOn(evs, iso) { return evs.filter((e) => onDay(e, iso)).sort((a, b) => kindOrder[a.kind] - kindOrder[b.kind]); }
+  // 14일 넘게 이어지는 기간(예: 대학원 논문심사 10/26~12/07)은 달력 점을 시작·끝 날에만 찍고, 목록에선 뒤로 보낸다
+  const isLong = (e) => e.end && e.end !== e.date && diffDays(e.end, e.date) > 14;
+  function eventsOn(evs, iso) {
+    return evs.filter((e) => onDay(e, iso)).sort((a, b) => (isLong(a) - isLong(b)) || (kindOrder[a.kind] - kindOrder[b.kind]));
+  }
 
-  function dots(evs) {
-    const k = new Set(evs.map((e) => e.kind));
+  function dots(evs, iso) {
+    const k = new Set(evs.filter((e) => !iso || !isLong(e) || e.date === iso || e.end === iso).map((e) => e.kind));
     return ["due", "acad", "bm"].filter((x) => k.has(x)).map((x) => x === "bm" ? `<i class="dot bm">★</i>` : `<i class="dot ${x}"></i>`).join("");
   }
 
@@ -267,7 +271,7 @@
     for (let i = 0; i < 7; i++) {
       const d = addDays(start, i), es = eventsOn(evs, d);
       cells.push(`<button class="wk-day${d === TODAY.slice(0, 10) ? " today" : ""}" data-day="${d}" aria-label="${mdw(d)} 일정 ${es.length}개">
-        <span class="wd">${WD[weekday(d)]}</span><span class="dn">${+d.slice(8)}</span><span class="dots">${dots(es)}</span></button>`);
+        <span class="wd">${WD[weekday(d)]}</span><span class="dn">${+d.slice(8)}</span><span class="dots">${dots(es, d)}</span></button>`);
     }
     const today = eventsOn(evs, TODAY.slice(0, 10));
     const line = today.length ? today.slice(0, 2).map((e) => `${{ due: "마감", acad: "학사", bm: "북마크" }[e.kind]} ${esc(e.title.replace(/^\[예시\]\s*/, ""))}`).join(" · ") + (today.length > 2 ? ` 외 ${today.length - 2}` : "") : "오늘 마감·학사일정은 없어요";
@@ -292,7 +296,7 @@
     for (let d = 1; d <= days; d++) {
       const iso = `${ym}-${String(d).padStart(2, "0")}`, es = eventsOn(evs, iso), wd = weekday(iso);
       cells.push(`<button class="cd${iso === today ? " today" : ""}${iso === sel ? " sel" : ""}${wd === 0 ? " sun" : wd === 6 ? " sat" : ""}" data-day="${iso}" aria-label="${mdw(iso)} 일정 ${es.length}개"${iso === sel ? ' aria-current="date"' : ""}>
-        <span class="dn">${d}</span><span class="dots">${dots(es)}</span></button>`);
+        <span class="dn">${d}</span><span class="dots">${dots(es, iso)}</span></button>`);
     }
     const prev = new Date(Date.UTC(y, m - 2, 1)).toISOString().slice(0, 7), next = new Date(Date.UTC(y, m, 1)).toISOString().slice(0, 7);
     const selEvs = eventsOn(evs, sel);
