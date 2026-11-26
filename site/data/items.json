@@ -1,47 +1,46 @@
 {
  "_note": "collector/collect.py 가 만든 실제 수집 데이터. 제목·날짜·링크만 저장한다. 원문은 링크에서.",
- "generated_at": "2026-11-26T22:58:30+09:00",
+ "generated_at": "2026-11-26T23:00:28+09:00",
  "sources": {
   "jnu": {
    "name": "본부 공지사항",
-   "updated": "2026-11-26T22:58:30+09:00",
+   "updated": "2026-11-26T23:00:28+09:00",
    "ok": true,
    "count": 55
   },
   "dormitory": {
    "name": "학생생활관",
-   "updated": "2026-11-26T22:58:30+09:00",
+   "updated": "2026-11-26T23:00:28+09:00",
    "ok": true,
    "count": 34
   },
   "intl": {
    "name": "국제교류",
-   "updated": "2026-11-26T22:58:30+09:00",
+   "updated": "2026-11-26T23:00:28+09:00",
    "ok": true,
    "count": 33
   },
   "clip": {
    "name": "진로취업 clip",
-   "updated": "2026-11-26T22:58:30+09:00",
+   "updated": "2026-11-26T23:00:28+09:00",
    "ok": true,
    "count": 20
   },
   "dept": {
    "name": "학과 게시판",
-   "updated": "2026-11-26T22:58:30+09:00",
-   "ok": false,
-   "count": 20,
-   "error": "간호대학: ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+   "updated": "2026-11-26T23:00:28+09:00",
+   "ok": true,
+   "count": 48
   },
   "jedaero": {
    "name": "제대로 산학1번지",
-   "updated": "2026-11-26T22:58:30+09:00",
+   "updated": "2026-11-26T23:00:28+09:00",
    "ok": true,
    "count": 8
   },
   "library": {
    "name": "중앙도서관",
-   "updated": "2026-11-26T22:58:30+09:00",
+   "updated": "2026-11-26T23:00:28+09:00",
    "ok": true,
    "count": 20
   }
@@ -544,7 +543,7 @@
    "deadline_src": "title",
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-26T09:00:00+09:00"
   },
   {
    "id": "jnu:283645",
@@ -573,7 +572,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-26T09:00:00+09:00"
   },
   {
    "id": "jnu:283641",
@@ -589,7 +588,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-26T09:00:00+09:00"
   },
   {
    "id": "jnu:283630",
@@ -614,7 +613,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-26T09:00:00+09:00"
   },
   {
    "id": "jnu:283629",
@@ -635,7 +634,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-26T09:00:00+09:00"
   },
   {
    "id": "jnu:283601",
@@ -656,7 +655,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-26T09:00:00+09:00"
   },
   {
    "id": "dormitory:283607",
@@ -677,7 +676,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-26T09:00:00+09:00"
   },
   {
    "id": "dormitory:283606",
@@ -698,7 +697,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-26T09:00:00+09:00"
   },
   {
    "id": "dormitory:283604",
@@ -719,7 +718,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-26T09:00:00+09:00"
   },
   {
    "id": "dormitory:283595",
@@ -740,7 +739,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-26T09:00:00+09:00"
   },
   {
    "id": "intl:283644",
@@ -769,7 +768,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-26T09:00:00+09:00"
   },
   {
    "id": "intl:283627",
@@ -790,7 +789,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-26T09:00:00+09:00"
   },
   {
    "id": "intl:283598",
@@ -819,7 +818,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-26T09:00:00+09:00"
   },
   {
    "id": "clip:283642",
@@ -835,7 +834,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-26T09:00:00+09:00"
   },
   {
    "id": "library:7168",
@@ -851,7 +850,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-26T09:00:00+09:00"
   },
   {
    "id": "jnu:283567",
@@ -872,7 +871,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-25T09:00:00+09:00"
   },
   {
    "id": "jnu:283564",
@@ -896,8 +895,10 @@
      "url": "https://www.jejunu.ac.kr/ara/noticesurvey/outEvent.htm?act=download&seq=283564&no=2"
     }
    ],
-   "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "also_posted": [
+    "간호대학"
+   ],
+   "first_seen": "2026-11-25T09:00:00+09:00"
   },
   {
    "id": "jnu:283562",
@@ -913,7 +914,7 @@
    "deadline_src": "title",
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-25T09:00:00+09:00"
   },
   {
    "id": "dormitory:283557",
@@ -929,7 +930,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-25T09:00:00+09:00"
   },
   {
    "id": "intl:283572",
@@ -950,7 +951,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-25T09:00:00+09:00"
   },
   {
    "id": "dept:283579",
@@ -966,7 +967,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-25T09:00:00+09:00"
   },
   {
    "id": "jnu:283530",
@@ -987,7 +988,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-22T09:00:00+09:00"
   },
   {
    "id": "jnu:283529",
@@ -1020,7 +1021,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-22T09:00:00+09:00"
   },
   {
    "id": "jnu:283524",
@@ -1036,7 +1037,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-22T09:00:00+09:00"
   },
   {
    "id": "jnu:283519",
@@ -1057,7 +1058,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-22T09:00:00+09:00"
   },
   {
    "id": "jnu:283510",
@@ -1078,7 +1079,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-22T09:00:00+09:00"
   },
   {
    "id": "jnu:283506",
@@ -1115,7 +1116,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-22T09:00:00+09:00"
   },
   {
    "id": "jnu:283504",
@@ -1136,7 +1137,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-22T09:00:00+09:00"
   },
   {
    "id": "jnu:283496",
@@ -1157,7 +1158,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-22T09:00:00+09:00"
   },
   {
    "id": "jnu:283494",
@@ -1182,7 +1183,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-22T09:00:00+09:00"
   },
   {
    "id": "dormitory:283528",
@@ -1198,7 +1199,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00",
+   "first_seen": "2026-11-22T09:00:00+09:00",
    "pinned": true
   },
   {
@@ -1215,7 +1216,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-22T09:00:00+09:00"
   },
   {
    "id": "dormitory:283522",
@@ -1236,7 +1237,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-22T09:00:00+09:00"
   },
   {
    "id": "dormitory:283521",
@@ -1257,7 +1258,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-22T09:00:00+09:00"
   },
   {
    "id": "dormitory:283503",
@@ -1278,7 +1279,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-22T09:00:00+09:00"
   },
   {
    "id": "intl:283532",
@@ -1294,7 +1295,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-22T09:00:00+09:00"
   },
   {
    "id": "jnu:283488",
@@ -1327,7 +1328,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-21T09:00:00+09:00"
   },
   {
    "id": "jnu:283479",
@@ -1343,7 +1344,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-21T09:00:00+09:00"
   },
   {
    "id": "jnu:283475",
@@ -1359,7 +1360,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-21T09:00:00+09:00"
   },
   {
    "id": "jnu:283469",
@@ -1384,7 +1385,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-21T09:00:00+09:00"
   },
   {
    "id": "dormitory:283460",
@@ -1405,7 +1406,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-21T09:00:00+09:00"
   },
   {
    "id": "intl:283457",
@@ -1430,7 +1431,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00",
+   "first_seen": "2026-11-21T09:00:00+09:00",
    "pinned": true
   },
   {
@@ -1456,7 +1457,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00",
+   "first_seen": "2026-11-21T09:00:00+09:00",
    "pinned": true
   },
   {
@@ -1482,7 +1483,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-21T09:00:00+09:00"
   },
   {
    "id": "intl:283466",
@@ -1511,7 +1512,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-21T09:00:00+09:00"
   },
   {
    "id": "intl:283464",
@@ -1532,7 +1533,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-21T09:00:00+09:00"
   },
   {
    "id": "jnu:283451",
@@ -1553,7 +1554,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-20T09:00:00+09:00"
   },
   {
    "id": "jnu:283443",
@@ -1582,7 +1583,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-20T09:00:00+09:00"
   },
   {
    "id": "jnu:283411",
@@ -1598,7 +1599,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-20T09:00:00+09:00"
   },
   {
    "id": "dormitory:283395",
@@ -1619,7 +1620,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-20T09:00:00+09:00"
   },
   {
    "id": "intl:283427",
@@ -1648,7 +1649,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-20T09:00:00+09:00"
   },
   {
    "id": "library:7159",
@@ -1664,7 +1665,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-20T09:00:00+09:00"
   },
   {
    "id": "library:7156",
@@ -1685,7 +1686,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-20T09:00:00+09:00"
   },
   {
    "id": "dormitory:283377",
@@ -1706,7 +1707,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00",
+   "first_seen": "2026-11-19T09:00:00+09:00",
    "pinned": true
   },
   {
@@ -1723,7 +1724,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-19T09:00:00+09:00"
   },
   {
    "id": "dept:283338",
@@ -1744,7 +1745,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-19T09:00:00+09:00"
   },
   {
    "id": "intl:283297",
@@ -1765,7 +1766,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-18T09:00:00+09:00"
   },
   {
    "id": "jnu:283255",
@@ -1781,7 +1782,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00",
+   "first_seen": "2026-11-15T09:00:00+09:00",
    "pinned": true
   },
   {
@@ -1807,7 +1808,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-15T09:00:00+09:00"
   },
   {
    "id": "intl:283259",
@@ -1823,7 +1824,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-15T09:00:00+09:00"
   },
   {
    "id": "intl:283256",
@@ -1848,7 +1849,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-15T09:00:00+09:00"
   },
   {
    "id": "intl:283254",
@@ -1873,7 +1874,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-15T09:00:00+09:00"
   },
   {
    "id": "dormitory:283210",
@@ -1898,7 +1899,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-14T09:00:00+09:00"
   },
   {
    "id": "clip:283248",
@@ -1927,7 +1928,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-14T09:00:00+09:00"
   },
   {
    "id": "clip:283224",
@@ -1956,7 +1957,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-14T09:00:00+09:00"
   },
   {
    "id": "clip:283209",
@@ -1972,7 +1973,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-14T09:00:00+09:00"
   },
   {
    "id": "intl:283189",
@@ -1993,7 +1994,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00",
+   "first_seen": "2026-11-13T09:00:00+09:00",
    "pinned": true
   },
   {
@@ -2010,7 +2011,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-12T09:00:00+09:00"
   },
   {
    "id": "dormitory:283105",
@@ -2026,7 +2027,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-12T09:00:00+09:00"
   },
   {
    "id": "intl:283131",
@@ -2051,7 +2052,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-12T09:00:00+09:00"
   },
   {
    "id": "jnu:283073",
@@ -2084,7 +2085,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00",
+   "first_seen": "2026-11-11T09:00:00+09:00",
    "pinned": true
   },
   {
@@ -2101,7 +2102,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-11T09:00:00+09:00"
   },
   {
    "id": "library:7151",
@@ -2117,7 +2118,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-11T09:00:00+09:00"
   },
   {
    "id": "library:7149",
@@ -2133,7 +2134,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-11T09:00:00+09:00"
   },
   {
    "id": "intl:282978",
@@ -2162,7 +2163,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-08T09:00:00+09:00"
   },
   {
    "id": "intl:282962",
@@ -2183,7 +2184,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-08T09:00:00+09:00"
   },
   {
    "id": "clip:282901",
@@ -2199,7 +2200,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-07T09:00:00+09:00"
   },
   {
    "id": "clip:282900",
@@ -2215,7 +2216,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-07T09:00:00+09:00"
   },
   {
    "id": "dept:282917",
@@ -2231,7 +2232,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-07T09:00:00+09:00"
   },
   {
    "id": "library:7143",
@@ -2260,7 +2261,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-07T09:00:00+09:00"
   },
   {
    "id": "dormitory:282896",
@@ -2281,7 +2282,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-06T09:00:00+09:00"
   },
   {
    "id": "dormitory:282866",
@@ -2322,7 +2323,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-06T09:00:00+09:00"
   },
   {
    "id": "dormitory:282865",
@@ -2338,7 +2339,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-06T09:00:00+09:00"
   },
   {
    "id": "dormitory:282853",
@@ -2354,7 +2355,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-06T09:00:00+09:00"
   },
   {
    "id": "intl:282862",
@@ -2383,7 +2384,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00",
+   "first_seen": "2026-11-06T09:00:00+09:00",
    "pinned": true
   },
   {
@@ -2409,7 +2410,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-06T09:00:00+09:00"
   },
   {
    "id": "jnu:282801",
@@ -2430,7 +2431,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00",
+   "first_seen": "2026-11-05T09:00:00+09:00",
    "pinned": true
   },
   {
@@ -2452,7 +2453,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-05T09:00:00+09:00"
   },
   {
    "id": "dept:282825",
@@ -2477,7 +2478,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-05T09:00:00+09:00"
   },
   {
    "id": "jedaero:PRM_000000000874",
@@ -2493,7 +2494,7 @@
    "deadline_src": "field",
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00",
+   "first_seen": "2026-11-04T09:00:00+09:00",
    "kind": "교육",
    "state": "접수마감"
   },
@@ -2511,7 +2512,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-04T09:00:00+09:00"
   },
   {
    "id": "clip:282685",
@@ -2527,7 +2528,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-01T09:00:00+09:00"
   },
   {
    "id": "clip:282677",
@@ -2543,7 +2544,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-11-01T09:00:00+09:00"
   },
   {
    "id": "clip:282458",
@@ -2564,7 +2565,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-31T09:00:00+09:00"
   },
   {
    "id": "dept:282530",
@@ -2585,7 +2586,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-31T09:00:00+09:00"
   },
   {
    "id": "dept:282518",
@@ -2614,7 +2615,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-31T09:00:00+09:00"
   },
   {
    "id": "dormitory:282406",
@@ -2635,7 +2636,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00",
+   "first_seen": "2026-10-30T09:00:00+09:00",
    "pinned": true
   },
   {
@@ -2652,7 +2653,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-29T09:00:00+09:00"
   },
   {
    "id": "dept:282398",
@@ -2685,7 +2686,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-29T09:00:00+09:00"
   },
   {
    "id": "library:7133",
@@ -2701,7 +2702,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-29T09:00:00+09:00"
   },
   {
    "id": "library:7132",
@@ -2717,7 +2718,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-29T09:00:00+09:00"
   },
   {
    "id": "library:7131",
@@ -2733,7 +2734,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-29T09:00:00+09:00"
   },
   {
    "id": "library:7130",
@@ -2749,7 +2750,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-29T09:00:00+09:00"
   },
   {
    "id": "library:7129",
@@ -2765,7 +2766,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-29T09:00:00+09:00"
   },
   {
    "id": "library:7128",
@@ -2781,7 +2782,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-29T09:00:00+09:00"
   },
   {
    "id": "dept:282348",
@@ -2802,7 +2803,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-28T09:00:00+09:00"
   },
   {
    "id": "clip:282289",
@@ -2818,7 +2819,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-25T09:00:00+09:00"
   },
   {
    "id": "library:7120",
@@ -2834,7 +2835,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-25T09:00:00+09:00"
   },
   {
    "id": "dept:282260",
@@ -2863,7 +2864,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-24T09:00:00+09:00"
   },
   {
    "id": "dept:282235",
@@ -2884,7 +2885,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-24T09:00:00+09:00"
   },
   {
    "id": "dept:282226",
@@ -2900,7 +2901,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-24T09:00:00+09:00"
   },
   {
    "id": "library:7114",
@@ -2916,7 +2917,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-24T09:00:00+09:00"
   },
   {
    "id": "dept:282174",
@@ -2945,7 +2946,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-23T09:00:00+09:00"
   },
   {
    "id": "dept:282192",
@@ -2961,7 +2962,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-23T09:00:00+09:00"
   },
   {
    "id": "dept:282175",
@@ -2986,7 +2987,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-23T09:00:00+09:00"
   },
   {
    "id": "dept:282112",
@@ -3015,7 +3016,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-21T09:00:00+09:00"
   },
   {
    "id": "dept:282046",
@@ -3036,7 +3037,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-18T09:00:00+09:00"
   },
   {
    "id": "dept:282042",
@@ -3065,7 +3066,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-18T09:00:00+09:00"
   },
   {
    "id": "dept:282040",
@@ -3090,7 +3091,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-18T09:00:00+09:00"
   },
   {
    "id": "dept:282032",
@@ -3106,7 +3107,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-17T09:00:00+09:00"
   },
   {
    "id": "dept:282031",
@@ -3122,7 +3123,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-17T09:00:00+09:00"
   },
   {
    "id": "dept:282010",
@@ -3147,7 +3148,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-17T09:00:00+09:00"
   },
   {
    "id": "dept:282003",
@@ -3176,7 +3177,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-17T09:00:00+09:00"
   },
   {
    "id": "dept:282001",
@@ -3197,7 +3198,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-17T09:00:00+09:00"
   },
   {
    "id": "clip:281944",
@@ -3213,7 +3214,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-16T09:00:00+09:00"
   },
   {
    "id": "clip:281943",
@@ -3229,7 +3230,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-16T09:00:00+09:00"
   },
   {
    "id": "clip:281937",
@@ -3254,7 +3255,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-16T09:00:00+09:00"
   },
   {
    "id": "dept:281989",
@@ -3295,7 +3296,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-16T09:00:00+09:00"
   },
   {
    "id": "clip:281921",
@@ -3311,7 +3312,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-15T09:00:00+09:00"
   },
   {
    "id": "clip:281916",
@@ -3336,7 +3337,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-15T09:00:00+09:00"
   },
   {
    "id": "library:6922",
@@ -3361,7 +3362,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-14T09:00:00+09:00"
   },
   {
    "id": "dept:281803",
@@ -3386,7 +3387,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-10T09:00:00+09:00"
   },
   {
    "id": "dept:281740",
@@ -3411,7 +3412,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-09T09:00:00+09:00"
   },
   {
    "id": "clip:281641",
@@ -3427,7 +3428,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-04T09:00:00+09:00"
   },
   {
    "id": "library:6789",
@@ -3448,7 +3449,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-04T09:00:00+09:00"
   },
   {
    "id": "dept:281533",
@@ -3464,7 +3465,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-02T09:00:00+09:00"
   },
   {
    "id": "dept:281521",
@@ -3480,7 +3481,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-02T09:00:00+09:00"
   },
   {
    "id": "clip:281493",
@@ -3501,7 +3502,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-10-01T09:00:00+09:00"
   },
   {
    "id": "clip:281439",
@@ -3522,7 +3523,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
+   "first_seen": "2026-09-30T09:00:00+09:00"
   },
   {
    "id": "dormitory:280760",
@@ -3543,7 +3544,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00",
+   "first_seen": "2026-09-09T09:00:00+09:00",
    "pinned": true
   },
   {
@@ -3569,7 +3570,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00",
+   "first_seen": "2026-09-04T09:00:00+09:00",
    "pinned": true
   },
   {
@@ -3586,7 +3587,7 @@
    "deadline_src": "field",
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:12:19+09:00",
+   "first_seen": "2026-09-03T09:00:00+09:00",
    "kind": "교육",
    "state": "접수중"
   },
@@ -3604,7 +3605,7 @@
    "deadline_src": "field",
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:12:19+09:00",
+   "first_seen": "2026-09-03T09:00:00+09:00",
    "kind": "캡스톤디자인",
    "state": "접수마감"
   },
@@ -3631,7 +3632,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00",
+   "first_seen": "2026-08-12T09:00:00+09:00",
    "pinned": true
   },
   {
@@ -3653,7 +3654,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00",
+   "first_seen": "2026-07-11T09:00:00+09:00",
    "pinned": true
   },
   {
@@ -3670,7 +3671,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00",
+   "first_seen": "2026-04-22T09:00:00+09:00",
    "pinned": true
   },
   {
@@ -3692,7 +3693,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00",
+   "first_seen": "2026-04-17T09:00:00+09:00",
    "pinned": true
   },
   {
@@ -3709,7 +3710,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00",
+   "first_seen": "2026-03-21T09:00:00+09:00",
    "pinned": true
   },
   {
@@ -3726,7 +3727,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00",
+   "first_seen": "2026-03-20T09:00:00+09:00",
    "pinned": true
   },
   {
@@ -3748,7 +3749,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00",
+   "first_seen": "2026-03-19T09:00:00+09:00",
    "pinned": true
   },
   {
@@ -3770,7 +3771,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00",
+   "first_seen": "2026-03-18T09:00:00+09:00",
    "pinned": true
   },
   {
@@ -3792,7 +3793,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00",
+   "first_seen": "2026-03-18T09:00:00+09:00",
    "pinned": true
   },
   {
@@ -3809,7 +3810,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00",
+   "first_seen": "2026-03-01T09:00:00+09:00",
    "pinned": true
   },
   {
@@ -3826,7 +3827,7 @@
    "deadline_src": null,
    "attachments": [],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00",
+   "first_seen": "2026-01-04T09:00:00+09:00",
    "pinned": true
   },
   {
@@ -3848,7 +3849,7 @@
     }
    ],
    "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00",
+   "first_seen": "2025-12-26T09:00:00+09:00",
    "pinned": true
   }
  ]
