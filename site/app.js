@@ -178,12 +178,9 @@
     const bm = P.bm[it.id];
     const star = `<button class="star${bm ? " on" : ""}" data-bm="${esc(it.id)}" aria-pressed="${bm ? "true" : "false"}" aria-label="${bm ? "북마크 빼기" : "북마크"}" title="${bm ? "북마크 빼기" : "북마크해서 달력에 넣기"}">${bm ? "★" : "☆"}</button>`;
     const att = it.attachments && it.attachments.length ? `<span title="${esc(it.attachments.map((a) => a.name).join(", "))}">첨부 ${it.attachments.length}</span>` : "";
-    const ask = bm && !it.deadline
-      ? `<label class="bm-date">달력에 넣을 날짜 <input type="date" data-bmdate="${esc(it.id)}" id="bmd-${esc(it.id)}" value="${esc(bm.date || "")}"></label>` : "";
     return `<li class="item">
       <div class="t-row"><a class="t" href="${esc(it.url)}" data-open="${esc(it.id)}">${esc(it.title)}</a>${star}</div>
       <div class="meta">${bits.join("")}<span>${esc(src)}${it.dept ? " · " + esc(it.dept) : ""}</span><span>${md(it.date)}</span>${att}${it._note ? `<span>${esc(it._note)}</span>` : ""}${hide}</div>
-      ${ask}
     </li>`;
   }
 
@@ -380,12 +377,18 @@
     return `<div class="scrim" data-close></div>
     <aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="dr-title">
       <div class="sheet-head"><h2 id="dr-title">북마크 ${rows.length}</h2><button class="x" data-close aria-label="닫기">×</button></div>
-      ${rows.length ? `<ul class="bm-list">${rows.map((r) => {
-        const d = r.date ? diffDays(r.date, TODAY) : null;
-        return `<li><span class="bm-when">${r.date ? md(r.date) : "날짜 없음"}${r.date && d >= 0 && d <= 7 ? `<span class="badge due">${d === 0 ? "오늘" : "D-" + d}</span>` : ""}${r.ai ? `<span class="badge ai">AI 추정</span>` : ""}</span>
+      ${rows.length ? (() => {
+        // 날짜(마감·직접 넣은 날)가 있는 것과 없는 것을 나눠 보여 준다. 없는 쪽은 줄마다 "날짜 없음"을 반복하지 않는다
+        const li = (r) => {
+          const d = r.date ? diffDays(r.date, TODAY) : null;
+          return `<li>${r.date ? `<span class="bm-when">${md(r.date)}${d >= 0 && d <= 7 ? `<span class="badge due">${d === 0 ? "오늘" : "D-" + d}</span>` : ""}${r.ai ? `<span class="badge ai">AI 추정</span>` : ""}</span>` : ""}
           <a href="#" data-open="${esc(r.id)}">${esc(r.title)}</a>
           <button class="x small" data-bm="${esc(r.id)}" aria-label="북마크 빼기">×</button></li>`;
-      }).join("")}</ul>` : `<p class="empty">글의 ☆ 를 누르면 여기에 모여요.</p>`}
+        };
+        const withDate = rows.filter((r) => r.date), noDate = rows.filter((r) => !r.date);
+        return (withDate.length ? `<ul class="bm-list">${withDate.map(li).join("")}</ul>` : "")
+          + (noDate.length ? `<h3 class="bm-sub">날짜 없는 북마크 ${noDate.length}</h3><p class="hint">제목을 눌러 달력에 넣을 날짜를 고를 수 있어요.</p><ul class="bm-list">${noDate.map(li).join("")}</ul>` : "");
+      })() : `<p class="empty">글의 ☆ 를 누르면 여기에 모여요.</p>`}
       <div class="drawer-actions">
         <button class="btn" data-act="ics"${dated ? "" : " disabled"}>휴대폰 캘린더에 추가 (.ics)</button>
         <p class="hint ics-msg">날짜가 있는 북마크 ${dated}개를 파일로 받아요. 미리보기 링크에서는 내려받기가 막혀 있어요.</p>
