@@ -1,46 +1,46 @@
 {
  "_note": "collector/collect.py 가 만든 실제 수집 데이터. 제목·날짜·링크만 저장한다. 원문은 링크에서.",
- "generated_at": "2026-11-26T22:16:24+09:00",
+ "generated_at": "2026-11-26T22:18:51+09:00",
  "sources": {
   "jnu": {
    "name": "본부 공지사항",
-   "updated": "2026-11-26T22:16:24+09:00",
+   "updated": "2026-11-26T22:18:51+09:00",
    "ok": true,
    "count": 55
   },
   "dormitory": {
    "name": "학생생활관",
-   "updated": "2026-11-26T22:16:24+09:00",
+   "updated": "2026-11-26T22:18:51+09:00",
    "ok": true,
    "count": 34
   },
   "intl": {
    "name": "국제교류",
-   "updated": "2026-11-26T22:16:24+09:00",
+   "updated": "2026-11-26T22:18:51+09:00",
    "ok": true,
    "count": 33
   },
   "clip": {
    "name": "진로취업 clip",
-   "updated": "2026-11-26T22:16:24+09:00",
+   "updated": "2026-11-26T22:18:51+09:00",
    "ok": true,
    "count": 20
   },
   "dept": {
    "name": "학과 게시판",
-   "updated": "2026-11-26T22:15:24+09:00",
-   "ok": false,
-   "error": "ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+   "updated": "2026-11-26T22:18:51+09:00",
+   "ok": true,
+   "count": 48
   },
   "jedaero": {
    "name": "제대로 산학1번지",
-   "updated": "2026-11-26T22:16:24+09:00",
+   "updated": "2026-11-26T22:18:51+09:00",
    "ok": true,
    "count": 8
   },
   "library": {
    "name": "중앙도서관",
-   "updated": "2026-11-26T22:16:24+09:00",
+   "updated": "2026-11-26T22:18:51+09:00",
    "ok": true,
    "count": 20
   }
@@ -895,7 +895,9 @@
      "url": "https://www.jejunu.ac.kr/ara/noticesurvey/outEvent.htm?act=download&seq=283564&no=2"
     }
    ],
-   "also_posted": [],
+   "also_posted": [
+    "간호대학"
+   ],
    "first_seen": "2026-11-26T22:10:55+09:00"
   },
   {
