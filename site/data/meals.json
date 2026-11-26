@@ -1,6 +1,6 @@
 {
  "_note": "collector/collect.py 가 학교 식단 페이지에서 만든 데이터.",
- "generated_at": "2026-11-26T22:18:51+09:00",
+ "generated_at": "2026-11-26T22:56:01+09:00",
  "week": "2026-11-23",
  "restaurants": {
   "baekdu": {
@@ -175,7 +175,8 @@
      }
     ]
    },
-   "updated": "2026-11-26T22:18:51+09:00"
+   "updated": "2026-11-26T22:18:51+09:00",
+   "error": "ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
   },
   "six": {
    "label": "6호관",
@@ -504,7 +505,7 @@
      }
     ]
    },
-   "updated": "2026-11-26T22:18:51+09:00"
+   "updated": "2026-11-26T22:56:01+09:00"
   },
   "one": {
    "label": "1호관",
@@ -640,7 +641,7 @@
      }
     ]
    },
-   "updated": "2026-11-26T22:18:51+09:00"
+   "updated": "2026-11-26T22:56:01+09:00"
   }
  }
 }
