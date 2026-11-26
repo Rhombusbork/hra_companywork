@@ -92,11 +92,17 @@ class Fetcher:
         wait = PAUSE - (time.time() - self.last)
         if wait > 0:
             time.sleep(wait)
-        try:
-            r = self.s.get(url, timeout=30)
-        finally:
-            self.last = time.time()
-            self.count += 1
+        for attempt in (1, 2):  # 연결이 끊기면 10초 쉬고 한 번만 다시
+            try:
+                r = self.s.get(url, timeout=30)
+                break
+            except (requests.ConnectionError, requests.Timeout):
+                if attempt == 2:
+                    raise
+                time.sleep(10)
+            finally:
+                self.last = time.time()
+                self.count += 1
         r.raise_for_status()
         if not r.encoding or r.encoding.lower() == "iso-8859-1":
             r.encoding = r.apparent_encoding
@@ -384,20 +390,31 @@ def main():
     prev_src = prev.get("sources", {})
     sources, fresh, failed = {}, {}, []
 
-    def run(sid, name, fn):
+    def run(sid, name, fn, label=None):
+        """label 은 학과처럼 한 정보원(dept)에 게시판이 여럿일 때 어느 것인지."""
+        who = f"{sid}({label})" if label else sid
+        cur = sources.get(sid)
         try:
             got = fn()
             if not got:
                 raise RuntimeError("0건 (구조가 바뀌었을 수 있음)")
             fresh.setdefault(sid, []).extend(got)
-            sources[sid] = {"name": name, "updated": NOW_S, "ok": True, "count": len(fresh[sid])}
-            print(f"  {sid}: {len(got)}건")
+            if cur and not cur["ok"]:
+                cur["count"] = len(fresh[sid])
+            else:
+                sources[sid] = {"name": name, "updated": NOW_S, "ok": True, "count": len(fresh[sid])}
+            print(f"  {who}: {len(got)}건")
         except Exception as e:  # 한 곳이 실패해도 나머지는 계속
-            failed.append(sid)
-            old = prev_src.get(sid, {})
-            sources[sid] = {"name": name, "updated": old.get("updated"), "ok": False,
-                            "error": f"{type(e).__name__}: {e}"[:200]}
-            print(f"  {sid}: 실패 {e}", file=sys.stderr)
+            failed.append(who)
+            err = f"{label + ': ' if label else ''}{type(e).__name__}: {e}"[:200]
+            if cur:
+                cur["ok"] = False
+                cur["error"] = (cur.get("error", "") + " / " + err).strip(" /")
+            else:
+                old = prev_src.get(sid, {})
+                sources[sid] = {"name": name, "updated": old.get("updated"), "ok": False, "error": err,
+                                "count": len(fresh.get(sid, []))}
+            print(f"  {who}: 실패 {e}", file=sys.stderr)
 
     print("공지")
     for b in cfg["boards"]:
@@ -411,9 +428,7 @@ def main():
             continue
         boards_done.add(d["board"])
         dept_names[d["board"]] = d["name"]
-        run("dept", "학과 게시판", lambda d=d: parse_artpq_table(f.get(d["board"]), d["board"], "dept", "학과 게시판", dept_board=d["board"]))
-    if "dept" in sources and "dept" in failed and fresh.get("dept"):
-        sources["dept"].update(ok=False)  # 일부 학과만 실패
+        run("dept", "학과 게시판", lambda d=d: parse_artpq_table(f.get(d["board"]), d["board"], "dept", "학과 게시판", dept_board=d["board"]), d["name"])
 
     # jedaero 는 robots.txt 가 없다(404, 11/26 확인). 한 쪽 10건 중 교수·기업용이 많아 3쪽까지 본다.
     j = cfg["jedaero"]
