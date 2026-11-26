@@ -162,6 +162,15 @@ def run_site(b, base, path, c, shots):
     c.ok(pg.locator("button.dept-opt small.got").count() >= 2, f"{tag}: 학과 목록에 '게시판 모음' 표시")
     ctx.close()
 
+    # 7-2. 홈 화면에 추가(PWA): manifest·아이콘·서비스워커
+    ctx, pg = page(PHONE)
+    pg.goto(url); pg.wait_for_timeout(1500)
+    man = pg.evaluate("fetch('manifest.webmanifest').then(r => r.ok ? r.json() : null)")
+    c.ok(bool(man) and man.get("start_url") == "./", f"{tag}: manifest")
+    c.ok(pg.evaluate("fetch('icons/icon-192.png').then(r => r.ok)"), f"{tag}: 아이콘")
+    c.ok(pg.evaluate("navigator.serviceWorker.getRegistration().then(r => !!r)"), f"{tag}: 서비스워커 등록")
+    ctx.close()
+
     # 8. PC 화면
     ctx, pg = page(PC)
     pg.goto(url + "?dept=nursing-1"); pg.wait_for_timeout(1000)
