@@ -296,6 +296,18 @@
       ]
     },
     {
+      "id": "youth",
+      "layer": 2,
+      "label": "제주 청년",
+      "desc": "제주청년센터에 올라온 제주 청년 교육·창업·모집 (학교 밖)",
+      "default": false,
+      "match": {
+        "source": [
+          "youth"
+        ]
+      }
+    },
+    {
       "id": "library",
       "layer": 3,
       "label": "도서관",

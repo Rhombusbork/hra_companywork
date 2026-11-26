@@ -88,7 +88,7 @@ def run_site(b, base, path, c, shots):
     shot(pg, "2_dept_saved")
 
     # 3. 분류 탭과 칩
-    for label in ["장학", "학사", "학식", "일정"]:
+    for label in ["장학", "학사", "제주 청년", "학식", "일정"]:
         a = pg.locator("nav.catbar a", has_text=label).first
         if a.count():
             a.click(); pg.wait_for_timeout(400)

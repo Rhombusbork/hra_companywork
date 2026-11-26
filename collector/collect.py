@@ -280,6 +280,33 @@ def parse_library(text, cfg):
     return out
 
 
+def parse_gnuboard(text, cfg):
+    """제주청년센터(그누보드). 제목은 '기관 / 행사명(~마감)' 꼴 (07 4-1절, 04)."""
+    soup = BeautifulSoup(text, "html.parser")
+    out, seen = [], set()
+    for tr in soup.select("table.board_list tr"):
+        a = tr.select_one("td.subj a[href*='wr_id=']")
+        if not a:
+            continue
+        m = re.search(r"wr_id=(\d+)", a.get("href", ""))
+        if not m or m[1] in seen:
+            continue
+        seen.add(m[1])
+        title = re.sub(r"\s+", " ", a.get_text(" ", strip=True))
+        cat = tr.select_one("td.caname")
+        if cat and "마감" in cat.get_text():  # '모집마감' 은 이미 끝난 글
+            continue
+        posted = find_date(tr.get_text(" "))
+        url = f"{cfg['view']}{m[1]}"
+        out.append(item("youth", cfg["name"], title, url, posted, id=f"youth:{m[1]}",
+                        category=cat.get_text(strip=True) if cat else None,
+                        pinned=("bg_notice" in (tr.get("class") or [])) or None))
+    for it in out:
+        if not it.get("pinned"):
+            it.pop("pinned", None)
+    return out
+
+
 def parse_meals(text, cfg, year):
     """caption 이 식당 이름인 표. 메뉴 사이가 </br> 라서 html.parser 가 구분을 버린다 → 셀 원문을 먼저 자른다 (07 4-1절)."""
     raw = re.sub(r"</?br\s*/?>", "\n", text, flags=re.I)
@@ -473,6 +500,10 @@ def main():
                                        for x in parse_jedaero(f.get(j["url"] + (f"?pageIndex={n}" if n > 1 else "")), j)])
     lb = cfg["library"]
     run("library", lb["name"], lambda: parse_library(f.get(lb["url"]), lb))
+    # 학교 밖: 제주청년센터 (robots 허용, 11/27 확인)
+    yc = cfg.get("youth")
+    if yc:
+        run("youth", yc["name"], lambda: parse_gnuboard(f.get(yc["url"]), yc))
 
     # 실패한 곳은 이전 글을 그대로 쓴다
     all_items = []

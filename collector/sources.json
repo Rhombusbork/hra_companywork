@@ -17,6 +17,11 @@
     "url": "https://lib.jejunu.ac.kr/pyxis-api/1/bulletin-boards/1/bulletins?offset=0&max=20",
     "link": "https://lib.jejunu.ac.kr/"
   },
+  "youth": {
+    "name": "제주청년센터",
+    "url": "https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1",
+    "view": "https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id="
+  },
   "departments": ["pharmacy", "nursing"],
   "meals": [
     { "id": "baekdu", "label": "백두관", "url": "https://www.jejunu.ac.kr/camp/stud/foodmenu/firstfixmenu.htm" },
