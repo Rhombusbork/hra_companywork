@@ -1,48 +1,54 @@
 {
  "_note": "collector/collect.py 가 만든 실제 수집 데이터. 제목·날짜·링크만 저장한다. 원문은 링크에서.",
- "generated_at": "2026-11-26T23:07:10+09:00",
+ "generated_at": "2026-11-26T23:18:46+09:00",
  "sources": {
   "jnu": {
    "name": "본부 공지사항",
-   "updated": "2026-11-26T23:07:10+09:00",
+   "updated": "2026-11-26T23:18:46+09:00",
    "ok": true,
    "count": 55
   },
   "dormitory": {
    "name": "학생생활관",
-   "updated": "2026-11-26T23:07:10+09:00",
+   "updated": "2026-11-26T23:18:46+09:00",
    "ok": true,
    "count": 34
   },
   "intl": {
    "name": "국제교류",
-   "updated": "2026-11-26T23:07:10+09:00",
+   "updated": "2026-11-26T23:18:46+09:00",
    "ok": true,
    "count": 33
   },
   "clip": {
    "name": "진로취업 clip",
-   "updated": "2026-11-26T23:07:10+09:00",
+   "updated": "2026-11-26T23:18:46+09:00",
    "ok": true,
    "count": 20
   },
   "dept": {
    "name": "학과 게시판",
-   "updated": "2026-11-26T23:07:10+09:00",
+   "updated": "2026-11-26T23:18:46+09:00",
    "ok": true,
    "count": 48
   },
   "jedaero": {
    "name": "제대로 산학1번지",
-   "updated": "2026-11-26T23:07:10+09:00",
+   "updated": "2026-11-26T23:18:46+09:00",
    "ok": true,
    "count": 8
   },
   "library": {
    "name": "중앙도서관",
-   "updated": "2026-11-26T23:07:10+09:00",
+   "updated": "2026-11-26T23:18:46+09:00",
    "ok": true,
    "count": 20
+  },
+  "youth": {
+   "name": "제주청년센터",
+   "updated": "2026-11-26T23:18:46+09:00",
+   "ok": true,
+   "count": 23
   }
  },
  "dept_boards": [
@@ -857,6 +863,40 @@
    "first_seen": "2026-11-26T09:00:00+09:00"
   },
   {
+   "id": "youth:1317",
+   "source": "youth",
+   "source_name": "제주청년센터",
+   "category": "행사홍보",
+   "title": "서울신문·한반도미래인구연구원 / 2026 서울신문 제주 인구포럼(12.3.)",
+   "url": "https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id=1317",
+   "date": "2026-11-24",
+   "dept": null,
+   "dept_board": null,
+   "deadline": null,
+   "deadline_src": null,
+   "attachments": [],
+   "also_posted": [],
+   "first_seen": "2026-11-26T09:00:00+09:00",
+   "pinned": true
+  },
+  {
+   "id": "youth:1316",
+   "source": "youth",
+   "source_name": "제주청년센터",
+   "category": "모집공고",
+   "title": "제주사회적경제네트워크 / 2026년 지역 돌봄 공동체 인큐베이팅 사업 참가팀 모집(~11.29.)",
+   "url": "https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id=1316",
+   "date": "2026-11-24",
+   "dept": null,
+   "dept_board": null,
+   "deadline": "2026-11-29",
+   "deadline_src": "title",
+   "attachments": [],
+   "also_posted": [],
+   "first_seen": "2026-11-26T09:00:00+09:00",
+   "pinned": true
+  },
+  {
    "id": "jnu:283567",
    "source": "jnu",
    "source_name": "본부 공지사항",
@@ -972,6 +1012,40 @@
    "attachments": [],
    "also_posted": [],
    "first_seen": "2026-11-25T09:00:00+09:00"
+  },
+  {
+   "id": "youth:1315",
+   "source": "youth",
+   "source_name": "제주청년센터",
+   "category": "모집공고",
+   "title": "SK행복나눔재단 / 2027년 SK 뉴스쿨 신입생 모집(~12.14.)",
+   "url": "https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id=1315",
+   "date": "2026-11-23",
+   "dept": null,
+   "dept_board": null,
+   "deadline": "2026-12-14",
+   "deadline_src": "title",
+   "attachments": [],
+   "also_posted": [],
+   "first_seen": "2026-11-25T09:00:00+09:00",
+   "pinned": true
+  },
+  {
+   "id": "youth:1314",
+   "source": "youth",
+   "source_name": "제주청년센터",
+   "category": "모집공고",
+   "title": "제주신용보증재단 / 2026 창업아카데미 11기(~12.14.)",
+   "url": "https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id=1314",
+   "date": "2026-11-21",
+   "dept": null,
+   "dept_board": null,
+   "deadline": "2026-12-14",
+   "deadline_src": "title",
+   "attachments": [],
+   "also_posted": [],
+   "first_seen": "2026-11-23T09:00:00+09:00",
+   "pinned": true
   },
   {
    "id": "jnu:283530",
@@ -1693,6 +1767,23 @@
    "first_seen": "2026-11-20T09:00:00+09:00"
   },
   {
+   "id": "youth:1311",
+   "source": "youth",
+   "source_name": "제주청년센터",
+   "category": "모집공고",
+   "title": "아라종합사회복지관 / 나의 반려 먼지 만들기 원데이클래스(~11.28.)",
+   "url": "https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id=1311",
+   "date": "2026-11-18",
+   "dept": null,
+   "dept_board": null,
+   "deadline": "2026-11-28",
+   "deadline_src": "title",
+   "attachments": [],
+   "also_posted": [],
+   "first_seen": "2026-11-20T09:00:00+09:00",
+   "pinned": true
+  },
+  {
    "id": "dormitory:283377",
    "source": "dormitory",
    "source_name": "학생생활관",
@@ -1752,6 +1843,23 @@
    "first_seen": "2026-11-19T09:00:00+09:00"
   },
   {
+   "id": "youth:1310",
+   "source": "youth",
+   "source_name": "제주청년센터",
+   "category": "모집공고",
+   "title": "스타트업베이 / 2027년 서귀포시 스타트업베이 입주기업 9기 모집(~12.7.)",
+   "url": "https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id=1310",
+   "date": "2026-11-17",
+   "dept": null,
+   "dept_board": null,
+   "deadline": "2026-12-07",
+   "deadline_src": "title",
+   "attachments": [],
+   "also_posted": [],
+   "first_seen": "2026-11-19T09:00:00+09:00",
+   "pinned": true
+  },
+  {
    "id": "intl:283297",
    "source": "intl",
    "source_name": "국제교류",
@@ -1771,6 +1879,40 @@
    ],
    "also_posted": [],
    "first_seen": "2026-11-18T09:00:00+09:00"
+  },
+  {
+   "id": "youth:1309",
+   "source": "youth",
+   "source_name": "제주청년센터",
+   "category": "행사홍보",
+   "title": "제주4∙3평화재단 / 제4회 제주4∙3영화제(11.28.)",
+   "url": "https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id=1309",
+   "date": "2026-11-16",
+   "dept": null,
+   "dept_board": null,
+   "deadline": null,
+   "deadline_src": null,
+   "attachments": [],
+   "also_posted": [],
+   "first_seen": "2026-11-18T09:00:00+09:00",
+   "pinned": true
+  },
+  {
+   "id": "youth:1305",
+   "source": "youth",
+   "source_name": "제주청년센터",
+   "category": "모집공고",
+   "title": "제주신용보증재단 / 2026 디지털전환(마케팅) 교육 실시(~12.2.)",
+   "url": "https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id=1305",
+   "date": "2026-11-16",
+   "dept": null,
+   "dept_board": null,
+   "deadline": "2026-12-02",
+   "deadline_src": "title",
+   "attachments": [],
+   "also_posted": [],
+   "first_seen": "2026-11-18T09:00:00+09:00",
+   "pinned": true
   },
   {
    "id": "jnu:283255",
@@ -1980,6 +2122,39 @@
    "first_seen": "2026-11-14T09:00:00+09:00"
   },
   {
+   "id": "youth:1304",
+   "source": "youth",
+   "source_name": "제주청년센터",
+   "category": "모집공고",
+   "title": "복합문화공간 라바르 / 예술로, 올레(~11.26.)",
+   "url": "https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id=1304",
+   "date": "2026-11-12",
+   "dept": null,
+   "dept_board": null,
+   "deadline": "2026-11-26",
+   "deadline_src": "title",
+   "attachments": [],
+   "also_posted": [],
+   "first_seen": "2026-11-14T09:00:00+09:00",
+   "pinned": true
+  },
+  {
+   "id": "youth:1303",
+   "source": "youth",
+   "source_name": "제주청년센터",
+   "category": "모집공고",
+   "title": "제주문화예술재단 / 2026 장애예술창작페스타「열린감각｜OPEN SENSES」(~11.14.)",
+   "url": "https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id=1303",
+   "date": "2026-11-12",
+   "dept": null,
+   "dept_board": null,
+   "deadline": "2026-11-14",
+   "deadline_src": "title",
+   "attachments": [],
+   "also_posted": [],
+   "first_seen": "2026-11-14T09:00:00+09:00"
+  },
+  {
    "id": "intl:283189",
    "source": "intl",
    "source_name": "국제교류",
@@ -1997,6 +2172,23 @@
      "url": "https://intl.jejunu.ac.kr/intl/community/notice2.htm?act=download&seq=283189&no=1"
     }
    ],
+   "also_posted": [],
+   "first_seen": "2026-11-13T09:00:00+09:00",
+   "pinned": true
+  },
+  {
+   "id": "youth:1302",
+   "source": "youth",
+   "source_name": "제주청년센터",
+   "category": "채용공고",
+   "title": "제주곶자왈공유화재단 / 2026년 제2차 신입직원 정규직 채용 공고(~12.4. 17:00)",
+   "url": "https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id=1302",
+   "date": "2026-11-11",
+   "dept": null,
+   "dept_board": null,
+   "deadline": "2026-12-04",
+   "deadline_src": "title",
+   "attachments": [],
    "also_posted": [],
    "first_seen": "2026-11-13T09:00:00+09:00",
    "pinned": true
@@ -2055,6 +2247,22 @@
      "url": "https://intl.jejunu.ac.kr/intl/community/notice2.htm?act=download&seq=283131&no=2"
     }
    ],
+   "also_posted": [],
+   "first_seen": "2026-11-12T09:00:00+09:00"
+  },
+  {
+   "id": "youth:1300",
+   "source": "youth",
+   "source_name": "제주청년센터",
+   "category": "공지",
+   "title": "제주청년센터 /「청년DB 등록 이벤트」안내(~11.18.)",
+   "url": "https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id=1300",
+   "date": "2026-11-10",
+   "dept": null,
+   "dept_board": null,
+   "deadline": "2026-11-18",
+   "deadline_src": "title",
+   "attachments": [],
    "also_posted": [],
    "first_seen": "2026-11-12T09:00:00+09:00"
   },
@@ -2191,6 +2399,22 @@
    "first_seen": "2026-11-08T09:00:00+09:00"
   },
   {
+   "id": "youth:1299",
+   "source": "youth",
+   "source_name": "제주청년센터",
+   "category": "행사홍보",
+   "title": "성산읍도시재생현장지원센터 / 제주도따이를 위한 찐 여행 '나도 관광객이다.'(~11.14.)",
+   "url": "https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id=1299",
+   "date": "2026-11-06",
+   "dept": null,
+   "dept_board": null,
+   "deadline": "2026-11-14",
+   "deadline_src": "title",
+   "attachments": [],
+   "also_posted": [],
+   "first_seen": "2026-11-08T09:00:00+09:00"
+  },
+  {
    "id": "clip:282901",
    "source": "clip",
    "source_name": "진로취업 clip",
@@ -2264,6 +2488,22 @@
      "url": "https://lib.jejunu.ac.kr/"
     }
    ],
+   "also_posted": [],
+   "first_seen": "2026-11-07T09:00:00+09:00"
+  },
+  {
+   "id": "youth:1296",
+   "source": "youth",
+   "source_name": "제주청년센터",
+   "category": "행사홍보",
+   "title": "제주공익활동지원센터 / 2026 공익활동 박람회(11.5.~11.6.)",
+   "url": "https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id=1296",
+   "date": "2026-11-05",
+   "dept": null,
+   "dept_board": null,
+   "deadline": "2026-11-06",
+   "deadline_src": "title",
+   "attachments": [],
    "also_posted": [],
    "first_seen": "2026-11-07T09:00:00+09:00"
   },
@@ -2451,6 +2691,38 @@
      "url": "https://nursing.jejunu.ac.kr/nursing/degree/notice.htm?act=download&seq=282825&no=2"
     }
    ],
+   "also_posted": [],
+   "first_seen": "2026-11-05T09:00:00+09:00"
+  },
+  {
+   "id": "youth:1295",
+   "source": "youth",
+   "source_name": "제주청년센터",
+   "category": "행사홍보",
+   "title": "제주시평생학습관 / 2026년 목요 특강 9강(박준 시인) 수강생 모집 안내(~11.11. 23:00)",
+   "url": "https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id=1295",
+   "date": "2026-11-03",
+   "dept": null,
+   "dept_board": null,
+   "deadline": "2026-11-11",
+   "deadline_src": "title",
+   "attachments": [],
+   "also_posted": [],
+   "first_seen": "2026-11-05T09:00:00+09:00"
+  },
+  {
+   "id": "youth:1294",
+   "source": "youth",
+   "source_name": "제주청년센터",
+   "category": "행사홍보",
+   "title": "청년미래센터 온바람 / 2026년 제1기 부모교육 참여자 모집(~11.9.)",
+   "url": "https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id=1294",
+   "date": "2026-11-03",
+   "dept": null,
+   "dept_board": null,
+   "deadline": "2026-11-09",
+   "deadline_src": "title",
+   "attachments": [],
    "also_posted": [],
    "first_seen": "2026-11-05T09:00:00+09:00"
   },
@@ -2892,6 +3164,23 @@
    "attachments": [],
    "also_posted": [],
    "first_seen": "2026-10-24T09:00:00+09:00"
+  },
+  {
+   "id": "youth:1279",
+   "source": "youth",
+   "source_name": "제주청년센터",
+   "category": "채용공고",
+   "title": "제주드림타워 / 인사부 직원 채용(~채용 시 마감)",
+   "url": "https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id=1279",
+   "date": "2026-10-22",
+   "dept": null,
+   "dept_board": null,
+   "deadline": null,
+   "deadline_src": null,
+   "attachments": [],
+   "also_posted": [],
+   "first_seen": "2026-10-24T09:00:00+09:00",
+   "pinned": true
   },
   {
    "id": "dept:282174",
@@ -3610,6 +3899,23 @@
    "pinned": true
   },
   {
+   "id": "youth:1186",
+   "source": "youth",
+   "source_name": "제주청년센터",
+   "category": "모집공고",
+   "title": "제주특별자치도 / 빛나는 제주 청년희망 대출 3.0 이자 지원사업 알림(~12.31.)",
+   "url": "https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id=1186",
+   "date": "2026-08-05",
+   "dept": null,
+   "dept_board": null,
+   "deadline": "2026-12-31",
+   "deadline_src": "title",
+   "attachments": [],
+   "also_posted": [],
+   "first_seen": "2026-08-07T09:00:00+09:00",
+   "pinned": true
+  },
+  {
    "id": "intl:278178",
    "source": "intl",
    "source_name": "국제교류",
@@ -3629,6 +3935,74 @@
    ],
    "also_posted": [],
    "first_seen": "2026-07-11T09:00:00+09:00",
+   "pinned": true
+  },
+  {
+   "id": "youth:1164",
+   "source": "youth",
+   "source_name": "제주청년센터",
+   "category": "모집공고",
+   "title": "국민연금공단 / 청년 맞춤형 재무상담서비스(~사업 마감까지)",
+   "url": "https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id=1164",
+   "date": "2026-07-09",
+   "dept": null,
+   "dept_board": null,
+   "deadline": null,
+   "deadline_src": null,
+   "attachments": [],
+   "also_posted": [],
+   "first_seen": "2026-07-11T09:00:00+09:00",
+   "pinned": true
+  },
+  {
+   "id": "youth:1154",
+   "source": "youth",
+   "source_name": "제주청년센터",
+   "category": "모집공고",
+   "title": "제주특별자치도광역정신건강복지센터 / 청년층 자살시도자 치료비 지원사업(~예산소진시까지)",
+   "url": "https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id=1154",
+   "date": "2026-07-02",
+   "dept": null,
+   "dept_board": null,
+   "deadline": null,
+   "deadline_src": null,
+   "attachments": [],
+   "also_posted": [],
+   "first_seen": "2026-07-04T09:00:00+09:00",
+   "pinned": true
+  },
+  {
+   "id": "youth:1107",
+   "source": "youth",
+   "source_name": "제주청년센터",
+   "category": "모집공고",
+   "title": "한국산업인력공단 / 2026년 청년 국가기술자격시험 응시료 지원사업(~예산 소진 시까지)",
+   "url": "https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id=1107",
+   "date": "2026-05-30",
+   "dept": null,
+   "dept_board": null,
+   "deadline": null,
+   "deadline_src": null,
+   "attachments": [],
+   "also_posted": [],
+   "first_seen": "2026-06-01T09:00:00+09:00",
+   "pinned": true
+  },
+  {
+   "id": "youth:1075",
+   "source": "youth",
+   "source_name": "제주청년센터",
+   "category": "모집공고",
+   "title": "제주특별자치도 / 2026 탐라청년출발패키지 사업-청년 전입 축하장려금(~예산 소진 시까지)",
+   "url": "https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id=1075",
+   "date": "2026-04-23",
+   "dept": null,
+   "dept_board": null,
+   "deadline": null,
+   "deadline_src": null,
+   "attachments": [],
+   "also_posted": [],
+   "first_seen": "2026-04-25T09:00:00+09:00",
    "pinned": true
   },
   {
@@ -3768,6 +4142,23 @@
    ],
    "also_posted": [],
    "first_seen": "2026-03-18T09:00:00+09:00",
+   "pinned": true
+  },
+  {
+   "id": "youth:1029",
+   "source": "youth",
+   "source_name": "제주청년센터",
+   "category": "모집공고",
+   "title": "제주특별자치도 경제통상진흥원 / 2026년 도외 직업훈련 참가 지원사업 참여자 모집(~12.31.)",
+   "url": "https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id=1029",
+   "date": "2026-03-05",
+   "dept": null,
+   "dept_board": null,
+   "deadline": null,
+   "deadline_src": null,
+   "attachments": [],
+   "also_posted": [],
+   "first_seen": "2026-03-07T09:00:00+09:00",
    "pinned": true
   },
   {
