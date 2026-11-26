@@ -383,6 +383,87 @@ def parse_academic(text, year):
     return out
 
 
+# ---------- 구독 (RSS·.ics) ----------
+SITE_URL = "https://rhombusbork.github.io/hra_companywork/"
+
+
+def cat_match(cat, it):
+    """화면(app.js inCat)과 같은 규칙으로 분류 카드에 드는지."""
+    m = cat.get("match", {})
+    if it["source"] == "dept":
+        return False
+    if it["source"] in m.get("source", []):
+        return True
+    if it["source"] == "jnu" and it.get("category") in m.get("source_category", []):
+        return True
+    return any(k in it["title"] for k in m.get("keywords", []))
+
+
+def write_feeds(items, academic, cfg, deps):
+    """feeds/ 에 RSS(전체·분류별·학과별)와 마감·학사일정 .ics 를 만든다. 휴대폰 캘린더·RSS 앱이 구독하면 알아서 갱신된다."""
+    from email.utils import format_datetime
+    from xml.sax.saxutils import escape as x
+    out = OUT_DIRS[0] / "feeds"
+    out.mkdir(exist_ok=True)
+
+    def rss(name, title, its):
+        rows = []
+        for it in its[:60]:
+            when = datetime.fromisoformat(it["first_seen"])
+            desc = f"{it['source_name']}{' · ' + it['dept'] if it.get('dept') else ''} · {it['date']}" + (f" · 마감 {it['deadline']}" if it.get("deadline") else "")
+            rows.append(f"<item><title>{x(it['title'])}</title><link>{x(it['url'])}</link><guid isPermaLink=\"false\">{x(it['id'])}</guid>"
+                        f"<pubDate>{format_datetime(when)}</pubDate><description>{x(desc)}</description></item>")
+        (out / f"{name}.xml").write_text(
+            '<?xml version="1.0" encoding="utf-8"?>\n<rss version="2.0"><channel>'
+            f"<title>{x('제주대 모아보기 · ' + title)}</title><link>{SITE_URL}</link>"
+            f"<description>{x('학교 공식 아님. 제목·날짜·링크만. ' + title)}</description><language>ko</language>"
+            + "".join(rows) + "</channel></rss>\n", encoding="utf-8")
+
+    by_seen = sorted(items, key=lambda i: i["first_seen"], reverse=True)
+    made = [("all", "전체")]
+    rss("all", "전체", by_seen)
+    for c in cfg["categories"]:
+        its = [i for i in by_seen if cat_match(c, i)]
+        if its:
+            rss(c["id"], c["label"], its)
+            made.append((c["id"], c["label"]))
+    names = {}
+    for d in deps:
+        names.setdefault(d["board"], d)
+    for board in sorted({i["dept_board"] for i in items if i.get("dept_board")}):
+        d = names.get(board)
+        slug = "dept-" + re.sub(r"^https?://([^./]+).*", r"\1", board)  # 화면도 같은 규칙 (app.js subLinks)
+        rss(slug, d["name"] if d else slug, [i for i in by_seen if i.get("dept_board") == board])
+        made.append((slug, d["name"] if d else slug))
+
+    def ics_text(s):
+        return s.replace("\\", "\\\\").replace(";", "\\;").replace(",", "\\,").replace("\n", " ")
+
+    ev = []
+    stamp = NOW.astimezone(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    for it in items:
+        if it.get("deadline") and it["deadline"] >= TODAY.isoformat():
+            d0 = date.fromisoformat(it["deadline"])
+            ev.append(("dl-" + it["id"], d0, d0, "[마감] " + it["title"], it["url"]))
+    for e in (academic or {}).get("events", []):
+        if e["end"] >= TODAY.isoformat():
+            ev.append(("ac-" + e["start"] + "-" + hashlib.md5(e["title"].encode()).hexdigest()[:8],
+                       date.fromisoformat(e["start"]), date.fromisoformat(e["end"]), "[학사] " + e["title"], academic["source"]))
+    lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//jnu-moa//KO", "CALSCALE:GREGORIAN",
+             "X-WR-CALNAME:제주대 모아보기 마감·학사일정", "X-WR-TIMEZONE:Asia/Seoul", "REFRESH-INTERVAL;VALUE=DURATION:PT6H"]
+    for uid, a, b, title, url in ev:
+        lines += ["BEGIN:VEVENT", f"UID:{ics_text(uid)}@jnu-moa", f"DTSTAMP:{stamp}",
+                  f"DTSTART;VALUE=DATE:{a.strftime('%Y%m%d')}", f"DTEND;VALUE=DATE:{(b + timedelta(days=1)).strftime('%Y%m%d')}",
+                  f"SUMMARY:{ics_text(title)}", f"URL:{url}", f"DESCRIPTION:{ics_text('원문에서 꼭 확인하세요. ' + url)}"]
+        if uid.startswith("dl-"):
+            lines += ["BEGIN:VALARM", "ACTION:DISPLAY", "TRIGGER:-PT15H", f"DESCRIPTION:{ics_text(title)}", "END:VALARM"]
+        lines.append("END:VEVENT")
+    lines.append("END:VCALENDAR")
+    (out / "deadlines.ics").write_text("\r\n".join(lines) + "\r\n", encoding="utf-8")
+    (out / "index.json").write_text(json.dumps({"rss": made, "ics": "deadlines.ics"}, ensure_ascii=False) + "\n", encoding="utf-8")
+    print(f"  구독: RSS {len(made)}개, .ics 일정 {len(ev)}개")
+
+
 # ---------- 합치기 ----------
 
 def load_prev(name):
@@ -626,6 +707,12 @@ def main():
             (d / "academic.json").write_text(json.dumps(acad_out, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
         (d / "items.json").write_text(json.dumps(items_out, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
         (d / "meals.json").write_text(json.dumps(meals_out, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    try:
+        site_cfg = json.loads((OUT_DIRS[0] / "config.json").read_text(encoding="utf-8"))
+        write_feeds(uniq, acad_out or load_prev("academic.json"), site_cfg, deps)
+    except Exception as e:
+        failed.append("feeds")
+        print(f"  구독 파일 실패 {e}", file=sys.stderr)
     print(f"글 {len(uniq)}건, 요청 {f.count}번, 실패 {failed or '없음'}")
     return 1 if failed else 0
 

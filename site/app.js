@@ -420,11 +420,24 @@
     return lines.join("\r\n");
   }
 
+  // 구독 주소: 수집기가 data/feeds/ 에 만든다. 캘린더는 webcal:// 로 열면 휴대폰이 '구독'으로 받는다
+  function subLinks() {
+    const base = new URL("data/feeds/", location.href).href;
+    const cal = base.replace(/^https?:/, "webcal:") + "deadlines.ics";
+    const got = new Set(D.meta.dept_boards || []);
+    const mine = myBoards().find((b) => b.board && got.has(b.board));
+    const slug = mine ? "dept-" + mine.board.replace(/^https?:\/\/([^./]+).*/, "$1") : null;
+    return `<a href="${esc(cal)}">휴대폰 캘린더(마감·학사일정)</a> · <a href="${esc(base + "all.xml")}" target="_blank" rel="noopener">RSS 전체</a>`
+      + (slug ? ` · <a href="${esc(base + slug + ".xml")}" target="_blank" rel="noopener">RSS ${esc(mine.label)}</a>` : "")
+      + ` · <a href="${esc(base + "scholar.xml")}" target="_blank" rel="noopener">RSS 장학</a>`;
+  }
+
   function footer() {
     const at = (iso) => iso ? `${md(iso)} ${iso.slice(11, 16)}` : "아직 없음";
     const src = Object.values(D.meta.sources).map((s) => `${esc(s.name)} ${at(s.updated)}`).join(" · ");
     return `<footer class="foot">
       <span>제주대학교 공식 서비스가 아닙니다. 글 제목과 날짜만 모으고, 내용은 모두 원문 게시판 링크로 봅니다.</span>
+      <span class="sub-links">구독: ${subLinks()}</span>
       <span class="src">정보원별 갱신: ${src}</span>
       ${FEEDBACK_URL ? `<a class="feedback" href="${esc(FEEDBACK_URL)}" target="_blank" rel="noopener">의견 보내기</a>` : ""}
     </footer>`;

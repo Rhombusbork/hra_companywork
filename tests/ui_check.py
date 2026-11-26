@@ -171,6 +171,16 @@ def run_site(b, base, path, c, shots):
     c.ok(pg.evaluate("navigator.serviceWorker.getRegistration().then(r => !!r)"), f"{tag}: 서비스워커 등록")
     ctx.close()
 
+    # 7-3. 구독 링크 (캘린더·RSS) 가 있고 파일이 열린다
+    ctx, pg = page(PHONE)
+    pg.goto(url + "?dept=pharmacy-1"); pg.wait_for_timeout(1200)
+    hrefs = pg.eval_on_selector_all(".sub-links a", "as => as.map(a => a.href)")
+    c.ok(any(h.startswith("webcal:") for h in hrefs), f"{tag}: 캘린더 구독 링크")
+    for h in [h for h in hrefs if h.startswith("http")]:
+        c.ok(pg.evaluate(f"fetch({h!r}).then(r => r.ok)"), f"{tag}: 구독 파일 열림 {h.rsplit('/', 1)[-1]}")
+    c.ok(pg.evaluate("fetch('data/feeds/deadlines.ics').then(r => r.text()).then(t => t.startsWith('BEGIN:VCALENDAR'))"), f"{tag}: .ics 파일")
+    ctx.close()
+
     # 8. PC 화면
     ctx, pg = page(PC)
     pg.goto(url + "?dept=nursing-1"); pg.wait_for_timeout(1000)
