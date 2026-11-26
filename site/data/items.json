@@ -1,50 +1,54 @@
 {
  "_note": "collector/collect.py 가 만든 실제 수집 데이터. 제목·날짜·링크만 저장한다. 원문은 링크에서.",
- "generated_at": "2026-11-26T23:00:28+09:00",
+ "generated_at": "2026-11-26T23:07:10+09:00",
  "sources": {
   "jnu": {
    "name": "본부 공지사항",
-   "updated": "2026-11-26T23:00:28+09:00",
+   "updated": "2026-11-26T23:07:10+09:00",
    "ok": true,
    "count": 55
   },
   "dormitory": {
    "name": "학생생활관",
-   "updated": "2026-11-26T23:00:28+09:00",
+   "updated": "2026-11-26T23:07:10+09:00",
    "ok": true,
    "count": 34
   },
   "intl": {
    "name": "국제교류",
-   "updated": "2026-11-26T23:00:28+09:00",
+   "updated": "2026-11-26T23:07:10+09:00",
    "ok": true,
    "count": 33
   },
   "clip": {
    "name": "진로취업 clip",
-   "updated": "2026-11-26T23:00:28+09:00",
+   "updated": "2026-11-26T23:07:10+09:00",
    "ok": true,
    "count": 20
   },
   "dept": {
    "name": "학과 게시판",
-   "updated": "2026-11-26T23:00:28+09:00",
+   "updated": "2026-11-26T23:07:10+09:00",
    "ok": true,
    "count": 48
   },
   "jedaero": {
    "name": "제대로 산학1번지",
-   "updated": "2026-11-26T23:00:28+09:00",
+   "updated": "2026-11-26T23:07:10+09:00",
    "ok": true,
    "count": 8
   },
   "library": {
    "name": "중앙도서관",
-   "updated": "2026-11-26T23:00:28+09:00",
+   "updated": "2026-11-26T23:07:10+09:00",
    "ok": true,
    "count": 20
   }
  },
+ "dept_boards": [
+  "https://nursing.jejunu.ac.kr/nursing/degree/notice.htm",
+  "https://pharmacy.jejunu.ac.kr/pharmacy/community/notice.htm"
+ ],
  "items": [
   {
    "id": "jnu:283757",
@@ -2356,36 +2360,6 @@
    "attachments": [],
    "also_posted": [],
    "first_seen": "2026-11-06T09:00:00+09:00"
-  },
-  {
-   "id": "intl:282862",
-   "source": "intl",
-   "source_name": "국제교류",
-   "category": null,
-   "title": "학내 전기자전거 안전운행 협조 요청",
-   "url": "https://intl.jejunu.ac.kr/intl/community/notice2.htm?act=view&seq=282862",
-   "date": "2026-11-04",
-   "dept": "관리자",
-   "dept_board": null,
-   "deadline": null,
-   "deadline_src": null,
-   "attachments": [
-    {
-     "name": "슬라이드1.PNG",
-     "url": "https://intl.jejunu.ac.kr/intl/community/notice2.htm?act=download&seq=282862&no=1"
-    },
-    {
-     "name": "슬라이드2.PNG",
-     "url": "https://intl.jejunu.ac.kr/intl/community/notice2.htm?act=download&seq=282862&no=2"
-    },
-    {
-     "name": "슬라이드3.PNG",
-     "url": "https://intl.jejunu.ac.kr/intl/community/notice2.htm?act=download&seq=282862&no=3"
-    }
-   ],
-   "also_posted": [],
-   "first_seen": "2026-11-06T09:00:00+09:00",
-   "pinned": true
   },
   {
    "id": "dept:282860",
