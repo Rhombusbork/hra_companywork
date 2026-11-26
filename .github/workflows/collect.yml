@@ -1,14 +1,11 @@
 # 학교 게시판·학식을 모아 site/data 를 갱신하고 Pages 에 다시 올린다.
 # 하루 4번 (한국 07:17 · 12:17 · 17:17 · 22:17). cron 은 UTC 라서 9시간을 뺐다 (07 4-2절).
-# collector/ 를 고쳐 main 에 push 해도 한 번 돈다 (= Actions 러너에서 학교 사이트가 열리는지 시험).
+# push 로는 돌지 않는다 (11/26 밤 push 마다 돌려 2분 간격 실행이 생기자 학교 CMS 가 러너 연결을 끊음). 시험은 Actions 화면에서 수동 실행(workflow_dispatch).
 # 한 곳이라도 실패하면 데이터는 그대로 올리고 마지막에 실패로 끝난다 → 저장소 주인에게 GitHub 가 메일을 보낸다.
 name: collect
 on:
   schedule:
     - cron: "17 22,3,8,13 * * *"
-  push:
-    branches: [main]
-    paths: ["collector/**", "certs/**", ".github/workflows/collect.yml"]
   workflow_dispatch:
 permissions:
   contents: write
