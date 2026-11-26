@@ -342,6 +342,21 @@ def merge_dupes(items, dept_names):
     for it in items:
         if it["source"] != "dept":
             by_title.setdefault(norm_title(it["title"]), it)
+    # 본부 글과 전용 게시판(국제교류·생활관·clip·도서관) 글이 같으면 하나만 남긴다.
+    # 본부 분류가 '일반'이면 전용 게시판 쪽을, 장학·학사처럼 분류가 있으면 본부 쪽을 남긴다.
+    jnu = {norm_title(it["title"]): it for it in items if it["source"] == "jnu"}
+    drop = set()
+    for it in items:
+        if it["source"] in ("jnu", "dept"):
+            continue
+        j = jnu.get(norm_title(it["title"]))
+        if j:
+            drop.add(id(j) if (j.get("category") in (None, "일반")) else id(it))
+    items = [it for it in items if id(it) not in drop]
+    by_title = {}
+    for it in items:
+        if it["source"] != "dept":
+            by_title.setdefault(norm_title(it["title"]), it)
     out = []
     for it in items:
         if it["source"] == "dept":

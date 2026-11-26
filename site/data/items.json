@@ -1,46 +1,46 @@
 {
  "_note": "collector/collect.py 가 만든 실제 수집 데이터. 제목·날짜·링크만 저장한다. 원문은 링크에서.",
- "generated_at": "2026-11-26T22:12:19+09:00",
+ "generated_at": "2026-11-26T22:15:24+09:00",
  "sources": {
   "jnu": {
    "name": "본부 공지사항",
-   "updated": "2026-11-26T22:12:19+09:00",
+   "updated": "2026-11-26T22:15:24+09:00",
    "ok": true,
    "count": 55
   },
   "dormitory": {
    "name": "학생생활관",
-   "updated": "2026-11-26T22:12:19+09:00",
+   "updated": "2026-11-26T22:15:24+09:00",
    "ok": true,
    "count": 34
   },
   "intl": {
    "name": "국제교류",
-   "updated": "2026-11-26T22:12:19+09:00",
+   "updated": "2026-11-26T22:15:24+09:00",
    "ok": true,
    "count": 33
   },
   "clip": {
    "name": "진로취업 clip",
-   "updated": "2026-11-26T22:12:19+09:00",
+   "updated": "2026-11-26T22:15:24+09:00",
    "ok": true,
    "count": 20
   },
   "dept": {
    "name": "학과 게시판",
-   "updated": "2026-11-26T22:12:19+09:00",
+   "updated": "2026-11-26T22:15:24+09:00",
    "ok": true,
    "count": 48
   },
   "jedaero": {
    "name": "제대로 산학1번지",
-   "updated": "2026-11-26T22:12:19+09:00",
+   "updated": "2026-11-26T22:15:24+09:00",
    "ok": true,
    "count": 8
   },
   "library": {
    "name": "중앙도서관",
-   "updated": "2026-11-26T22:12:19+09:00",
+   "updated": "2026-11-26T22:15:24+09:00",
    "ok": true,
    "count": 20
   }
@@ -68,22 +68,6 @@
      "url": "https://www.jejunu.ac.kr/ara/noticesurvey/outEvent.htm?act=download&seq=283757&no=2"
     }
    ],
-   "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
-  },
-  {
-   "id": "jnu:283755",
-   "source": "jnu",
-   "source_name": "본부 공지사항",
-   "category": "일반",
-   "title": "2026 WIDE JOB FAIR #Location with JDC(Jeju Science Park) 진로‧취업박람회",
-   "url": "https://www.jejunu.ac.kr/ara/noticesurvey/outEvent.htm?act=view&seq=283755",
-   "date": "2026-11-26",
-   "dept": "대학일자리플러스센터",
-   "dept_board": null,
-   "deadline": null,
-   "deadline_src": null,
-   "attachments": [],
    "also_posted": [],
    "first_seen": "2026-11-26T22:10:55+09:00"
   },
@@ -674,35 +658,6 @@
    "first_seen": "2026-11-26T22:10:55+09:00"
   },
   {
-   "id": "jnu:283600",
-   "source": "jnu",
-   "source_name": "본부 공지사항",
-   "category": "일반",
-   "title": "2026학년도 남유타대학교(SUU) 동계 단기 교류수학 프로그램 추가 모집 안내",
-   "url": "https://www.jejunu.ac.kr/ara/noticesurvey/outEvent.htm?act=view&seq=283600",
-   "date": "2026-11-24",
-   "dept": "국제교류처",
-   "dept_board": null,
-   "deadline": null,
-   "deadline_src": null,
-   "attachments": [
-    {
-     "name": "(남유타대학교_추가 모집) 2026학년도 동계 단기 교류 수학 안내문.hwp",
-     "url": "https://www.jejunu.ac.kr/ara/noticesurvey/outEvent.htm?act=download&seq=283600&no=1"
-    },
-    {
-     "name": "남유타대학교 프로그램 안내자료.zip",
-     "url": "https://www.jejunu.ac.kr/ara/noticesurvey/outEvent.htm?act=download&seq=283600&no=2"
-    },
-    {
-     "name": "[서식] 2026학년도 동계 단기 교류수학 프로그램 지원서.hwp",
-     "url": "https://www.jejunu.ac.kr/ara/noticesurvey/outEvent.htm?act=download&seq=283600&no=3"
-    }
-   ],
-   "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
-  },
-  {
    "id": "dormitory:283607",
    "source": "dormitory",
    "source_name": "학생생활관",
@@ -894,27 +849,6 @@
    "deadline": null,
    "deadline_src": null,
    "attachments": [],
-   "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
-  },
-  {
-   "id": "jnu:283573",
-   "source": "jnu",
-   "source_name": "본부 공지사항",
-   "category": "일반",
-   "title": "2026년 언어교육원 11월 정기토익 대비 무료 특강 안내",
-   "url": "https://www.jejunu.ac.kr/ara/noticesurvey/outEvent.htm?act=view&seq=283573",
-   "date": "2026-11-23",
-   "dept": "국제교류과",
-   "dept_board": null,
-   "deadline": null,
-   "deadline_src": null,
-   "attachments": [
-    {
-     "name": "붙임2. 2026학년도 11월 정기토익 대비 무료 특강 홍보물.jpg",
-     "url": "https://www.jejunu.ac.kr/ara/noticesurvey/outEvent.htm?act=download&seq=283573&no=1"
-    }
-   ],
    "also_posted": [],
    "first_seen": "2026-11-26T22:10:55+09:00"
   },
@@ -1454,85 +1388,6 @@
    "first_seen": "2026-11-26T22:10:55+09:00"
   },
   {
-   "id": "jnu:283467",
-   "source": "jnu",
-   "source_name": "본부 공지사항",
-   "category": "일반",
-   "title": "2027학년도 제1학기 해외파견 교류수학생(10차 조기마감) 선발 안내",
-   "url": "https://www.jejunu.ac.kr/ara/noticesurvey/outEvent.htm?act=view&seq=283467",
-   "date": "2026-11-19",
-   "dept": "관리자",
-   "dept_board": null,
-   "deadline": null,
-   "deadline_src": null,
-   "attachments": [
-    {
-     "name": "[붙임1] 2027-1학기 해외파견 교류수학 프로그램 10차 선발 공고.pdf",
-     "url": "https://www.jejunu.ac.kr/ara/noticesurvey/outEvent.htm?act=download&seq=283467&no=1"
-    },
-    {
-     "name": "2027-1학기 교류수학 선발 대학 세부정보(10차 조기마감).xlsx",
-     "url": "https://www.jejunu.ac.kr/ara/noticesurvey/outEvent.htm?act=download&seq=283467&no=2"
-    },
-    {
-     "name": "[붙임3] (서식) 2027-1학기 해외파견 교류수학 프로그램 10차 지원서.hwp",
-     "url": "https://www.jejunu.ac.kr/ara/noticesurvey/outEvent.htm?act=download&seq=283467&no=3"
-    }
-   ],
-   "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
-  },
-  {
-   "id": "jnu:283458",
-   "source": "jnu",
-   "source_name": "본부 공지사항",
-   "category": "일반",
-   "title": "2026학년도 남유타대학교 동계 단기 교류수학 프로그램 선발 결과 안내",
-   "url": "https://www.jejunu.ac.kr/ara/noticesurvey/outEvent.htm?act=view&seq=283458",
-   "date": "2026-11-19",
-   "dept": "국제교류처",
-   "dept_board": null,
-   "deadline": null,
-   "deadline_src": null,
-   "attachments": [
-    {
-     "name": "(공지) 2026학년도 남유타대학교 단기 교류 지원 및 선발 명단.xlsx",
-     "url": "https://www.jejunu.ac.kr/ara/noticesurvey/outEvent.htm?act=download&seq=283458&no=1"
-    },
-    {
-     "name": "2026학년도 남유타대학교(SUU) 동계 단기 교류수학 프로그램 선발자 안내 사항.hwp",
-     "url": "https://www.jejunu.ac.kr/ara/noticesurvey/outEvent.htm?act=download&seq=283458&no=2"
-    }
-   ],
-   "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
-  },
-  {
-   "id": "jnu:283456",
-   "source": "jnu",
-   "source_name": "본부 공지사항",
-   "category": "일반",
-   "title": "2026학년도 동계 단기 해외 어학연수 프로그램 선발 결과 안내(2차 및 추가 선발)",
-   "url": "https://www.jejunu.ac.kr/ara/noticesurvey/outEvent.htm?act=view&seq=283456",
-   "date": "2026-11-19",
-   "dept": "국제교류처",
-   "dept_board": null,
-   "deadline": null,
-   "deadline_src": null,
-   "attachments": [
-    {
-     "name": "(2차 및 추가 선발) 2026학년도 동계 단기 해외 어학연수 프로그램 선발 결과.xlsx",
-     "url": "https://www.jejunu.ac.kr/ara/noticesurvey/outEvent.htm?act=download&seq=283456&no=1"
-    },
-    {
-     "name": "2026학년도 동계 단기 해외 어학연수 선발자 안내사항(2차 및 추가 선발).hwp",
-     "url": "https://www.jejunu.ac.kr/ara/noticesurvey/outEvent.htm?act=download&seq=283456&no=2"
-    }
-   ],
-   "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
-  },
-  {
    "id": "dormitory:283460",
    "source": "dormitory",
    "source_name": "학생생활관",
@@ -1731,51 +1586,6 @@
    "first_seen": "2026-11-26T22:10:55+09:00"
   },
   {
-   "id": "jnu:283440",
-   "source": "jnu",
-   "source_name": "본부 공지사항",
-   "category": "일반",
-   "title": "[BK21]2026 대학원생을 위한 연구윤리 교육: 신청기간('26.11.23.(월)~11.30.(월))",
-   "url": "https://www.jejunu.ac.kr/ara/noticesurvey/outEvent.htm?act=view&seq=283440",
-   "date": "2026-11-18",
-   "dept": "중앙도서관(교육연구지원팀)",
-   "dept_board": null,
-   "deadline": "2026-11-30",
-   "deadline_src": "title",
-   "attachments": [],
-   "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
-  },
-  {
-   "id": "jnu:283429",
-   "source": "jnu",
-   "source_name": "본부 공지사항",
-   "category": "일반",
-   "title": "2027학년도 제1학기 해외파견 교류수학생(9차) 선발 안내",
-   "url": "https://www.jejunu.ac.kr/ara/noticesurvey/outEvent.htm?act=view&seq=283429",
-   "date": "2026-11-18",
-   "dept": "국제교류과",
-   "dept_board": null,
-   "deadline": null,
-   "deadline_src": null,
-   "attachments": [
-    {
-     "name": "[붙임1] 2027-1학기 해외파견 교류수학 프로그램 9차 선발 공고.pdf",
-     "url": "https://www.jejunu.ac.kr/ara/noticesurvey/outEvent.htm?act=download&seq=283429&no=1"
-    },
-    {
-     "name": "2027-1학기 교류수학 선발 대학 세부정보(9차).xlsx",
-     "url": "https://www.jejunu.ac.kr/ara/noticesurvey/outEvent.htm?act=download&seq=283429&no=2"
-    },
-    {
-     "name": "[붙임3] (서식) 2027-1학기 해외파견 교류수학 프로그램 9차 지원서.hwp",
-     "url": "https://www.jejunu.ac.kr/ara/noticesurvey/outEvent.htm?act=download&seq=283429&no=3"
-    }
-   ],
-   "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
-  },
-  {
    "id": "jnu:283411",
    "source": "jnu",
    "source_name": "본부 공지사항",
@@ -1934,22 +1744,6 @@
      "url": "https://nursing.jejunu.ac.kr/nursing/degree/notice.htm?act=download&seq=283338&no=1"
     }
    ],
-   "also_posted": [],
-   "first_seen": "2026-11-26T22:10:55+09:00"
-  },
-  {
-   "id": "intl:283311",
-   "source": "intl",
-   "source_name": "국제교류",
-   "category": null,
-   "title": "『제6회 영리더스포럼,제주』 개최 안내",
-   "url": "https://intl.jejunu.ac.kr/intl/community/notice2.htm?act=view&seq=283311",
-   "date": "2026-11-16",
-   "dept": "관리자",
-   "dept_board": null,
-   "deadline": null,
-   "deadline_src": null,
-   "attachments": [],
    "also_posted": [],
    "first_seen": "2026-11-26T22:10:55+09:00"
   },

@@ -205,7 +205,7 @@
   }
 
   function sampleNote() {
-    return `<p class="sample-note">시안 v2예요 (상세 창·북마크 사이드바 추가). v1 은 따로 남겨 뒀어요. 글 제목은 11/21 수집 기록과 학과 조사에서 가져왔고, [예시] 글, 학사일정, 날짜·마감일 일부("AI 추정" 포함)는 화면 시험용으로 넣은 값이에요. 날짜 기준은 ${md(D.meta.generated_at)}입니다.</p>`;
+    return `<p class="sample-note">학교 공식 사이트가 아니에요. 학교 게시판의 제목·날짜·링크만 모아 보여 줘요. 내용과 마감은 원문에서 꼭 확인하세요.</p>`;
   }
 
   // ---------- 일정 (마감·학사일정·북마크) ----------
@@ -556,7 +556,9 @@
     if (!q || !q.trim()) return null;
     const s = q.trim();
     const pool = D.deps.filter((d) => !d.is_college_board);
-    const hit = pool.find((d) => d.id === s) || pool.find((d) => d.name === s) || pool.find((d) => d.name.includes(s));
+    const all = D.deps;
+    const hit = pool.find((d) => d.id === s) || pool.find((d) => d.name === s) || all.find((d) => d.id === s || d.name === s)
+      || pool.find((d) => d.name.includes(s)) || all.find((d) => d.name.includes(s));
     return hit ? hit.id : null;
   }
 
@@ -963,8 +965,8 @@
       }
       draft = JSON.parse(JSON.stringify(P));
       render();
-      // 실제 수집이 붙으면 켠다. 시안은 데이터가 고정이라 켜 두면 '새 글' 표시가 다시는 안 보인다.
-      // window.addEventListener("pagehide", markVisit);
+      // 다음에 올 때 '새 글' 표시를 위해 이번 데이터 시각을 기억한다.
+      window.addEventListener("pagehide", markVisit);
     })
     .catch((err) => { $app.innerHTML = `<p class="loading">데이터를 불러오지 못했어요 (${esc(err.message)}). 잠시 뒤 새로 고쳐 주세요.</p>`; });
 })();
