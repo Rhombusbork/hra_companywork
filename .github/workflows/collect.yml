@@ -12,6 +12,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
+  issues: write
 concurrency:
   group: collect
   cancel-in-progress: false
@@ -50,7 +51,26 @@ jobs:
     needs: [collect, deploy]
     if: always()
     runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_REPO: ${{ github.repository }}
+      RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      TITLE: "자동 수집 실패"
     steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      # 실패하면 이슈를 하나 열어 조원 모두가 보게 한다 (이미 열려 있으면 댓글만). 다시 성공하면 닫는다.
+      - name: 이슈 열기·닫기
+        run: |
+          open=$(gh issue list --state open --search "in:title $TITLE" --json number --jq '.[0].number' || true)
+          if [ "${{ needs.collect.outputs.status }}" != "0" ]; then
+            errs=$(python3 -c "import json;d=json.load(open('site/data/items.json'));print('\n'.join(f'- {k}: {v.get(\"error\")}' for k,v in d['sources'].items() if not v.get('ok')) or '- (공지 말고 학식·학사일정 쪽일 수 있음, 로그 확인)')")
+            body=$(printf '실패한 곳:\n%s\n\n실패한 곳은 이전 데이터를 그대로 보여 주고 있다. 로그: %s\n\n고치는 법은 README 의 "수집기 돌리기".' "$errs" "$RUN_URL")
+            if [ -n "$open" ]; then gh issue comment "$open" --body "$body"; else gh issue create --title "$TITLE" --body "$body"; fi
+          elif [ -n "$open" ]; then
+            gh issue close "$open" --comment "다시 정상으로 수집됨: $RUN_URL"
+          fi
       - name: 실패한 정보원이 있으면 실패로 끝냄
         run: |
           if [ "${{ needs.collect.outputs.status }}" != "0" ]; then
