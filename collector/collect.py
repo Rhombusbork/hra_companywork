@@ -485,6 +485,12 @@ def main():
         old = prev_items.get(it["id"])
         if old:
             it["first_seen"] = old.get("first_seen", it["first_seen"])
+        # 오래된 글을 처음 본 것(첫 수집, 학과 추가, 첫 페이지에 다시 올라온 고정 글)은 '새 글'이 아니다.
+        # 처음 본 시각은 게시일 + 2일을 넘지 않게 한다.
+        if it.get("date"):
+            cap = (date.fromisoformat(it["date"]) + timedelta(days=2)).isoformat() + "T09:00:00+09:00"
+            if it["first_seen"] > cap:
+                it["first_seen"] = cap
     # 마감일이 남은 글은 오래돼도 남긴다 (jedaero 는 접수 시작일이 날짜라서)
     keep_key = lambda it: max(it["date"] or "9999", it.get("deadline") or "")
     all_items = [it for it in all_items if it.get("pinned") or keep_key(it) >= cutoff]
