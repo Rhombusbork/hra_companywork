@@ -318,3 +318,18 @@ body.locked { overflow: hidden; }
 .drawer-nav { display: flex; flex-direction: column; gap: 4px; margin-top: 14px; border-top: 1px solid var(--line); padding-top: 12px; }
 .drawer-nav a { color: var(--accent); text-decoration: none; padding: 6px 0; }
 @media (max-width: 380px) { .top-btns .icon-btn { padding: 6px 10px; } }
+
+/* 학과 넣기 띠 · 갱신 멈춤 안내 · 의견 보내기 */
+.dept-banner {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+  border: 1px solid var(--accent); border-radius: 10px; padding: 10px 12px; margin-block: 0 12px;
+  background: var(--surface); font-size: 14px;
+}
+.dept-banner .btn { text-decoration: none; }
+.stale-note {
+  font-size: 13px; border-radius: 8px; padding: 8px 12px; margin-block: 4px 10px;
+  background: var(--surface-2); border-left: 3px solid var(--accent);
+}
+.foot .feedback { color: var(--accent); font-weight: 600; }
+a.btn { display: inline-block; text-decoration: none; }
+a.btn.link { text-decoration: underline; }
