@@ -1,0 +1,32 @@
+{
+  "_note": "수집할 곳. 학교 사이트는 robots.txt 가 전체 차단이라 첫 페이지만, 요청 사이 2~3초 (07 5절). 학과는 departments 에 id 를 넣으면 늘어난다 (07 8절 '학과 범위'는 아직 정하는 중).",
+  "boards": [
+    { "id": "jnu", "name": "본부 공지사항", "url": "https://www.jejunu.ac.kr/ara/noticesurvey/outEvent.htm?pageSize=50", "has_category": true },
+    { "id": "dormitory", "name": "학생생활관", "url": "https://dormitory.jejunu.ac.kr/dormitory/notice/notice.htm" },
+    { "id": "intl", "name": "국제교류", "url": "https://intl.jejunu.ac.kr/intl/community/notice2.htm" },
+    { "id": "clip", "name": "진로취업 clip", "url": "https://clip.jejunu.ac.kr/clip/community/notice.htm" }
+  ],
+  "jedaero": {
+    "name": "제대로 산학1번지",
+    "url": "https://jedaero.jejunu.ac.kr/Platform/prm/list/total.do",
+    "skip_types": ["공동연구", "컨설팅", "네트워킹"],
+    "pages": 3
+  },
+  "library": {
+    "name": "중앙도서관",
+    "url": "https://lib.jejunu.ac.kr/pyxis-api/1/bulletin-boards/1/bulletins?offset=0&max=20",
+    "link": "https://lib.jejunu.ac.kr/"
+  },
+  "departments": ["pharmacy", "nursing"],
+  "meals": [
+    { "id": "baekdu", "label": "백두관", "url": "https://www.jejunu.ac.kr/camp/stud/foodmenu/firstfixmenu.htm" },
+    { "id": "six", "label": "6호관", "url": "https://www.jejunu.ac.kr/camp/stud/foodmenu/fixfirst.htm",
+      "fallback": "http://ibjejunu.co.kr/default/02/01.php",
+      "stale_note": "학교 페이지가 아직 이번 주 식단이 아니에요. 업체 게시판에 이번 주 식단 이미지가 먼저 올라와요." },
+    { "id": "sara", "label": "사라캠퍼스", "url": "https://www.jejunu.ac.kr/camp/stud/foodmenu/secondfixmenu.htm" }
+  ],
+  "meals_link_only": {
+    "one": { "label": "1호관", "source": "https://chefskiss.co.kr/morning", "link_only": true,
+      "link_note": "아침(천원의 아침밥)은 업체 사이트, 점심·저녁은 업체 인스타그램에 올라와요." }
+  }
+}
