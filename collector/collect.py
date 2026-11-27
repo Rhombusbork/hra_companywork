@@ -355,6 +355,161 @@ def parse_meals(text, cfg, year):
     return days
 
 
+# ---------- 1호관 (쉐프스키스) ----------
+# 아침(천원의 아침밥): chefskiss.co.kr/morning 게시판의 주간 글. 본문에 일~금 표가 둘(일반식, 간편식).
+# 점심·저녁: 업체 홈페이지 첫 화면의 인스타그램 위젯이 최근 게시물 캡션을 HTML 에 넣어 준다.
+#   인스타그램을 직접 긁지는 않는다(약관·로그인). 업체가 자기 홈페이지에 올린 캡션 글만 읽고, 사진은 저장하지 않는다.
+#   캡션엔 대표 메뉴만 있어서 "인스타 글"로 표시하고 게시물 링크를 붙인다.
+# robots.txt: Allow / (Disallow 는 가입·장바구니뿐) [확인 11/27].
+# 업체 사이트가 해외·데이터센터 IP 를 막으면(403) 링크만 남기고, 수집 실패로 치지 않는다.
+CHEF_HOME = "https://chefskiss.co.kr/"
+CHEF_MORNING = "https://chefskiss.co.kr/morning"
+
+
+def _year_for(mo):
+    return TODAY.year + 1 if (TODAY.month == 12 and mo == 1) else TODAY.year - 1 if (TODAY.month == 1 and mo == 12) else TODAY.year
+
+
+def chef_morning_posts(text):
+    """목록에서 '11/22 - 11/27 식단표' 글들 → [(시작일, 글 주소)] 최신 순"""
+    soup = BeautifulSoup(text, "html.parser")
+    out, seen = [], set()
+    for a in soup.select("a[href*='bmode=view']"):
+        m = re.search(r"(\d{1,2})\s*/\s*(\d{1,2})\s*-\s*(\d{1,2})\s*/\s*(\d{1,2})", a.get_text(" ", strip=True))
+        idx = re.search(r"idx=(\d+)", a.get("href", ""))
+        if not m or not idx or idx[1] in seen:
+            continue
+        seen.add(idx[1])
+        try:
+            start = date(_year_for(int(m[1])), int(m[1]), int(m[2]))
+        except ValueError:
+            continue
+        out.append((start, urljoin(CHEF_MORNING, f"/morning/?bmode=view&idx={idx[1]}&t=board")))
+    return sorted(out, reverse=True)
+
+
+def parse_chef_morning(text, start):
+    """주간 글 본문 표 둘 → {날짜: [{meal, menu}]}. 첫 줄은 '일( 11/22)' '월( 23일)' … 처럼 요일이고, 열마다 하루씩."""
+    soup = BeautifulSoup(text, "html.parser")
+    days = {}
+    for t in soup.select("table"):
+        rows = t.find_all("tr")
+        if len(rows) < 2:
+            continue
+        heads = [td.get_text(" ", strip=True) for td in rows[0].find_all(["td", "th"])]
+        if not heads or not re.match(r"^[일월화수목금토]\s*\(", heads[0]):
+            continue
+        # 표 위에 붙은 제목으로 일반식/간편식을 가른다
+        title = ""
+        for prev in t.find_all_previous(string=True, limit=40):
+            s = prev.strip()
+            if "천원의 아침밥" in s:
+                title = s
+                break
+        name = "간편식(천원의 아침밥)" if "간편" in title else "조식(천원의 아침밥)"
+        for i, td in enumerate(rows[1].find_all(["td", "th"])):
+            menu = [p.get_text(" ", strip=True) for p in td.find_all("p")] or td.get_text("\n").split("\n")
+            menu = [m for m in (x.strip() for x in menu) if m]
+            if not menu or menu in (["휴무"], ["미운영"], ["-"]):
+                continue
+            key = (start + timedelta(days=i)).isoformat()
+            days.setdefault(key, []).append({"meal": name, "menu": menu})
+    for v in days.values():  # 일반식이 먼저
+        v.sort(key=lambda r: r["meal"].startswith("간편"))
+    return days
+
+
+MEAL_NAMES = {"조식": "조식", "중식": "중식", "석식": "석식", "아침": "조식", "점심": "중식", "저녁": "석식"}
+
+
+def clean_caption(s):
+    s = re.sub(r"[~♡♥☆★^*]+", " ", s)
+    s = re.sub(r"[\U0001F300-\U0001FAFF\u2600-\u27BF]", " ", s)  # 이모지
+    s = re.sub(r"\s+", " ", s).strip(" .!,")
+    return s
+
+
+def parse_chef_insta(text):
+    """홈페이지 인스타 위젯 → {날짜: [{meal, menu:[캡션 한 줄], note, url}]} (조식·중식·석식 글만)"""
+    soup = BeautifulSoup(text, "html.parser")
+    days = {}
+    for a in soup.select("a[href*='instagram.com/p/']"):
+        cap_el = a.select_one("p.title")
+        cap = cap_el.get_text("\n", strip=True) if cap_el else ""
+        m = re.search(r"(\d{1,2})\s*월\s*(\d{1,2})\s*일\s*(조식|중식|석식|아침|점심|저녁|이[번벤]트\s*메뉴|스페셜\s*메뉴)", cap)
+        if not m:
+            continue
+        try:
+            key = date(_year_for(int(m[1])), int(m[1]), int(m[2])).isoformat()
+        except ValueError:
+            continue
+        body = cap[m.end():]
+        body = re.sub(r"^\s*(메뉴\s*)?입니다\s*", "", body)
+        body = clean_caption(body)
+        # "…드시러오세요", "…을 준비했습니다" 같은 인사말은 덜어 낸다
+        body = re.sub(r"\s*\S*?(드시러\s*오세요|드시러오세요).*$", "", body)
+        body = re.sub(r"\s*(을|를)?\s*준비했습니다.*$", "", body)
+        body = re.sub(r"\s*(맛있게\s*드세요|많이\s*드세요|맛점하고\s*가세요|든든하게.*|기다릴게요|많\.?관\.?부|서둘러주세요).*$", "", body)
+        body = re.sub(r"^오늘은\s*", "", body).strip(" .!,")
+        if re.match(r"^\d+\s*인\s*한정", body):
+            body = ""
+        if not body:
+            continue
+        meal = MEAL_NAMES.get(m[3], "스페셜(한정)")
+        if meal == "스페셜(한정)":
+            body = re.sub(r"^\s*", "", cap[m.end():])
+            body = clean_caption(re.sub(r"입니다.*$", "", body, flags=re.S))
+            if not body:
+                continue
+        row = {"meal": meal, "menu": [body[:80]], "note": "인스타 글", "url": a.get("href")}
+        lst = days.setdefault(key, [])
+        if not any(r["meal"] == row["meal"] for r in lst):  # 같은 끼니 글이 여럿이면 최신(위) 것
+            lst.append(row)
+    order = {"조식": 0, "중식": 1, "스페셜(한정)": 2, "석식": 3}
+    for v in days.values():
+        v.sort(key=lambda r: order.get(r["meal"], 9))
+    return days
+
+
+def collect_chef(f, prev):
+    """1호관 아침 + 인스타 캡션. 막히면 이전 데이터를 쓰고 link_only 로 둔다."""
+    r = {"label": "1호관", "source": CHEF_HOME, "link_insta": "https://www.instagram.com/chefskiss_jnu/",
+         "link_note": "아침(천원의 아침밥)은 업체 사이트, 점심·저녁은 업체 인스타그램에 올라와요."}
+    days, got = {}, []
+    try:
+        posts = chef_morning_posts(f.get(CHEF_MORNING))
+        monday = TODAY - timedelta(days=TODAY.weekday())
+        # 이번 주(일요일 시작)와 다음 주 글까지
+        for start, url in posts[:2]:
+            if start >= monday - timedelta(days=8):
+                for k, v in parse_chef_morning(f.get(url), start).items():
+                    days.setdefault(k, []).extend(v)
+        got.append("아침")
+    except Exception as e:
+        print(f"  1호관 아침: 못 받음 {type(e).__name__}: {e}"[:160], file=sys.stderr)
+    try:
+        for k, v in parse_chef_insta(f.get(CHEF_HOME)).items():
+            days.setdefault(k, []).extend(v)
+        got.append("인스타")
+    except Exception as e:
+        print(f"  1호관 인스타: 못 받음 {type(e).__name__}: {e}"[:160], file=sys.stderr)
+    order = {"조식(천원의 아침밥)": 0, "간편식(천원의 아침밥)": 1, "조식": 2, "중식": 3, "스페셜(한정)": 4, "석식": 5}
+    for v in days.values():
+        v.sort(key=lambda x: order.get(x["meal"], 9))
+    if days:
+        r["days"] = dict(sorted(days.items()))
+        r["updated"] = NOW_S
+        r["got"] = got
+        print(f"  one: {len(days)}일 ({'·'.join(got)})")
+    else:
+        old = prev.get("one", {})
+        r["days"] = old.get("days", {}) if old.get("days") else {}
+        r["updated"] = old.get("updated")
+        r["link_only"] = not r["days"]
+        print("  one: 업체 사이트를 못 읽어 링크만 둠")
+    return r
+
+
 ACAD_URL = "https://www.jejunu.ac.kr/admission/eduguide/degree/academyschedule/academic.htm?year={y}"
 ACAD_RE = re.compile(r"^(\d{1,2})\.\s*(\d{1,2})\s*\([^)]*\)(?:\s*~\s*(\d{1,2})\.\s*(\d{1,2})\s*\([^)]*\))?$")
 
@@ -662,6 +817,8 @@ def main():
         rest[m["id"]] = r
     for k, v in cfg["meals_link_only"].items():
         rest[k] = dict(v, days={})
+    # 1호관: 업체 사이트에서 읽어 본다 (막히면 링크만)
+    rest["one"] = collect_chef(f, prev_meals["restaurants"])
     order = ["baekdu", "six", "one", "sara"]
     meals_out = {
         "_note": "collector/collect.py 가 학교 식단 페이지에서 만든 데이터.",

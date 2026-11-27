@@ -1,4 +1,5 @@
 // 화면 테두리: 머리(제목·북마크·검색·설정), 분류 탭, 바닥
+import { useEffect, useRef, useState } from "react";
 import { useApp } from "./ctx.js";
 import { md } from "../lib/util.js";
 import { Star, Search, Gear } from "./icons.jsx";
@@ -23,16 +24,42 @@ export function Header({ title }) {
   );
 }
 
+// 분류 탭. PC 에서는 옆으로 넘기기 어려워서: 좌우 화살표 버튼, 마우스 휠로 옆 이동, 끌어서 넘기기, 지금 탭은 늘 보이게.
 export function Catbar({ current }) {
   const { D, P } = useApp();
+  const ref = useRef(null);
+  const [edge, setEdge] = useState({ l: false, r: false });
   const tabs = [["home", "홈"], ["schedule", "일정"], ["c-dept", "내 학과"]];
   if (P.kwIn.length) tabs.push(["c-kw", "내 키워드"]);
   D.cfg.categories.forEach((c) => { if (P.cats.includes(c.id)) tabs.push(["c-" + c.id, c.label]); });
   tabs.push(["c-meal", "학식"]);
+  const measure = () => { const el = ref.current; if (!el) return; setEdge({ l: el.scrollLeft > 4, r: el.scrollLeft + el.clientWidth < el.scrollWidth - 4 }); };
+  useEffect(() => {
+    const el = ref.current; if (!el) return;
+    const cur = el.querySelector("[aria-current='page']");
+    if (cur) el.scrollLeft = Math.max(0, cur.offsetLeft - el.clientWidth / 2 + cur.offsetWidth / 2);
+    measure();
+    // 세로 휠을 옆 이동으로 (트랙패드 가로 스크롤은 그대로)
+    const wheel = (e) => { if (Math.abs(e.deltaY) > Math.abs(e.deltaX) && el.scrollWidth > el.clientWidth) { el.scrollLeft += e.deltaY; e.preventDefault(); } };
+    el.addEventListener("wheel", wheel, { passive: false });
+    const ro = new ResizeObserver(measure); ro.observe(el);
+    return () => { el.removeEventListener("wheel", wheel); ro.disconnect(); };
+  }, [current, tabs.length]);
+  // 마우스로 끌어서 넘기기 (끌었으면 클릭은 무시)
+  const drag = useRef(null);
+  const down = (e) => { if (e.pointerType !== "mouse") return; drag.current = { x: e.clientX, s: ref.current.scrollLeft, moved: false }; };
+  const move = (e) => { const d = drag.current; if (!d) return; const dx = e.clientX - d.x; if (Math.abs(dx) > 4) d.moved = true; if (d.moved) ref.current.scrollLeft = d.s - dx; };
+  const up = () => { setTimeout(() => { drag.current = null; }, 0); };
+  const click = (e) => { if (drag.current && drag.current.moved) { e.preventDefault(); e.stopPropagation(); } };
+  const by = (dir) => ref.current && ref.current.scrollBy({ left: dir * ref.current.clientWidth * 0.7, behavior: "smooth" });
   return (
-    <nav className="catbar" aria-label="분류">
-      {tabs.map(([h, l]) => <a key={h} className="chip" href={"#" + h} aria-current={h === current ? "page" : undefined}>{l}</a>)}
-    </nav>
+    <div className={"catbar-wrap" + (edge.l ? " can-l" : "") + (edge.r ? " can-r" : "")}>
+      <button className="cat-arrow l" aria-label="탭 왼쪽으로" tabIndex={-1} onClick={() => by(-1)} hidden={!edge.l}>‹</button>
+      <nav className="catbar" aria-label="분류" ref={ref} onScroll={measure} onPointerDown={down} onPointerMove={move} onPointerUp={up} onPointerLeave={up} onClickCapture={click}>
+        {tabs.map(([h, l]) => <a key={h} className="chip" href={"#" + h} aria-current={h === current ? "page" : undefined} draggable={false}>{l}</a>)}
+      </nav>
+      <button className="cat-arrow r" aria-label="탭 오른쪽으로" tabIndex={-1} onClick={() => by(1)} hidden={!edge.r}>›</button>
+    </div>
   );
 }
 

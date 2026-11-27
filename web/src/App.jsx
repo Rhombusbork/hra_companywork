@@ -1,12 +1,13 @@
 // 제주대 모아보기 (React 판). 서버·로그인 없음: data/*.json 을 받아 브라우저에서 거르고, 설정은 이 브라우저에만 둔다.
 import { useEffect, useMemo, useState, useCallback, useRef } from "react";
 import { Ctx } from "./components/ctx.js";
-import { makeLogic, quickPrefs, fitDepts, urlDept } from "./lib/logic.js";
-import { loadPrefs, savePrefs, clearPrefs, markVisit, upgrade } from "./lib/prefs.js";
+import { makeLogic, quickPrefs, fitDepts, urlDept, applyDefaults } from "./lib/logic.js";
+import { loadPrefs, savePrefs, clearPrefs, markVisit, upgrade, blankPrefs } from "./lib/prefs.js";
 import { clone } from "./lib/util.js";
 import { Home } from "./components/Home.jsx";
 import { Schedule, ListView, MealView, SearchView } from "./components/Views.jsx";
 import { DeptPick, SetupView } from "./components/Setup.jsx";
+import { Onboarding } from "./components/Onboarding.jsx";
 import { DetailSheet, BmDrawer } from "./components/Sheets.jsx";
 
 const route = () => (location.hash || "").replace(/^#/, "");
@@ -20,7 +21,7 @@ export default function App() {
   const [r, setR] = useState(route());
   const [sheet, setSheet] = useState(null);         // null | {type:"item", id} | {type:"bm"}
   const [sheetReturn, setSheetReturn] = useState(null);
-  const [ui, setUiState] = useState({ searchQ: "", deptQuery: "", deptQuery2: "", open2: false, selDay: null, calMonth: null });
+  const [ui, setUiState] = useState({ searchQ: "", deptQuery: "", deptQuery2: "", open2: false, selDay: null, calMonth: null, obStep: 0 });
   const setUi = useCallback((patch) => setUiState((u) => ({ ...u, ...patch })), []);
   const pRef = useRef(null);
   pRef.current = P;
@@ -32,11 +33,12 @@ export default function App() {
         const data = { cfg, deps, items: items.items, meals, academic, meta: items };
         let p = loadPrefs();
         p = p ? upgrade(p) : null;
-        // 처음 온 사람은 묻지 않고 바로 홈으로. 학과는 홈의 "학과 넣기"나 설정에서 넣는다
-        if (!p || !p.done) { p = quickPrefs(data); }
+        // 처음 온 사람은 세 단계(나 → 볼 것 → 홈 화면)를 묻는다. 다시 오면 저장된 값으로 바로 홈.
+        // ?dept= 링크로 온 사람은 묻지 않고 바로 홈 (학과가 정해져 있으니까)
         const qd = urlDept(data);
+        if (!p) p = qd ? quickPrefs(data) : applyDefaults(data, blankPrefs());
         if (qd) {
-          p.depts = [qd].concat(p.depts.filter((x) => x !== qd)); fitDepts(data, p);
+          p.depts = [qd].concat(p.depts.filter((x) => x !== qd)); fitDepts(data, p); p.done = true;
           try { history.replaceState(null, "", location.pathname + location.hash); } catch (e) {}
         }
         savePrefs(p);
@@ -86,15 +88,18 @@ export default function App() {
     hideSource: (src) => { setSheet(null); update((p) => { p.hidden = [...new Set(p.hidden.concat(src))]; }); },
     goDay: (d) => { setUi({ selDay: d, calMonth: d.slice(0, 7) }); if (route() !== "schedule") location.hash = "schedule"; },
     saveDept: () => { const p = clone(P); p.depts = draft.depts.slice(); fitDepts(D, p); savePrefs(p); setP(p); setDraft(clone(p)); go("home"); },
-    saveSetup: () => { const p = { ...clone(draft), done: true, home: P.home }; savePrefs(p); setP(p); go("home"); },
-    resetAll: () => { clearPrefs(); const p = quickPrefs(D); savePrefs(p); setP(p); setDraft(clone(p)); go("home"); },
+    saveSetup: () => { const p = { ...clone(draft), done: true, home: { ...P.home, hidden: (draft.home && draft.home.hidden) || P.home.hidden } }; savePrefs(p); setP(p); go("home"); },
+    resetAll: () => { clearPrefs(); const p = applyDefaults(D, blankPrefs()); setP(p); setDraft(clone(p)); setUi({ obStep: 0 }); go("home"); },
+    finishOnboarding: () => { const p = { ...clone(draft), done: true }; fitDepts(D, p); p.cats = draft.cats.slice(); savePrefs(p); setP(p); setDraft(clone(p)); go("home"); },
+    skipOnboarding: () => { const p = quickPrefs(D); p.depts = draft.depts.slice(); if (p.depts.length) fitDepts(D, p); savePrefs(p); setP(p); setDraft(clone(p)); go("home"); },
   };
 
   if (err) return <p className="loading">데이터를 불러오지 못했어요 ({err}). 잠시 뒤 새로 고쳐 주세요.</p>;
   if (!D || !P || !L) return <p className="loading">불러오는 중…</p>;
 
   let view;
-  if (r === "setup") view = <SetupView />;
+  if (!P.done) view = <Onboarding />;
+  else if (r === "setup") view = <SetupView />;
   else if (r === "dept") view = <DeptPick />;
   else if (r === "c-meal") view = <MealView />;
   else if (r === "schedule") view = <Schedule />;

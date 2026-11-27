@@ -14,7 +14,7 @@ const RGL = WidthProvider(Responsive);
 const strip = (ls) => Object.fromEntries(Object.entries(ls).map(([bp, l]) => [bp, l.map(({ i, x, y, w, h }) => ({ i, x, y, w, h }))]));
 
 // 칸마다 기본 색: 마감은 파랑, 이번 주 수는 연하늘, 나머지는 흰색
-const AUTO_TONE = { date: "clear", urgent: "blue", count: "sky" };
+const AUTO_TONE = { urgent: "blue", count: "sky" };
 
 export function Home() {
   const { D, P, L, update } = useApp();
@@ -43,7 +43,7 @@ export function Home() {
   const hide = (id) => { update((p) => { p.home = { ...p.home, hidden: [...new Set([...(p.home.hidden || []), id])] }; }); setMenu(null); };
   const unhide = (id) => update((p) => { p.home = { ...p.home, hidden: (p.home.hidden || []).filter((x) => x !== id) }; });
   const setLook = (id, k, v) => update((p) => { const look = { ...(p.home.look || {}) }; look[id] = { ...(look[id] || {}), [k]: v }; p.home = { ...p.home, look }; });
-  const reset = () => { update((p) => { p.home = { layouts: null, hidden: [], look: {} }; }); setMenu(null); };
+  const reset = () => { update((p) => { p.home = { layouts: null, hidden: ["count"], look: {} }; }); setMenu(null); };
 
   // 칸을 길게 누르면 편집 모드 (아이폰처럼)
   const press = useRef(null);
@@ -136,7 +136,8 @@ export function Home() {
                 )}
                 {editing && menu === w.id && (
                   <div className="tile-menu" role="dialog" aria-label={`${w.title} 꾸미기`}>
-                    <p className="tm-t">{w.title}</p>
+                    <p className="tm-t">{w.title}<small>{w.size}</small></p>
+                    {w.hint && <p className="tm-hint">{w.hint}</p>}
                     <div className="tm-row"><span>크기</span><div className="tm-opts">
                       {SIZES.filter((s) => !s.lgOnly || bp === "lg").filter((s) => s.w >= w.min.w && s.h >= w.min.h).map((s) => (
                         <button key={s.id} className={l.w === Math.min(s.w, COLS[bp]) && l.h === s.h ? "on" : ""} onClick={() => setSize(w.id, s)}>{s.label}</button>

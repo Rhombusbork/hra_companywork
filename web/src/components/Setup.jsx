@@ -5,6 +5,7 @@ import { Header, Back } from "./Chrome.jsx";
 import { deptMatch, clone } from "../lib/util.js";
 import { defaultsFor, recommendedBy, applyDefaults } from "../lib/logic.js";
 import { blankPrefs } from "../lib/prefs.js";
+import { CategoryCards, RestaurantCards, TileCards } from "./Cards.jsx";
 
 function DeptPicker({ which }) {
   const { D, draft, setDraft, ui, setUi } = useApp();
@@ -100,7 +101,7 @@ const Seg = ({ options, value, onPick }) => (
   <div className="seg" role="group">{options.map((o) => <button key={o} className={o === value ? "on" : ""} onClick={() => onPick(o)}>{o}</button>)}</div>
 );
 
-function Step1() {
+export function Step1() {
   const { D, draft, setDraft } = useApp();
   const main = draft.depts[0];
   const teachAuto = defaultsFor(D, draft).teachAuto;
@@ -119,43 +120,24 @@ function Step1() {
 }
 
 function Step2() {
-  const { D, draft, setDraft } = useApp();
-  const rec = recommendedBy(D, draft);
+  // 볼 것: 고르기 카드 (처음 설정과 같은 카드)
+  const { draft, setDraft } = useApp();
   const set = (fn) => setDraft((dr) => { const n = clone(dr); fn(n); return n; });
-  const toggle = (field, id, on) => set((n) => { n.touched = true; const s = new Set(n[field]); on ? s.add(id) : s.delete(id); n[field] = [...s]; });
-  const layer = (lv, title) => {
-    const cs = D.cfg.categories.filter((c) => c.layer === lv && (!c.dorm_only || draft.dorm));
-    if (!cs.length) return null;
-    return (
-      <div className="field"><div className="lbl">{title}</div>
-        {cs.map((c) => (
-          <label key={c.id} className="opt"><input type="checkbox" id={"cat-" + c.id} checked={draft.cats.includes(c.id)} onChange={(e) => toggle("cats", c.id, e.target.checked)} />
-            <span className="k">{c.label}{rec[c.id] && <span className="rec">{rec[c.id].join("·")} 추천</span>}<small>{c.desc}</small></span></label>
-        ))}
-      </div>
-    );
-  };
-  const why = [...new Set(draft.depts.map((id) => D.deps.find((d) => d.id === id)).filter(Boolean).map((d) => D.cfg.recommend[d.college]?.why).filter(Boolean))];
   return (
     <>
       <div className="field"><div className="lbl">내 학과 공지 <span className="req">항상 보여요</span></div>
         <div className="opt locked"><input type="checkbox" checked disabled readOnly /><span className="k">학과 게시판 글<small>졸업·학사, 졸업요건·자격, 근로·학과장학, 교직, 취업·채용, 실습·특강, 행사로 나눠 보여 드려요</small></span></div>
         <label className="opt"><input type="checkbox" id="gradin" checked={draft.gradInDept !== false} onChange={(e) => set((n) => { n.gradInDept = e.target.checked; })} /><span className="k">졸업요건·자격 글도 함께 보기<small>본부·진로취업에 올라온 토익·자격증·모의고사 글을 학과 칸의 '졸업요건·자격' 칩으로 모아요</small></span></label>
       </div>
-      {layer(1, "모두에게 필요한 것")}
-      {layer(2, "내 학과와 가까운 것")}
-      {why.length > 0 && <p className="hint" style={{ margin: "-4px 2px 12px" }}>{why.join(" / ")}</p>}
-      {layer(3, "그 밖")}
-      <div className="field"><div className="lbl">학식 식당</div>
-        {D.cfg.restaurants.map((r) => (
-          <label key={r.id} className="opt"><input type="checkbox" id={"rest-" + r.id} checked={draft.rest.includes(r.id)} onChange={(e) => toggle("rest", r.id, e.target.checked)} /><span className="k">{r.label}<small>{r.campus}캠퍼스</small></span></label>
-        ))}
-      </div>
+      <CategoryCards layer={1} title="모두에게 필요한 것" />
+      <CategoryCards layer={2} title="내 학과와 가까운 것" />
+      <CategoryCards layer={3} title="그 밖" />
+      <RestaurantCards />
     </>
   );
 }
 
-function Step3() {
+export function Step3() {
   const { D, draft, setDraft } = useApp();
   const set = (fn) => setDraft((dr) => { const n = clone(dr); fn(n); return n; });
   const chosen = [{ id: "dept", label: "내 학과 공지" }].concat(D.cfg.categories.filter((c) => draft.cats.includes(c.id)));
@@ -225,9 +207,11 @@ export function SetupView() {
             <div className="actions" style={{ marginTop: 8 }}><button className="btn" onClick={(e) => copyText(link, document.getElementById("link-out"), say("link"))}>내 학과 링크 복사</button><span className="hint">{msgs.link}</span></div>
           </div>
         )}
-        <h2>볼 것</h2><p className="lead">홈에 보일 분류예요. 칸의 자리·크기·색은 홈의 ‘홈 편집’에서 바꿔요.</p>
+        <h2>볼 것</h2><p className="lead">오른쪽 위 ✓ 로 넣고 빼요. 미리보기로 요즘 올라오는 글을 볼 수 있어요.</p>
         <Step2 />
-        <h2>표시할 것</h2><p className="lead">&nbsp;</p>
+        <h2>홈 화면</h2><p className="lead">끈 칸은 숨겨 두고, 홈의 ‘칸 추가’로 다시 꺼낼 수 있어요.</p>
+        <TileCards />
+        <h3 className="pick-h">표시</h3>
         <Step3 />
         <h2>키워드</h2><p className="lead">제목에 이 말이 있으면 따로 모으거나, 숨겨요.</p>
         <KwField field="kwIn" label="모아 볼 키워드" ph="예: 근로, 튜터링" />

@@ -12,7 +12,7 @@ export const px = (h) => h * ROW + (h - 1) * GAP;
 export const SIZES = [
   { id: "s", label: "작게", w: 1, h: 3 },
   { id: "m", label: "넓게", w: 2, h: 3 },
-  { id: "l", label: "크게", w: 2, h: 6 },
+  { id: "l", label: "크게", w: 2, h: 7 },
   { id: "xl", label: "길게", w: 2, h: 9 },
   { id: "full", label: "가로 가득", w: 4, h: 6, lgOnly: true },
 ];
@@ -31,20 +31,26 @@ export const SHAPES = [
 ];
 
 // 이 사람에게 지금 보여 줄 수 있는 칸들 (숨긴 칸 포함)
+// size: 추천 크기 (고르기 카드·편집 메뉴에 보임), hint: 크기를 바꾸면 무엇이 달라지는지
 export function catalog(D, P, L) {
   const w = [
-    { id: "date", title: "오늘 날짜", min: { w: 1, h: 2 }, def: { sm: [2, 3], lg: [4, 3] } },
-    { id: "urgent", title: "가장 먼저 마감", min: { w: 1, h: 3 }, def: { sm: [2, 5], lg: [2, 6] } },
-    { id: "count", title: "이번 주 마감 수", min: { w: 1, h: 2 }, def: { sm: [1, 3], lg: [1, 3] } },
+    { id: "cal", title: "오늘 · 달력", size: "추천 크게 2×7", desc: "왼쪽은 오늘 날짜·일정, 오른쪽은 이달 달력. 키우면 아래로 이번 주가 펼쳐져요",
+      hint: "넓게: 오늘 | 달력 · 크게: + 이번 주 7일 · 길게: + 이번 주 일정 목록. 작게(1칸) 하면 달력이 숨고 오늘만 남아요.", min: { w: 1, h: 3 }, def: { sm: [2, 7], lg: [4, 7] } },
+    { id: "urgent", title: "가장 먼저 마감", size: "추천 넓게 2×5", desc: "마감이 가장 가까운 글 하나를 크게",
+      hint: "작게 하면 D-숫자와 제목만 보여요.", min: { w: 1, h: 3 }, def: { sm: [2, 5], lg: [2, 7] } },
+    { id: "count", title: "이번 주 마감 수", size: "추천 작게 1×3", desc: "7일 안에 마감되는 글이 몇 건인지 숫자로",
+      hint: "작게 둘 때 가장 보기 좋아요.", min: { w: 1, h: 2 }, def: { sm: [1, 3], lg: [1, 3] } },
   ];
-  if (P.rest.length) w.push({ id: "meal", title: "오늘 학식", min: { w: 1, h: 2 }, def: { sm: [1, 3], lg: [1, 3] } });
-  w.push({ id: "next", title: "그다음 마감", min: { w: 1, h: 3 }, def: { sm: [2, 5], lg: [2, 3] } });
-  w.push({ id: "week", title: "이번 주", min: { w: 1, h: 3 }, def: { sm: [2, 4], lg: [4, 4] } });
-  if (P.depts.length) w.push({ id: "dept", title: "내 학과", min: { w: 1, h: 4 }, def: { sm: [2, 12], lg: [4, 12] } });
-  if (P.kwIn.length) w.push({ id: "kw", title: "내 키워드", min: { w: 1, h: 3 }, def: { sm: [2, 7], lg: [2, 7] } });
+  if (P.rest.length) w.push({ id: "meal", title: "오늘 학식", size: "추천 넓게 2×5", desc: "지금 시간에 맞는 끼니를 식당별로 (천원의 아침밥·1호관 인스타 메뉴 포함)",
+    hint: "키우면 식당이 더 많이 보이고, 작게 하면 첫 식당만 보여요.", min: { w: 1, h: 3 }, def: { sm: [2, 5], lg: [2, 5] } });
+  w.push({ id: "next", title: "그다음 마감", size: "추천 넓게 2×4", desc: "그다음으로 마감이 가까운 글들",
+    hint: "키울수록 줄이 늘어나요.", min: { w: 1, h: 3 }, def: { sm: [2, 4], lg: [2, 3] } });
+  if (P.depts.length) w.push({ id: "dept", title: "내 학과", size: "추천 길게 2×12", desc: "학과 게시판 글을 졸업·장학·취업 칩으로 나눠",
+    hint: "키울수록 글이 더 보여요.", min: { w: 1, h: 4 }, def: { sm: [2, 12], lg: [4, 12] } });
+  if (P.kwIn.length) w.push({ id: "kw", title: "내 키워드", size: "추천 넓게 2×7", desc: "고른 키워드가 제목에 든 글", min: { w: 1, h: 3 }, def: { sm: [2, 7], lg: [2, 7] } });
   for (const c of L.shownCats()) {
     const h = c.chips ? 8 : 7;
-    w.push({ id: "c-" + c.id, cat: c, title: c.label, min: { w: 1, h: 3 }, def: { sm: [2, h], lg: [2, h] } });
+    w.push({ id: "c-" + c.id, cat: c, title: c.label, size: `추천 넓게 2×${h}`, desc: c.desc, hint: "키울수록 글이 더 보여요.", min: { w: 1, h: 3 }, def: { sm: [2, h], lg: [2, h] } });
   }
   return w;
 }
@@ -67,23 +73,22 @@ export function defaultLayout(widgets, bp) {
   };
   const by = Object.fromEntries(widgets.map((x) => [x.id, x]));
   const sz = (id) => by[id].def[bp];
-  const order = ["date", "urgent", "next", "count", "meal", "week", "dept", "kw"];
+  const order = ["cal", "urgent", "next", "count", "meal", "dept", "kw"];
   if (bp === "lg") {
     // 날짜 / [마감 큰 칸 | 그다음 마감, 수·학식] / 이번 주 / 학과
-    if (by.date) place("date", ...sz("date"), 0);
+    if (by.cal) place("cal", ...sz("cal"), 0);
     if (by.urgent) place("urgent", ...sz("urgent"), 0);
     if (by.next) place("next", ...sz("next"), 2);
+    if (by.meal) place("meal", ...sz("meal"), 2);
     if (by.count) place("count", ...sz("count"), 2);
-    if (by.meal) place("meal", ...sz("meal"), 3);
     // 오른쪽이 비면 왼쪽 높이에 맞춘다
     const top = Math.max(...colY); for (let i = 0; i < cols; i++) colY[i] = top;
-    for (const id of ["week", "dept"]) if (by[id]) place(id, ...sz(id), 0);
+    for (const id of ["dept"]) if (by[id]) place(id, ...sz(id), 0);
     for (const x of widgets) if (!out.some((o) => o.i === x.id)) place(x.id, ...sz(x.id));
   } else {
     for (const id of order) {
       if (!by[id]) continue;
-      if (id === "count") place(id, ...sz(id), 0);
-      else if (id === "meal") place(id, ...sz(id), by.count ? 1 : 0);
+      if (id === "count" && sz(id)[0] === 1) place(id, ...sz(id), 0);
       else { const top = Math.max(...colY); for (let i = 0; i < cols; i++) colY[i] = top; place(id, ...sz(id), 0); }
     }
     for (const x of widgets) if (!out.some((o) => o.i === x.id)) { const top = Math.max(...colY); for (let i = 0; i < cols; i++) colY[i] = top; place(x.id, ...sz(x.id), 0); }
@@ -92,6 +97,14 @@ export function defaultLayout(widgets, bp) {
 }
 
 // 저장된 배치 + 새로 생긴 칸(맨 아래에) - 숨긴 칸
+// 옛 칸 이름 옮기기: '날짜'(date) → '오늘·달력'(cal), '이번 주'(week)는 달력 칸에 합쳐져 없어짐
+export function migrate(home) {
+  const fix = (arr) => (arr || []).filter((x) => x !== "week").map((x) => (x === "date" ? "cal" : x));
+  const layouts = home.layouts && Object.fromEntries(Object.entries(home.layouts).map(([bp, l]) => [bp, l.filter((x) => x.i !== "week").map((x) => (x.i === "date" ? { ...x, i: "cal", h: Math.max(x.h, 4) } : x))]));
+  const look = { ...(home.look || {}) }; if (look.date) { look.cal = look.date; delete look.date; } delete look.week;
+  return { ...home, layouts, hidden: fix(home.hidden), look };
+}
+
 export function mergedLayouts(widgets, saved, hidden) {
   const show = widgets.filter((w) => !hidden.includes(w.id));
   const res = {};

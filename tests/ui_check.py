@@ -61,16 +61,37 @@ def run_site(b, base, path, c, shots):
             pg.screenshot(path=f"{shots}/{tag}_{name}.png")
 
     url = base + path
-    # 1. 처음 온 사람: 바로 홈, 학과 넣기 띠, 마지막 갱신
+    # 0. 처음 온 사람: 세 단계 처음 설정 (나 → 볼 것 → 홈 화면). 끝내면 홈, 다시 오면 바로 홈
+    ctx0, p0 = page(PHONE)
+    p0.goto(url); p0.wait_for_timeout(1200)
+    c.ok(p0.locator(".onb").count() == 1, f"{tag}: 처음엔 처음 설정 화면")
+    p0.click("#dept-q-1"); p0.keyboard.type("약학"); p0.wait_for_timeout(300)
+    p0.locator("button.dept-opt").first.click(); p0.wait_for_timeout(300)
+    p0.click("[data-act=next]"); p0.wait_for_timeout(300)
+    c.ok(p0.locator(".pick-card").count() >= 6, f"{tag}: 볼 것 고르기 카드")
+    on0 = p0.locator("#cat-library").get_attribute("aria-checked")
+    p0.click("#cat-library"); p0.wait_for_timeout(200)
+    c.ok(p0.locator("#cat-library").get_attribute("aria-checked") != on0, f"{tag}: 카드 체크 바뀜")
+    p0.locator(".pc-prev").first.click(); p0.wait_for_timeout(200)
+    c.ok(p0.locator(".pc-list li").count() >= 1, f"{tag}: 카드 미리보기")
+    p0.click("[data-act=next]"); p0.wait_for_timeout(300)
+    c.ok(p0.locator("#tile-cal").count() == 1, f"{tag}: 홈 칸 고르기")
+    p0.click("[data-act=finish]"); p0.wait_for_timeout(800)
+    c.ok(p0.locator(".home-grid").count() == 1 and "약학과" in p0.inner_text("body"), f"{tag}: 처음 설정 끝 → 홈에 약학과")
+    p0.reload(); p0.wait_for_timeout(1200)
+    c.ok(p0.locator(".onb").count() == 0 and "약학과" in p0.inner_text("body"), f"{tag}: 다시 오면 저장된 설정으로 바로 홈")
+    ctx0.close()
+
+    # 1. 처음 온 사람이 건너뛰면: 홈, 학과 넣기 띠, 마지막 갱신
     ctx, pg = page(PHONE)
     pg.goto(url); pg.wait_for_timeout(1200)
+    pg.click("[data-act=skip]"); pg.wait_for_timeout(800)
     body = pg.inner_text("body")
     c.ok("마지막 갱신" in body, f"{tag}: 마지막 갱신 표시")
-    c.ok("학과 넣기" in body, f"{tag}: 처음엔 학과 넣기 띠")
+    c.ok("학과 넣기" in body, f"{tag}: 건너뛰면 학과 넣기 띠")
     c.ok("[예시]" not in body, f"{tag}: 홈에 [예시] 데이터 없음")
     c.ok(pg.locator(".item").count() > 3, f"{tag}: 홈에 글 목록")
     shot(pg, "1_home_phone")
-
     # 2. 학과 넣기 → 약학과 → 저장 → 홈에 내 학과
     pg.get_by_text("학과 넣기").first.click(); pg.wait_for_timeout(400)
     c.ok(pg.url.endswith("#dept"), f"{tag}: 학과 넣기 → #dept")

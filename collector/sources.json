@@ -30,8 +30,6 @@
       "stale_note": "학교 페이지가 아직 이번 주 식단이 아니에요. 업체 게시판에 이번 주 식단 이미지가 먼저 올라와요." },
     { "id": "sara", "label": "사라캠퍼스", "url": "https://www.jejunu.ac.kr/camp/stud/foodmenu/secondfixmenu.htm" }
   ],
-  "meals_link_only": {
-    "one": { "label": "1호관", "source": "https://chefskiss.co.kr/morning", "link_only": true,
-      "link_note": "아침(천원의 아침밥)은 업체 사이트, 점심·저녁은 업체 인스타그램에 올라와요." }
-  }
+  "meals_link_only": {},
+  "_meals_one": "1호관(쉐프스키스)은 collect.py 의 collect_chef 가 업체 사이트(천원의 아침밥 게시판, 첫 화면 인스타 위젯 캡션)에서 읽는다. 막히면 링크만"
 }

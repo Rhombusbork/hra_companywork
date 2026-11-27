@@ -119,7 +119,7 @@ export function MealView() {
         {ms.length ? ms.map(({ r, meals, state }) => (
           <section key={r.label} className="card meal-card">
             <div className="card-head"><h2>{r.label}</h2><a href={r.source} target="_blank" rel="noopener">원문</a></div>
-            {state === "menu" ? meals.map((m, i) => <div key={i} className="meal-row"><b>{m.meal}</b><span>{m.menu.join(", ")}{m.note && <> <small>({m.note})</small></>}</span></div>)
+            {state === "menu" ? meals.map((m, i) => <div key={i} className="meal-row"><b>{m.meal}</b><span>{m.menu.join(", ")}{m.note && <> <small>({m.note})</small></>}{m.url && <> <a className="meal-src" href={m.url} target="_blank" rel="noopener">인스타 원문 ↗</a></>}</span></div>)
               : state === "stale" ? <p className="empty">{r.stale_note} <a href={r.fallback} target="_blank" rel="noopener">업체 게시판 열기</a></p>
               : state === "link" ? <p className="empty">{r.link_note} <a href={r.source} target="_blank" rel="noopener">업체 사이트 열기</a></p>
               : <p className="empty">오늘은 식단이 없어요.</p>}

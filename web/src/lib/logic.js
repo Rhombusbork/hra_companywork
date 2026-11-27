@@ -3,6 +3,16 @@
 import { diffDays, has, addDays, weekday } from "./util.js";
 import { blankPrefs, lastVisit } from "./prefs.js";
 
+// 분류에 드는 글인지 (설정과 상관없이)
+export function inCatAny(cat, it) {
+  const m = cat.match;
+  if (it.source === "dept") return false;
+  if (m.source && m.source.includes(it.source)) return true;
+  if (m.source_category && it.source === "jnu" && m.source_category.includes(it.category)) return true;
+  if (m.keywords && has(it.title, m.keywords)) return true;
+  return false;
+}
+
 export function makeLogic(D, P) {
   const TODAY = D.meta.generated_at;
   const T = TODAY.slice(0, 10);

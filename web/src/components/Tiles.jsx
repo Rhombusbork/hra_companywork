@@ -2,25 +2,85 @@
 // 작게 하면 숫자·제목만, 키우면 글이 더 많이 보인다.
 import { useApp } from "./ctx.js";
 import { ItemRow, AcadRow } from "./ItemRow.jsx";
-import { WD, WD_EN, diffDays, mdw, dLabel, cleanTitle } from "../lib/util.js";
+import { WD, diffDays, mdw, dLabel, cleanTitle, weekday } from "../lib/util.js";
 
 const ROW_PX = 92;   // 글 한 줄 높이(제목 2줄 + 출처, 대략)
 
 function listLimit(hPx, overhead) { return Math.max(1, Math.floor((hPx - overhead) / ROW_PX)); }
 
-export function DateTile() {
-  const { L, P } = useApp();
-  const t = L.T, [, m, d] = t.split("-"), wd = new Date(t + "T12:00:00Z").getUTCDay();
+// 오늘·달력 칸 (옛 '날짜'와 '이번 주'를 합침). 아이폰 캘린더 위젯처럼 왼쪽은 오늘, 오른쪽은 이달 달력.
+// 칸을 키울수록 아래로 정보가 자세해진다: 달(한눈에) → 이번 주(하루씩) → 이번 주 일정 목록.
+//   작게(1×1)  : 요일·날짜·오늘 마감 수
+//   넓게(2×1~) : 왼쪽 오늘 + 일정 2개 | 오른쪽 이달 달력
+//   크게(높이 6줄~): + 이번 주 7일 줄
+//   길게(높이 9줄~): + 이번 주 일정 목록
+const KIND_LBL = { due: "마감", acad: "학사", bm: "북마크" };
+export function CalTile({ hPx }) {
+  const { L, goDay } = useApp();
+  const t = L.T, [y, m, d] = t.split("-").map(Number), wd = weekday(t);
+  const todayEv = L.eventsOn(t);
   const soon = L.soonList();
-  const todayN = soon.filter((it) => diffDays(it.deadline, L.TODAY) === 0).length;
-  const fresh = L.myItems().filter((it) => P.marks.newOn && L.isNew(it)).length;
+  const todayDue = soon.filter((it) => diffDays(it.deadline, L.TODAY) === 0).length;
+  // 이달 달력
+  const ym = t.slice(0, 7), lead = weekday(ym + "-01"), days = new Date(Date.UTC(y, m, 0)).getUTCDate();
+  const cells = [...Array(lead).fill(null), ...Array.from({ length: days }, (_, i) => `${ym}-${String(i + 1).padStart(2, "0")}`)];
+  const week = L.weekDays();
+  const weekEv = week.flatMap((day) => L.eventsOn(day).filter((e) => !L.isLong(e) || e.date === day).map((e) => ({ ...e, day })))
+    .filter((e, i, arr) => arr.findIndex((x) => x.title === e.title && x.kind === e.kind) === i);
+  const showWeek = hPx >= 340, showAgenda = hPx >= 440;
+  const agendaN = Math.max(0, Math.floor((hPx - 380) / 30));
   return (
-    <div className="t-date">
-      <div className="hero-row">
-        <h2 className="hero-date mono" aria-label={`${+m}월 ${+d}일 ${WD[wd]}요일`}>{m}.{d}</h2>
-        <div className="hero-side"><span className="mono">{WD_EN[wd]}</span><span>{WD[wd]}요일</span></div>
+    <div className="t-cal">
+      <div className="cal-top">
+        <div className="cal-today">
+          <span className="ct-wd">{WD[wd]}요일</span>
+          <button className="ct-day mono" onClick={() => goDay(t)} aria-label={`${m}월 ${d}일 일정 보기`}>{d}</button>
+          <span className="ct-sub">오늘 마감 <b>{todayDue}</b> · 이번 주 <b>{soon.length}</b></span>
+          <ul className="ct-ev">
+            {todayEv.length ? todayEv.slice(0, 2).map((e, i) => (
+              <li key={i} className={"k-" + e.kind}><b>{KIND_LBL[e.kind]}</b><span>{e.title.replace(/^\[예시\]\s*/, "")}</span></li>
+            )) : <li className="none"><span>오늘 일정 없음</span></li>}
+          </ul>
+        </div>
+        <div className="cal-month" aria-label={`${m}월 달력`}>
+          <span className="cm-title">{m}월</span>
+          <div className="cm-grid cm-wd">{WD.map((w, i) => <span key={w} className={i === 0 ? "sun" : i === 6 ? "sat" : ""}>{w}</span>)}</div>
+          <div className="cm-grid">
+            {cells.map((c, i) => {
+              if (!c) return <span key={"p" + i} />;
+              const k = L.dotKinds(L.eventsOn(c), c);
+              return (
+                <button key={c} className={"cm-d" + (c === t ? " today" : "") + (i % 7 === 0 ? " sun" : i % 7 === 6 ? " sat" : "")} onClick={() => goDay(c)} aria-label={`${mdw(c)} 일정 ${k.length ? "있음" : "없음"}`}>
+                  {+c.slice(8)}{k.length > 0 && <i className={"cm-dot " + k[0]} />}
+                </button>
+              );
+            })}
+          </div>
+        </div>
       </div>
-      <p className="hero-sum">오늘 마감 <b>{todayN}</b><i />이번 주 마감 <b>{soon.length}</b><i />새 글 <b>{fresh}</b></p>
+      {showWeek && (
+        <div className="cal-week">
+          <div className="b-head"><span className="b-k"><span className="mono">THIS WEEK</span> 이번 주</span><a href="#schedule">일정 ›</a></div>
+          <div className="wk">
+            {week.map((day) => {
+              const es = L.eventsOn(day);
+              return (
+                <button key={day} className={"wk-day" + (day === t ? " today" : "")} data-day={day} aria-label={`${mdw(day)} 일정 ${es.length}개`} onClick={() => goDay(day)}>
+                  <span className="wd">{WD[weekday(day)]}</span><span className="dn">{+day.slice(8)}</span>
+                  <span className="dots">{L.dotKinds(es, day).map((k) => k === "bm" ? <i key={k} className="dot bm">★</i> : <i key={k} className={"dot " + k} />)}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+      {showAgenda && agendaN > 0 && (
+        <ul className="cal-agenda">
+          {weekEv.slice(0, agendaN).map((e, i) => (
+            <li key={i} className={"k-" + e.kind}><span className="ca-d mono">{mdw(e.day)}</span><b>{KIND_LBL[e.kind]}</b><a href={e.url} target="_blank" rel="noopener">{e.title.replace(/^\[예시\]\s*/, "")}</a></li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
@@ -51,24 +111,47 @@ export function CountTile() {
   );
 }
 
-export function MealTile({ hPx }) {
+// 지금 시간에 맞는 끼니 (10시 전 조식, 14시 전 중식, 그 뒤 석식). 그 끼니가 없으면 가장 가까운 끼니
+const MEAL_ORDER = ["조식", "중식", "석식"];
+function seoulHour() {
+  try { return +new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Seoul", hour: "numeric", hourCycle: "h23" }).format(new Date()); } catch (e) { return new Date().getHours(); }
+}
+export function pickMeal(meals) {
+  const h = seoulHour();
+  const want = h < 10 ? 0 : h < 14 ? 1 : 2;
+  const kind = (m) => MEAL_ORDER.findIndex((k) => m.meal.startsWith(k) || m.meal.includes(k));
+  const scored = meals.map((m) => ({ m, k: kind(m) })).filter((x) => x.k >= 0);
+  const exact = scored.filter((x) => x.k === want);
+  if (exact.length) return exact.map((x) => x.m).sort((a, b) => /간편/.test(a.meal) - /간편/.test(b.meal));
+  const before = scored.filter((x) => x.k < want).sort((a, b) => b.k - a.k);
+  if (before.length) return [before[0].m];
+  return meals.slice(0, 1);
+}
+
+export function MealTile({ hPx, wCols }) {
   const { L } = useApp();
-  const ms = L.todayMeals();
-  const withMenu = ms.filter((x) => x.state === "menu");
-  if (!withMenu.length) return <a className="t-meal" href="#c-meal"><span className="b-k"><span className="mono">MENU</span> 오늘 학식</span><span className="b-title">식단 보기</span></a>;
-  const more = hPx > 220; // 키우면 식당별로 한 줄씩
-  const { r, meals } = withMenu[0];
+  const ms = L.todayMeals().filter((x) => x.state === "menu");
+  if (!ms.length) return <a className="t-meal" href="#c-meal"><span className="b-k"><span className="mono">MENU</span> 오늘 학식</span><span className="b-title">식단 보기</span></a>;
+  const rows = Math.max(1, Math.floor((hPx - 46) / 52));
+  // 메뉴 칸에 섞인 ★·※ 같은 기호만 있는 줄은 뺀다
+  const clean = (m) => ({ ...m, menu: m.menu.filter((x) => /[가-힣A-Za-z0-9]/.test(x)) });
+  const items = ms.flatMap(({ r, meals }) => pickMeal(meals).slice(0, 1).map((m) => ({ r, m: clean(m) }))).filter((x) => x.m.menu.length);
   return (
     <a className="t-meal" href="#c-meal">
       <span className="b-k"><span className="mono">MENU</span> 오늘 학식</span>
-      {more ? (
-        <ul className="meal-mini">{withMenu.map(({ r, meals }) => <li key={r.label}><small>{r.label} {meals[0].meal}</small><b>{meals[0].menu[0]}</b><span>{meals[0].menu.slice(1, 3).join(" · ")}</span></li>)}</ul>
-      ) : (
-        <>
-          <span className="b-dish">{meals[0].menu[0] || ""}</span>
-          <span className="b-foot"><span>{r.label} {meals[0].meal}</span><span>{withMenu.length > 1 ? "+" + (withMenu.length - 1) + "곳" : ""}</span></span>
-        </>
-      )}
+      <ul className="meal-mini">
+        {items.slice(0, rows).map(({ r, m }) => {
+          const cheap = /천원/.test(m.meal + " " + (m.note || ""));
+          const insta = m.note === "인스타 글";
+          return (
+            <li key={r.label}>
+              <small>{r.label} · {m.meal.replace(/\(천원의 아침밥\)/, "")}{cheap && <em className="mt-tag">천원</em>}{insta && <em className="mt-tag insta">인스타</em>}</small>
+              <b>{m.menu[0]}</b>
+              {m.menu.length > 1 && <span>{m.menu.slice(1, 4).join(" · ")}</span>}
+            </li>
+          );
+        })}
+      </ul>
     </a>
   );
 }
@@ -86,33 +169,6 @@ export function NextTile({ hPx }) {
         ))}</ol>
       ) : <p className="empty">이번 주는 여기까지예요.</p>}
     </div>
-  );
-}
-
-export function WeekTile() {
-  const { L, goDay } = useApp();
-  const days = L.weekDays();
-  const today = L.eventsOn(L.T);
-  const lbl = { due: "마감", acad: "학사", bm: "북마크" };
-  const line = today.length
-    ? today.slice(0, 2).map((e) => `${lbl[e.kind]} ${e.title.replace(/^\[예시\]\s*/, "")}`).join(" · ") + (today.length > 2 ? ` 외 ${today.length - 2}` : "")
-    : "오늘 마감·학사일정은 없어요";
-  return (
-    <section className="week">
-      <div className="b-head"><span className="b-k"><span className="mono">THIS WEEK</span> 이번 주</span><a href="#schedule">일정 ›</a></div>
-      <div className="wk">
-        {days.map((d) => {
-          const es = L.eventsOn(d);
-          return (
-            <button key={d} className={"wk-day" + (d === L.T ? " today" : "")} data-day={d} aria-label={`${mdw(d)} 일정 ${es.length}개`} onClick={() => goDay(d)}>
-              <span className="wd">{WD[new Date(d + "T12:00:00Z").getUTCDay()]}</span><span className="dn">{+d.slice(8)}</span>
-              <span className="dots">{L.dotKinds(es, d).map((k) => k === "bm" ? <i key={k} className="dot bm">★</i> : <i key={k} className={"dot " + k} />)}</span>
-            </button>
-          );
-        })}
-      </div>
-      <p className="wk-today"><b>오늘</b> {line}</p>
-    </section>
   );
 }
 
@@ -186,12 +242,11 @@ export function CatBlock({ cat, items, limit, catId, title, href, full }) {
 export function TileBody({ w, hPx, used }) {
   const { L, P } = useApp();
   switch (w.id) {
-    case "date": return <DateTile />;
+    case "cal": return <CalTile hPx={hPx} />;
     case "urgent": return <UrgentTile />;
     case "count": return <CountTile />;
     case "meal": return <MealTile hPx={hPx} />;
     case "next": return <NextTile hPx={hPx} />;
-    case "week": return <WeekTile />;
     case "dept": return <div className="t-list"><DeptBlock limit={listLimit(hPx, L.myBoards().length ? 150 : 90)} /></div>;
     case "kw": return <div className="t-list"><CatBlock items={L.kwItems(used)} limit={listLimit(hPx, 80)} catId="kw" title={"내 키워드 · " + P.kwIn.join(", ")} href="c-kw" /></div>;
     default:
