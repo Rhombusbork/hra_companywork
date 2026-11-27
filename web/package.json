@@ -1,0 +1,20 @@
+{
+  "name": "jnu-moa-web",
+  "private": true,
+  "version": "2.0.0",
+  "type": "module",
+  "description": "제주대 모아보기 화면 (React). npm run build 하면 ../site 에 index.html 과 assets/ 가 나온다",
+  "scripts": {
+    "dev": "vite",
+    "build": "node -e \"require('fs').rmSync('../site/assets',{recursive:true,force:true})\" && vite build"
+  },
+  "dependencies": {
+    "react": "19.2.9",
+    "react-dom": "19.2.9",
+    "react-grid-layout": "1.5.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "5.2.0",
+    "vite": "7.3.8"
+  }
+}

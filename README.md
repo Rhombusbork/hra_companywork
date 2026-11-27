@@ -51,6 +51,22 @@ python collector/collect.py --cache /tmp/c  # 받은 원본을 저장해 두고 
 - 한 곳이 실패하거나 0건이면 그곳은 이전 데이터를 쓰고, 끝날 때 실패로 끝난다(Actions 가 메일을 보냄). 원인은 `items.json` 의 `sources.<id>.error`.
 - 화면 보기: 저장소 맨 위에서 `python3 -m http.server` 후 `/site/`.
 
+## 화면 고치기 (React)
+
+화면 소스는 `web/` 에 있다 (React + [react-grid-layout](https://github.com/react-grid-layout/react-grid-layout)). `site/` 의 `index.html`·`assets/` 는 빌드 결과라 직접 고치지 않는다.
+
+```
+cd web
+npm install
+npm run dev     # 고치면서 보기 (site/data 를 그대로 씀)
+npm run build   # site/index.html 과 site/assets/ 를 다시 만든다 → 커밋
+```
+
+- 홈은 칸(위젯) 그리드다. 사용자가 '홈 편집'(또는 칸 길게 누르기)으로 칸을 옮기고·크기를 바꾸고·숨기고·색과 모양을 고른다. 배치는 그 사람 브라우저(localStorage `jnu-moa-prefs-v1` 의 `home`)에만 저장된다.
+- 칸 목록과 기본 배치: `web/src/lib/layout.js`. 칸 내용: `web/src/components/Tiles.jsx`. 글을 고르는 규칙: `web/src/lib/logic.js`.
+- 칸 만드는 방법은 `.claude/skills/creating-dashboards` 스킬(ancoleman/ai-design-components, MIT)을 따랐다.
+- 고친 뒤 `python tests/ui_check.py` 로 화면 시험.
+
 ## 다음 할 일
 
 [11_남은_작업_계획.md](제주_웹서비스_MVP/11_남은_작업_계획.md) 의 "사용자(사람)가 해야 하는 것".
