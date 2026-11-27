@@ -15,6 +15,7 @@ export function blankPrefs() {
   return {
     v: 1, depts: [], level: "학부", campus: "아라", dorm: false, teach: false, cats: [], rest: [],
     marks: { newOn: true, dueOn: true, off: [] }, kwIn: [], kwOut: [], hidden: [], bm: {}, gradInDept: true, chips: {},
+    mealFav: null,   // 자주 가는 학식 식당 (홈 학식 칸에 뜸)
     // 홈 화면 꾸미기: 칸 배치(화면 폭별), 숨긴 칸, 칸 색·모양
     home: { layouts: null, hidden: ["count"], look: {} },  // 이번 주 마감 수는 오늘·달력 칸에도 있어서 처음엔 숨김
     touched: false, done: false,

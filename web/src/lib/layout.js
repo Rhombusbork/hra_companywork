@@ -41,8 +41,8 @@ export function catalog(D, P, L) {
     { id: "count", title: "이번 주 마감 수", size: "추천 작게 1×3", desc: "7일 안에 마감되는 글이 몇 건인지 숫자로",
       hint: "작게 둘 때 가장 보기 좋아요.", min: { w: 1, h: 2 }, def: { sm: [1, 3], lg: [1, 3] } },
   ];
-  if (P.rest.length) w.push({ id: "meal", title: "오늘 학식", size: "추천 넓게 2×5", desc: "지금 시간에 맞는 끼니를 식당별로 (천원의 아침밥·1호관 인스타 메뉴 포함)",
-    hint: "키우면 식당이 더 많이 보이고, 작게 하면 첫 식당만 보여요.", min: { w: 1, h: 3 }, def: { sm: [2, 5], lg: [2, 5] } });
+  if (P.rest.length) w.push({ id: "meal", title: "오늘 학식", size: "추천 넓게 2×5", desc: "자주 가는 식당의 지금 끼니 (10시 전 아침 · 15시 전 점심 · 15시부터 저녁). 끼니 탭으로 넘겨 봐요",
+    hint: "넓게 5줄 이상이면 반찬까지, 그보다 작으면 대표 메뉴만 보여요.", min: { w: 1, h: 3 }, def: { sm: [2, 5], lg: [2, 5] } });
   w.push({ id: "next", title: "그다음 마감", size: "추천 넓게 2×4", desc: "그다음으로 마감이 가까운 글들",
     hint: "키울수록 줄이 늘어나요.", min: { w: 1, h: 3 }, def: { sm: [2, 4], lg: [2, 3] } });
   if (P.depts.length) w.push({ id: "dept", title: "내 학과", size: "추천 길게 2×12", desc: "학과 게시판 글을 졸업·장학·취업 칩으로 나눠",

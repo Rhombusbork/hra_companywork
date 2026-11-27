@@ -15,7 +15,7 @@ function freq(n) {
   return `2주에 ${n}건`;
 }
 
-export function PickCard({ on, onToggle, title, sub, desc, badge, preview, id }) {
+export function PickCard({ on, onToggle, title, sub, desc, badge, preview, id, extra }) {
   const [open, setOpen] = useState(false);
   return (
     <div className={"pick-card" + (on ? " on" : "")}>
@@ -30,6 +30,7 @@ export function PickCard({ on, onToggle, title, sub, desc, badge, preview, id })
         </button>
       </div>
       {desc && <p className="pc-desc">{desc}</p>}
+      {extra}
       {preview && preview.length > 0 && (
         <>
           <button className="pc-prev" aria-expanded={open} onClick={() => setOpen((v) => !v)}>미리보기 <span aria-hidden="true">{open ? "↑" : "→"}</span></button>
@@ -73,15 +74,24 @@ export function RestaurantCards() {
   const { D, draft, setDraft } = useApp();
   const T = D.meta.generated_at.slice(0, 10);
   const toggle = (id) => setDraft((dr) => { const s = new Set(dr.rest); s.has(id) ? s.delete(id) : s.add(id); return { ...dr, rest: [...s], touched: true }; });
+  const on = D.cfg.restaurants.filter((r) => draft.rest.includes(r.id)).map((r) => r.id);
+  const fav = on.includes(draft.mealFav) ? draft.mealFav : on[0];
   return (
     <section className="pick-sec">
       <h3 className="pick-h">학식 식당</h3>
+      <p className="hint pick-hint">자주 가는 곳 하나를 고르면 홈의 ‘오늘 학식’ 칸에 그 식당이 떠요. 칸에서도 바로 바꿀 수 있어요.</p>
       <div className="pick-grid">
         {D.cfg.restaurants.map((r) => {
           const m = D.meals.restaurants[r.id];
           const today = m && m.days && m.days[T];
           const desc = today && today.length ? `오늘 ${today.map((x) => x.menu[0]).slice(0, 2).join(" · ")}` : r.id === "one" ? "천원의 아침밥 + 점심·저녁(업체 인스타 글)" : "오늘 식단 없음";
-          return <PickCard key={r.id} id={"rest-" + r.id} on={draft.rest.includes(r.id)} onToggle={() => toggle(r.id)} title={r.label} sub={r.campus + "캠퍼스"} desc={desc} />;
+          const isOn = draft.rest.includes(r.id);
+          const extra = isOn ? (
+            <button className={"fav-btn" + (fav === r.id ? " on" : "")} id={"fav-" + r.id} aria-pressed={fav === r.id} onClick={() => setDraft((dr) => ({ ...dr, mealFav: r.id }))}>
+              {fav === r.id ? "★ 자주 가는 곳" : "☆ 자주 가는 곳으로"}
+            </button>
+          ) : null;
+          return <PickCard key={r.id} id={"rest-" + r.id} on={isOn} onToggle={() => toggle(r.id)} title={r.label} sub={r.campus + "캠퍼스"} desc={desc} extra={extra} />;
         })}
       </div>
     </section>

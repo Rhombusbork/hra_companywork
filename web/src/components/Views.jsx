@@ -3,6 +3,7 @@ import { useApp } from "./ctx.js";
 import { Header, Catbar, Footer, Back } from "./Chrome.jsx";
 import { ItemRow, AcadRow } from "./ItemRow.jsx";
 import { DeptBlock, CatBlock } from "./Tiles.jsx";
+import { MealPage } from "./Meal.jsx";
 import { WD, md, mdw } from "../lib/util.js";
 
 const KIND = { due: "마감", acad: "학사", bm: "북마크" };
@@ -110,22 +111,12 @@ export function ListView({ id }) {
 
 export function MealView() {
   const { L } = useApp();
-  const ms = L.todayMeals();
   return (
     <>
       <Header /><Catbar current="c-meal" />
-      <Back><h2>오늘 학식 · {mdw(L.T)}</h2></Back>
-      <div className="stack">
-        {ms.length ? ms.map(({ r, meals, state }) => (
-          <section key={r.label} className="card meal-card">
-            <div className="card-head"><h2>{r.label}</h2><a href={r.source} target="_blank" rel="noopener">원문</a></div>
-            {state === "menu" ? meals.map((m, i) => <div key={i} className="meal-row"><b>{m.meal}</b><span>{m.menu.join(", ")}{m.note && <> <small>({m.note})</small></>}{m.url && <> <a className="meal-src" href={m.url} target="_blank" rel="noopener">인스타 원문 ↗</a></>}</span></div>)
-              : state === "stale" ? <p className="empty">{r.stale_note} <a href={r.fallback} target="_blank" rel="noopener">업체 게시판 열기</a></p>
-              : state === "link" ? <p className="empty">{r.link_note} <a href={r.source} target="_blank" rel="noopener">업체 사이트 열기</a></p>
-              : <p className="empty">오늘은 식단이 없어요.</p>}
-          </section>
-        )) : <p className="empty">설정에서 식당을 골라 주세요.</p>}
-      </div>
+      <Back><h2>학식 · {mdw(L.T)}</h2></Back>
+      <MealPage />
+      <p className="hint" style={{ margin: "12px 4px 0" }}>식당을 누르면 홈의 ‘오늘 학식’ 칸에도 그 식당이 떠요. 끼니는 시간에 맞춰 열려요 (10시 전 아침 · 15시 전 점심 · 15시부터 저녁).</p>
       <Footer />
     </>
   );

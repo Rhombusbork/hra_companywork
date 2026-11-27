@@ -2,6 +2,7 @@
 // 작게 하면 숫자·제목만, 키우면 글이 더 많이 보인다.
 import { useApp } from "./ctx.js";
 import { ItemRow, AcadRow } from "./ItemRow.jsx";
+import { MealBoard } from "./Meal.jsx";
 import { WD, diffDays, mdw, dLabel, cleanTitle, weekday } from "../lib/util.js";
 import { recommendedBy } from "../lib/logic.js";
 
@@ -112,48 +113,13 @@ export function CountTile() {
   );
 }
 
-// 지금 시간에 맞는 끼니 (10시 전 조식, 14시 전 중식, 그 뒤 석식). 그 끼니가 없으면 가장 가까운 끼니
-const MEAL_ORDER = ["조식", "중식", "석식"];
-function seoulHour() {
-  try { return +new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Seoul", hour: "numeric", hourCycle: "h23" }).format(new Date()); } catch (e) { return new Date().getHours(); }
-}
-export function pickMeal(meals) {
-  const h = seoulHour();
-  const want = h < 10 ? 0 : h < 14 ? 1 : 2;
-  const kind = (m) => MEAL_ORDER.findIndex((k) => m.meal.startsWith(k) || m.meal.includes(k));
-  const scored = meals.map((m) => ({ m, k: kind(m) })).filter((x) => x.k >= 0);
-  const exact = scored.filter((x) => x.k === want);
-  if (exact.length) return exact.map((x) => x.m).sort((a, b) => /간편/.test(a.meal) - /간편/.test(b.meal));
-  const before = scored.filter((x) => x.k < want).sort((a, b) => b.k - a.k);
-  if (before.length) return [before[0].m];
-  return meals.slice(0, 1);
-}
-
-export function MealTile({ hPx, wCols }) {
-  const { L } = useApp();
-  const ms = L.todayMeals().filter((x) => x.state === "menu");
-  if (!ms.length) return <a className="t-meal" href="#c-meal"><span className="b-k"><span className="mono">MENU</span> 오늘 학식</span><span className="b-title">식단 보기</span></a>;
-  const rows = Math.max(1, Math.floor((hPx - 46) / 52));
-  // 메뉴 칸에 섞인 ★·※ 같은 기호만 있는 줄은 뺀다
-  const clean = (m) => ({ ...m, menu: m.menu.filter((x) => /[가-힣A-Za-z0-9]/.test(x)) });
-  const items = ms.flatMap(({ r, meals }) => pickMeal(meals).slice(0, 1).map((m) => ({ r, m: clean(m) }))).filter((x) => x.m.menu.length);
+// 오늘 학식: 자주 가는 식당 하나를 골라 두고, 지금 시간 끼니를 탭으로 (10시 전 아침 · 15시 전 점심 · 15시부터 저녁)
+export function MealTile({ hPx }) {
   return (
-    <a className="t-meal" href="#c-meal">
-      <span className="b-k"><span className="mono">MENU</span> 오늘 학식</span>
-      <ul className="meal-mini">
-        {items.slice(0, rows).map(({ r, m }) => {
-          const cheap = /천원/.test(m.meal + " " + (m.note || ""));
-          const insta = m.note === "인스타 글";
-          return (
-            <li key={r.label}>
-              <small>{r.label} · {m.meal.replace(/\(천원의 아침밥\)/, "")}{cheap && <em className="mt-tag">천원</em>}{insta && <em className="mt-tag insta">인스타</em>}</small>
-              <b>{m.menu[0]}</b>
-              {m.menu.length > 1 && <span>{m.menu.slice(1, 4).join(" · ")}</span>}
-            </li>
-          );
-        })}
-      </ul>
-    </a>
+    <div className="t-meal">
+      <div className="b-head"><span className="b-k"><span className="mono">MENU</span> 오늘 학식</span><a href="#c-meal">전체 ›</a></div>
+      <MealBoard compact hPx={hPx} />
+    </div>
   );
 }
 

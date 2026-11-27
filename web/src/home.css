@@ -323,3 +323,53 @@
 .meal-src { font-size: 12px; font-weight: 700; color: var(--accent); text-decoration: none; white-space: nowrap; }
 .tm-t small { margin-left: 8px; font-size: 12px; font-weight: 700; color: var(--accent); }
 .tm-hint { margin: -6px 0 0; font-size: 12.5px; line-height: 1.5; color: var(--muted); }
+
+/* =========================================================
+   학식 판 (학교 '오늘의 식단' 창처럼): 식당 → 끼니 탭 → 메뉴 상자
+   ========================================================= */
+.t-meal { display: flex; flex-direction: column; gap: var(--s2); height: 100%; min-height: 0; }
+.mealb { display: flex; flex-direction: column; gap: var(--s3); min-height: 0; }
+.mealb.compact { gap: var(--s2); flex: 1; }
+.mb-select select {
+  appearance: none; -webkit-appearance: none; border: 1.5px solid var(--line-2); background: var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%235a6474' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 12px center / 11px 8px;
+  border-radius: 10px; height: 36px; padding: 0 34px 0 12px; font: inherit; font-size: 14.5px; font-weight: 700; color: var(--fg); cursor: pointer; max-width: 100%;
+}
+.mb-select select:focus { outline: none; border-color: var(--accent); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.mb-seg { flex-wrap: wrap; }
+.mb-tabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; flex: none; }
+.mb-tabs::-webkit-scrollbar { display: none; }
+.mb-tabs button {
+  flex: 1 0 auto; min-width: 64px; border: 0; border-radius: 10px; height: 38px; padding: 0 12px; cursor: pointer;
+  background: var(--surface-2); color: var(--muted); font: inherit; font-size: 14px; font-weight: 700;
+}
+.mb-tabs button.on { background: var(--fill); color: #fff; }
+.compact .mb-tabs button { height: 32px; font-size: 13px; min-width: 52px; }
+.mb-box { background: var(--sky-soft); border-radius: 12px; padding: var(--s3) var(--s4); display: flex; flex-direction: column; gap: 6px; min-height: 0; overflow: hidden; }
+.mb-main { font-size: 18px; font-weight: 800; letter-spacing: -0.03em; color: var(--ink); line-height: 1.3; }
+.compact .mb-main { font-size: 16px; }
+.mb-rest-list { margin: 0; font-size: 14px; line-height: 1.6; color: var(--fg-2); }
+.compact .mb-rest-list { font-size: 13px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.mb-tags { margin: 2px 0 0; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.mb-tags .mt-tag { margin-left: 0; }
+.mb-note { font-size: 12px; color: var(--muted); }
+.mb-empty { margin: 0; padding: var(--s2) 0; }
+.tone-blue .mb-box, .tone-navy .mb-box { background: rgba(255, 255, 255, .14); }
+.tone-blue .mb-main, .tone-navy .mb-main { color: #fff; }
+.tone-blue .mb-tabs button.on, .tone-navy .mb-tabs button.on { background: #fff; color: var(--fill); }
+@container (max-width: 240px) { .t-meal .b-head a { display: none; } .mb-select select { width: 100%; } }
+
+/* 학식 화면 */
+.meal-page { padding: var(--s5); }
+.mp-date { display: flex; align-items: center; gap: var(--s2); padding-bottom: var(--s4); margin-bottom: var(--s4); border-bottom: 1.5px dashed var(--line-2); flex-wrap: wrap; }
+.mp-ym { font-size: 14px; color: var(--accent); font-weight: 600; margin-right: 4px; }
+.mp-nav { width: 32px; height: 32px; border-radius: 8px; border: 0; background: var(--fill); color: #fff; font-size: 18px; cursor: pointer; display: grid; place-items: center; }
+.mp-nav:disabled { opacity: .3; cursor: default; }
+.mp-d { font-family: var(--mono); font-size: 30px; font-weight: 600; color: var(--ink); letter-spacing: -0.04em; min-width: 2.4em; text-align: center; }
+.mp-d small { font-family: var(--font); font-size: 14px; font-weight: 600; color: var(--muted); margin-left: 2px; letter-spacing: 0; }
+.mp-src { margin-left: auto; font-size: 13px; font-weight: 700; color: var(--accent); text-decoration: none; }
+
+/* 식당 카드: 자주 가는 곳 */
+.fav-btn { align-self: flex-start; border: 1.5px solid var(--line-2); background: var(--surface); border-radius: 999px; padding: 5px 12px; font: inherit; font-size: 13px; font-weight: 700; color: var(--muted); cursor: pointer; }
+.fav-btn.on { border-color: var(--star); color: var(--star); background: transparent; }
+.pick-hint { margin: -6px 2px var(--s3); }
