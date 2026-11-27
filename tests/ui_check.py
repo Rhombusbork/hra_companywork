@@ -126,7 +126,7 @@ def run_site(b, base, path, c, shots):
             opener.click(); pg.wait_for_timeout(400)
             c.ok("북마크 1" in pg.inner_text("body"), f"{tag}: 북마크 창에 1개")
             shot(pg, "5_bookmarks")
-            pg.locator("[data-close]").first.click(); pg.wait_for_timeout(300)
+            pg.locator(".drawer [data-close]").first.click(); pg.wait_for_timeout(300)
 
     # 5-1. 검색
     pg.goto(url + "#search"); pg.wait_for_timeout(500)

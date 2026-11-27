@@ -160,37 +160,67 @@
   }
 
   function itemRow(it, catId) {
+    // 왼쪽 칸 하나로 '언제'를 먼저 보여 준다 (마감이 있으면 D-day, 없으면 게시일). 글자는 제목과 출처만.
     const marksOff = P.marks.off.includes(catId);
+    let when;
+    const dueOn = it.deadline && P.marks.dueOn && !marksOff;
+    const d = it.deadline ? diffDays(it.deadline, TODAY) : null;
+    if (dueOn && d < 0) when = `<span class="when closed"><b>마감</b><small>${md(it.deadline)}</small></span>`;
+    else if (dueOn && d <= 7) when = `<span class="when hot"><b>${d === 0 ? "오늘" : "D-" + d}</b><small>마감</small></span>`;
+    else if (dueOn) when = `<span class="when due"><b>${md(it.deadline)}</b><small>마감</small></span>`;
+    else { const [, m, dd] = it.date.slice(0, 10).split("-"); when = `<span class="when"><b>${+dd}</b><small>${+m}월</small></span>`; }
+    const fresh = P.marks.newOn && !marksOff && isNew(it);
     const bits = [];
-    if (it.deadline && P.marks.dueOn && !marksOff) {
-      const d = diffDays(it.deadline, TODAY);
-      if (d < 0) bits.push(`<span class="badge closed">마감</span>`);
-      else if (d <= 7) bits.push(`<span class="badge due">${d === 0 ? "오늘 마감" : "D-" + d}</span>`);
-      else bits.push(`<span class="badge due far">~${md(it.deadline)}</span>`);
-    }
-    if (it.deadline && it.deadline_src === "ai" && P.marks.dueOn && !marksOff) bits.push(`<span class="badge ai" title="첨부 문서를 AI 가 읽어 추정한 마감일이에요. 원문에서 꼭 확인하세요">AI 추정</span>`);
-    if (P.marks.newOn && !marksOff && isNew(it)) bits.push(`<span class="badge new">새 글</span>`);
+    if (it.deadline && it.deadline_src === "ai" && dueOn) bits.push(`<span class="badge ai" title="첨부 문서를 AI 가 읽어 추정한 마감일이에요. 원문에서 꼭 확인하세요">AI 추정</span>`);
     if (it._tags) {
       const multi = P.depts.length > 1 && !["교직", "졸업요건"].includes(it._who);
       if (multi) bits.push(`<span class="badge tag">${esc(it._who)}</span>`);
       bits.push(`<span class="badge tag">${esc(D.cfg.dept_tags.find((t) => t.id === it._tags[0]).label)}</span>`);
     }
-    const src = it.source === "dept" ? it._who || "학과 게시판" : it.source_name;
-    const hide = it.source === "dept" ? "" : `<button class="hide-btn" data-hide="${esc(it.source)}" title="${esc(it.source_name)} 글을 숨깁니다">숨기기</button>`;
+    const src = it.source === "dept" ? it._who || "학과 게시판" : (it.dept || it.source_name);
     const bm = P.bm[it.id];
-    const star = `<button class="star${bm ? " on" : ""}" data-bm="${esc(it.id)}" aria-pressed="${bm ? "true" : "false"}" aria-label="${bm ? "북마크 빼기" : "북마크"}" title="${bm ? "북마크 빼기" : "북마크해서 달력에 넣기"}">${bm ? "★" : "☆"}</button>`;
-    const att = it.attachments && it.attachments.length ? `<span title="${esc(it.attachments.map((a) => a.name).join(", "))}">첨부 ${it.attachments.length}</span>` : "";
+    const star = `<button class="star${bm ? " on" : ""}" data-bm="${esc(it.id)}" aria-pressed="${bm ? "true" : "false"}" aria-label="${bm ? "북마크 빼기" : "북마크"}" title="${bm ? "북마크 빼기" : "북마크해서 달력에 넣기"}">${STAR(bm)}</button>`;
+    const att = it.attachments && it.attachments.length ? `<span class="att-n" title="${esc(it.attachments.map((a) => a.name).join(", "))}">${ICON.clip}${it.attachments.length}</span>` : "";
     return `<li class="item">
-      <div class="t-row"><a class="t" href="${esc(it.url)}" data-open="${esc(it.id)}">${esc(it.title)}</a>${star}</div>
-      <div class="meta">${bits.join("")}<span>${esc(src)}${it.dept ? " · " + esc(it.dept) : ""}</span><span>${md(it.date)}</span>${att}${it._note ? `<span>${esc(it._note)}</span>` : ""}${hide}</div>
+      ${when}
+      <div class="item-body">
+        <div class="t-row"><a class="t${fresh ? " fresh" : ""}" href="${esc(it.url)}" data-open="${esc(it.id)}">${fresh ? `<i class="new-dot" aria-label="새 글"></i>` : ""}${esc(cleanTitle(it.title))}</a>${star}</div>
+        <div class="meta">${bits.join("")}<span class="src">${esc(src)}</span>${att}</div>
+      </div>
     </li>`;
   }
+
+  // 제목 앞뒤의 ★·【】 같은 장식은 덜어 낸다 (원문 제목은 상세 창에 그대로)
+  const cleanTitle = (t) => t.replace(/^[\s★☆■□◆◇●○※]+|[\s★☆■□◆◇●○※]+$/g, "").replace(/^\[예시\]\s*/, "");
+
+  const STAR = (on) => `<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 3.6l2.6 5.3 5.8.8-4.2 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.2-4.1 5.8-.8z" fill="${on ? "currentColor" : "none"}" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>`;
+  // 칸 머리 아이콘: 선 하나 굵기, 한 색. 모양으로 칸을 구별한다
+  const svg = (d) => `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+  const ICON = {
+    dept: svg('<path d="M3 10l9-5 9 5-9 5z"/><path d="M7 12.2V16c0 1.5 2.2 3 5 3s5-1.5 5-3v-3.8"/>'),
+    kw: svg('<path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.3"/>'),
+    haksa: svg('<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 21H20"/>'),
+    scholar: svg('<circle cx="12" cy="12" r="8.5"/><path d="M8 9l1.7 6L12 9.5 14.3 15 16 9M7.5 12h9"/>'),
+    dorm: svg('<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-5h4v5"/>'),
+    intl: svg('<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.5 2.6 3.5 5.4 3.5 8.5s-1 5.9-3.5 8.5c-2.5-2.6-3.5-5.4-3.5-8.5s1-5.9 3.5-8.5z"/>'),
+    program: svg('<rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M12 13l.9 1.8 2 .3-1.5 1.4.4 2-1.8-1-1.8 1 .4-2-1.5-1.4 2-.3z"/>'),
+    career: svg('<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a1.5 1.5 0 0 1 1.5-1.5h3A1.5 1.5 0 0 1 15 5v2M3 12.5h18"/>'),
+    youth: svg('<path d="M12 21v-8"/><path d="M12 13c0-4 3-6.5 7-6.5 0 4-3 6.5-7 6.5zM12 15c0-3-2.3-5-5.5-5 0 3 2.3 5 5.5 5z"/>'),
+    library: svg('<path d="M4 4h4v16H4zM10 4h4v16h-4z"/><path d="M16 5.2l3.8-1 3 15.5-3.8.8z" transform="translate(-2.2 0)"/>'),
+    general: svg('<path d="M4 10v4h3l6 4V6L7 10z"/><path d="M16.5 9a4 4 0 0 1 0 6M19 6.5a7.5 7.5 0 0 1 0 11"/>'),
+    meal: svg('<path d="M3.5 11h17a8.5 8.5 0 0 1-17 0z"/><path d="M9 7c0-1.5 1-1.5 1-3M13 7c0-1.5 1-1.5 1-3"/>'),
+    cal: svg('<rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/>'),
+    clip: `<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M20 11.5l-8.3 8.3a5 5 0 0 1-7.1-7.1l8.7-8.7a3.4 3.4 0 0 1 4.8 4.8l-8.6 8.6a1.7 1.7 0 0 1-2.4-2.4l7.9-7.9"/></svg>`,
+    search: svg('<circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/>'),
+    gear: svg('<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>'),
+  };
+  const secIcon = () => "";
 
   // ---------- 머리·분류 줄 ----------
   function header(title) {
     return `<header class="top">
-      <div class="brand"><h1>${esc(title || "제주대 모아보기")}</h1><small>마지막 갱신: ${md(D.meta.generated_at)} ${D.meta.generated_at.slice(11, 16)}</small></div>
-      <div class="top-btns"><button class="icon-btn" data-act="bm-open" aria-haspopup="dialog">★ 북마크 ${Object.keys(P && P.bm || {}).length}</button><a class="icon-btn" href="#search" aria-label="검색">검색</a><a class="icon-btn" href="#setup">설정</a></div>
+      <div class="brand"><h1>${esc(title || "제주대 모아보기")}</h1><small>마지막 갱신 <span class="mono">${md(D.meta.generated_at)} ${D.meta.generated_at.slice(11, 16)}</span></small></div>
+      <div class="top-btns"><button class="icon-btn" data-act="bm-open" aria-haspopup="dialog" aria-label="북마크 ${Object.keys(P && P.bm || {}).length}개">${STAR(false)}<span class="lbl-sm">북마크</span> <span class="num">${Object.keys(P && P.bm || {}).length}</span></button><a class="icon-btn sq" href="#search" aria-label="검색" title="검색">${ICON.search}</a><a class="icon-btn sq" href="#setup" aria-label="설정" title="설정">${ICON.gear}</a></div>
     </header>`;
   }
 
@@ -204,7 +234,7 @@
   }
 
   function sampleNote() {
-    return `<p class="sample-note">학교 공식 사이트가 아니에요. 학교 게시판의 제목·날짜·링크만 모아 보여 줘요. 내용과 마감은 원문에서 꼭 확인하세요.</p>`;
+    return `<p class="sample-note"><span class="pill">비공식</span>학교 게시판 제목·날짜만 모았어요. 마감은 원문에서 꼭 확인하세요.</p>`;
   }
 
   // ---------- 일정 (마감·학사일정·북마크) ----------
@@ -277,7 +307,7 @@
     const today = eventsOn(evs, TODAY.slice(0, 10));
     const line = today.length ? today.slice(0, 2).map((e) => `${{ due: "마감", acad: "학사", bm: "북마크" }[e.kind]} ${esc(e.title.replace(/^\[예시\]\s*/, ""))}`).join(" · ") + (today.length > 2 ? ` 외 ${today.length - 2}` : "") : "오늘 마감·학사일정은 없어요";
     return `<section class="week">
-      <div class="card-head"><span class="lbl">이번 주</span><a href="#schedule">일정 탭 →</a></div>
+      <div class="b-head"><span class="b-k"><span class="mono">THIS WEEK</span> 이번 주</span><a href="#schedule">일정 ›</a></div>
       <div class="wk">${cells.join("")}</div>
       <p class="wk-today"><b>오늘</b> ${line}</p>
     </section>`;
@@ -443,6 +473,58 @@
     </footer>`;
   }
 
+  // ---------- 홈 위쪽: 큰 날짜 · 흐르는 띠 · 벤토 ----------
+  const WD_EN = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+  function soonList() {
+    return myItems().filter((it) => it.deadline && diffDays(it.deadline, TODAY) >= 0 && diffDays(it.deadline, TODAY) <= 7)
+      .sort((a, b) => (a.deadline < b.deadline ? -1 : a.deadline > b.deadline ? 1 : 0));
+  }
+  const srcOf = (it) => it.source === "dept" ? it._who || "학과" : (it.dept || it.source_name);
+  const dLabel = (d) => d === 0 ? "D-DAY" : "D-" + d;
+
+  function hero() {
+    const t = TODAY.slice(0, 10), [, m, d] = t.split("-"), wd = weekday(t);
+    const soon = soonList();
+    const todayN = soon.filter((it) => diffDays(it.deadline, TODAY) === 0).length;
+    const fresh = myItems().filter((it) => P.marks.newOn && isNew(it)).length;
+    // 흐르는 띠: 이번 주 마감 제목. 글자만 흐르고, 누를 곳은 아래 칸에 따로 있다 (읽기 화면에는 한 번만 읽힘)
+    const tk = soon.slice(0, 8).map((it) => `<span class="tk-i"><b class="mono">${dLabel(diffDays(it.deadline, TODAY))}</b>${esc(cleanTitle(it.title))}</span>`).join("");
+    return `<section class="hero" aria-label="오늘">
+      <div class="hero-row">
+        <h2 class="hero-date mono" aria-label="${+m}월 ${+d}일 ${WD[wd]}요일">${m}.${d}</h2>
+        <div class="hero-side"><span class="mono">${WD_EN[wd]}</span><span>${WD[wd]}요일</span></div>
+      </div>
+      <p class="hero-sum">오늘 마감 <b>${todayN}</b><i></i>이번 주 마감 <b>${soon.length}</b><i></i>새 글 <b>${fresh}</b></p>
+    </section>
+`;
+  }
+
+  function bento() {
+    const soon = soonList();
+    const top = soon[0];
+    const urgent = top ? (() => { const d = diffDays(top.deadline, TODAY); return `<a class="b-tile b-urgent" href="${esc(top.url)}" data-open="${esc(top.id)}">
+        <span class="b-k"><span class="mono">DUE</span> 가장 먼저 마감</span>
+        <span class="b-big mono">${dLabel(d)}</span>
+        <span class="b-title">${esc(cleanTitle(top.title))}</span>
+        <span class="b-foot"><span>${esc(srcOf(top))}</span><span class="mono">${mdw(top.deadline)}</span></span></a>`; })()
+      : `<div class="b-tile b-urgent calm"><span class="b-k"><span class="mono">DUE</span> 마감</span><span class="b-big mono">0</span><span class="b-title">7일 안에 마감되는 글이 없어요</span></div>`;
+    const next = soon.slice(1, 5).map((it) => `<li><a href="${esc(it.url)}" data-open="${esc(it.id)}"><b class="mono">${dLabel(diffDays(it.deadline, TODAY))}</b><span>${esc(cleanTitle(it.title))}</span></a></li>`).join("");
+    const nextTile = `<div class="b-tile b-next"><div class="b-head"><span class="b-k"><span class="mono">NEXT</span> 그다음 마감</span><a href="#schedule">달력 ›</a></div>
+      ${next ? `<ol class="b-list">${next}</ol>` : `<p class="empty">이번 주는 여기까지예요.</p>`}</div>`;
+    const count = `<a class="b-tile b-count" href="#schedule"><span class="b-k"><span class="mono">WEEK</span> 이번 주 마감</span><span class="b-big mono">${soon.length}</span><span class="b-foot"><span>건</span><span>일정 ›</span></span></a>`;
+    // 학식: 첫 식당 대표 메뉴를 크게
+    let meal = "";
+    const rs = P.rest.map((id) => D.meals.restaurants[id]).filter(Boolean);
+    const withMenu = rs.map((r) => [r, r.days[TODAY.slice(0, 10)]]).filter(([, ms]) => ms && ms.length);
+    if (withMenu.length) {
+      const [r, ms] = withMenu[0];
+      meal = `<a class="b-tile b-meal" href="#c-meal"><span class="b-k"><span class="mono">MENU</span> 오늘 학식</span>
+        <span class="b-dish">${esc(ms[0].menu[0] || "")}</span>
+        <span class="b-foot"><span>${esc(r.label)} ${esc(ms[0].meal)}</span><span>${withMenu.length > 1 ? "+" + (withMenu.length - 1) + "곳" : ""}</span></span></a>`;
+    } else if (rs.length) meal = `<a class="b-tile b-meal" href="#c-meal"><span class="b-k"><span class="mono">MENU</span> 오늘 학식</span><span class="b-title">식단 보기</span></a>`;
+    return `<div class="bento">${urgent}${count}${meal}${nextTile}<section class="b-tile b-week">${weekStrip()}</section></div>`;
+  }
+
   // ---------- 학식 ----------
   function todayMeals() {
     const out = [];
@@ -500,7 +582,7 @@
       empty = `<p class="empty">최근 글이 없어요. 아직 수집하지 않는 학과일 수 있어요. ${links}</p>`;
     }
     return `<section class="card main">
-      <div class="card-head"><div><h2>내 학과</h2><div class="sub">${esc(name)}</div></div>${items.length > limit ? `<a href="#c-dept">전체 ${items.length}개 보기</a>` : ""}</div>
+      <div class="card-head"><div><h2>${secIcon("dept")}내 학과</h2><div class="sub">${esc(name)}</div></div>${items.length > limit ? `<a href="#c-dept">전체 ${items.length} ›</a>` : ""}</div>
       ${notYetNote}
       ${tagChips ? `<div class="tagrow"><button class="chip${!tagSel || tagSel === "all" ? " on" : ""}" data-tag="all">전체<span class="n">${items.length}</span></button>${tagChips}</div>` : ""}
       ${empty || `<ul class="items">${shown.slice(0, limit).map((it) => itemRow(it, "dept")).join("")}</ul>`}
@@ -545,8 +627,7 @@
     if (!items.length && !(cat && cat.chips)) return "";
     const body = chipBody(cat, items, 3, catId);
     return `<section class="card">
-      <div class="card-head"><h2>${esc(title)}</h2>${body.n > 3 ? `<a href="#${href}">더 보기 ${body.n}</a>` : ""}</div>
-      ${why ? `<p class="why">${esc(why)}</p>` : ""}
+      <div class="card-head"><h2>${secIcon(catId)}${esc(title)}</h2>${body.n > 3 ? `<a href="#${href}">전체 ${body.n} ›</a>` : ""}</div>
       ${chipBar(cat, items)}
       ${body.html}
     </section>`;
@@ -639,10 +720,9 @@
     const used = new Set();
     const di = deptItems();
     di.forEach((it) => used.add(it.id));
-    let html = header() + staleNote() + sampleNote() + catbar("home") + deptBanner() + weekStrip();
-    const ml = todayMeals();
-    if (ml.length) html += `<a class="meals" href="#c-meal"><span class="lbl">오늘 학식 · ${mdw(TODAY)}</span>${ml.join("")}</a>`;
-    html += `<div class="stack">` + deptCard(di, chipSel("dept"), 5);
+    let html = header() + staleNote() + catbar("home") + hero() + deptBanner() + bento() + sampleNote();
+    // 학과를 안 골랐으면 위의 '학과 넣기' 띠가 같은 말을 하니 빈 학과 칸은 그리지 않는다
+    html += `<div class="stack">` + (P.depts.length ? deptCard(di, chipSel("dept"), 5) : "");
     const kw = kwItems(used); kw.forEach((it) => used.add(it.id));
     html += smallCard("내 키워드 · " + P.kwIn.join(", "), kw, "c-kw", "kw");
     const rec = recommendedBy(P);
@@ -656,7 +736,7 @@
         const lbl = { 1: "모두에게 필요한 것", 2: "내 학과와 가까운 것", 3: "그 밖" }[c.layer];
         html += `<p class="layer-label">${lbl}</p>`; lastLayer = c.layer;
       }
-      const why = rec[c.id] ? rec[c.id].join("·") + " 추천" : "";
+      const why = "";
       html += smallCard(c.label, items, "c-" + c.id, c.id, why, c);
     }
     html += `</div>` + footer();
@@ -706,17 +786,28 @@
   }
 
   // ---------- 처음 설정 / 설정 ----------
+  const CHO = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ";
+  const choseong = (s) => [...s].map((c) => { const k = c.charCodeAt(0) - 0xac00; return k >= 0 && k < 11172 ? CHO[Math.floor(k / 588)] : c; }).join("");
+  const squash = (s) => s.replace(/\s+/g, "").toLowerCase();
+  function deptMatch(d, q) {
+    const n = squash(q), hay = squash(d.name + " " + d.college);
+    if (hay.includes(n)) return true;
+    // 초성만 쳤을 때 (예: ㄱㅇ → 경영학과). 학과 이름 앞부분만 본다 (독일'학과 인'문… 같은 엉뚱한 걸림 막기)
+    if (/^[ㄱ-ㅎ]+$/.test(n)) return choseong(squash(d.name)).startsWith(n);
+    // 받침 없이 친 중간 글자까지 맞춰 본다: "학과"를 빼고 다시
+    return n.length > 1 && squash(d.name).includes(n.replace(/(학과|학부|전공)$/, ""));
+  }
   function deptPicker(which) {
     const q = (which === 2 ? deptQuery2 : deptQuery).trim();
     const taken = new Set(draft.depts);
     const got = new Set(D.meta.dept_boards || []);
-    const list = D.deps.filter((d) => !d.is_college_board && (!q || (d.name + d.college).includes(q)));
+    const list = D.deps.filter((d) => !d.is_college_board && (!q || deptMatch(d, q)));
     const groups = {};
     list.forEach((d) => (groups[d.college] = groups[d.college] || []).push(d));
     const body = Object.entries(groups).map(([col, ds]) =>
       `<div class="dept-group">${esc(col)}</div>` + ds.map((d) =>
         `<button class="dept-opt" data-pick="${which}" data-id="${esc(d.id)}"${taken.has(d.id) ? " disabled" : ""}>${esc(d.name)}${got.has(d.board) ? ` <small class="got">게시판 모음</small>` : ""}${taken.has(d.id) ? " · 선택함" : ""}</button>`).join("")).join("");
-    return `<input type="search" id="dept-q-${which}" placeholder="학과 이름으로 찾기 (예: 약학, 경영)" value="${esc(q)}" autocomplete="off">
+    return `<input type="search" id="dept-q-${which}" placeholder="학과 이름이나 초성 (예: 약학, ㄱㅇ)" value="${esc(q)}" autocomplete="off" enterkeyhint="done" aria-label="학과 찾기">
       <div class="dept-list">${body || `<p class="empty" style="padding:10px">찾는 학과가 없어요.</p>`}</div>`;
   }
 
@@ -840,18 +931,49 @@
     else if (r === "search") html = viewSearch();
     else if (r.startsWith("c-")) html = viewList(r.slice(2));
     else html = viewHome();
-    const keepFocus = document.activeElement && document.activeElement.id;
-    const caret = keepFocus && document.activeElement.selectionStart;
+    const hadSheet = !!$app.querySelector(".sheet, .drawer");
     $app.className = r === "schedule" && P && P.done ? "wide" : "";
     if (P && P.done && sheet) html += sheet.type === "bm" ? bmDrawer() : detailSheet(sheet.id);
     document.body.classList.toggle("locked", !!(P && P.done && sheet));
-    $app.innerHTML = html;
-    if (keepFocus) {
-      const el = document.getElementById(keepFocus);
-      if (el && el.tagName === "INPUT") { el.focus(); try { el.setSelectionRange(caret, caret); } catch (e) {} }
-    } else if (sheet) {
+    patch(html);
+    const act = document.activeElement;
+    const typing = act && act !== document.body && $app.contains(act) && (act.tagName === "INPUT" || act.tagName === "TEXTAREA");
+    if (sheet && !hadSheet && !typing) {
       const box = $app.querySelector(".sheet, .drawer"); const x = box && box.querySelector(".x"); if (x) x.focus();
     }
+  }
+
+  // 화면 전체를 innerHTML 로 갈아 끼우면 입력칸도 새로 만들어져서, 한글을 치는 중(조합 중)이던 글자가
+  // 끊기고 자음·모음이 따로 들어간다. 그래서 바뀐 부분만 고친다(morph). 입력칸은 같은 자리에 그대로 남는다.
+  function patch(html) {
+    const tpl = document.createElement("template");
+    tpl.innerHTML = html;
+    morphKids($app, tpl.content);
+  }
+  function sameKind(a, b) {
+    return a.nodeType === b.nodeType && a.nodeName === b.nodeName && (a.nodeType !== 1 || (a.id || "") === (b.id || "") && (a.type || "") === (b.type || ""));
+  }
+  function morphKids(from, to) {
+    const a = [...from.childNodes], b = [...to.childNodes];
+    for (let i = 0; i < b.length; i++) {
+      const x = a[i], y = b[i];
+      if (!x) { from.appendChild(y); continue; }
+      if (!sameKind(x, y)) { from.replaceChild(y, x); continue; }
+      morphNode(x, y);
+    }
+    for (let i = b.length; i < a.length; i++) a[i].remove();
+  }
+  function morphNode(x, y) {
+    if (x.nodeType !== 1) { if (x.nodeValue !== y.nodeValue) x.nodeValue = y.nodeValue; return; }
+    for (const at of [...x.attributes]) if (!y.hasAttribute(at.name)) x.removeAttribute(at.name);
+    for (const at of [...y.attributes]) if (x.getAttribute(at.name) !== at.value) x.setAttribute(at.name, at.value);
+    if (x.tagName === "INPUT" || x.tagName === "TEXTAREA") {
+      // 사용자가 치고 있는 칸의 값은 건드리지 않는다
+      if (x !== document.activeElement && x.value !== y.value) x.value = y.value;
+      if (x.type === "checkbox" || x.type === "radio") x.checked = y.hasAttribute("checked");
+      if (x.tagName === "TEXTAREA") return;
+    }
+    morphKids(x, y);
   }
 
   function setDraftDept(changeFn) {
@@ -878,6 +1000,13 @@
   });
 
   $app.addEventListener("keydown", (e) => {
+    if (e.isComposing || e.keyCode === 229) return; // 한글 조합 중 Enter
+    if (e.key === "Enter" && /^dept-q-[12]$/.test(e.target.id)) {
+      // 찾은 학과가 하나뿐이면 Enter 로 바로 고른다
+      const opts = [...$app.querySelectorAll(".dept-opt:not([disabled])")];
+      if (opts.length === 1) { e.preventDefault(); opts[0].click(); }
+      return;
+    }
     if (e.key === "Enter" && (e.target.id === "kw-in" || e.target.id === "kw-out")) { e.preventDefault(); addKw(e.target.id === "kw-in" ? "kwIn" : "kwOut", e.target.id); }
   });
 
