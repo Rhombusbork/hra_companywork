@@ -2,3 +2,6 @@
 _private/
 .claude/worktrees/
 __pycache__/
+
+# 에브리타임 캡처 등 받은 자료 (공개 저장소에 올리지 않음)
+자료/
