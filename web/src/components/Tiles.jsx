@@ -3,6 +3,7 @@
 import { useApp } from "./ctx.js";
 import { ItemRow, AcadRow } from "./ItemRow.jsx";
 import { WD, diffDays, mdw, dLabel, cleanTitle, weekday } from "../lib/util.js";
+import { recommendedBy } from "../lib/logic.js";
 
 const ROW_PX = 92;   // 글 한 줄 높이(제목 2줄 + 출처, 대략)
 
@@ -210,7 +211,7 @@ export function DeptBlock({ limit, full }) {
 }
 
 // 분류 하나 (학사·장학 …). 학사처럼 칩이 있는 분류는 칩으로 나눠 본다
-export function CatBlock({ cat, items, limit, catId, title, href, full }) {
+export function CatBlock({ cat, items, limit, catId, title, sub, href, full }) {
   const { L, update } = useApp();
   const sel = cat && cat.chips ? L.chipSel(cat.id) : "all";
   const ch = sel !== "all" && cat && cat.chips.find((x) => x.id === sel);
@@ -225,7 +226,7 @@ export function CatBlock({ cat, items, limit, catId, title, href, full }) {
   const pick = (v) => update((p) => { p.chips = { ...(p.chips || {}), [cat.id]: v }; });
   return (
     <>
-      {title && <div className="card-head"><h2>{title}</h2>{!full && n > limit && <a href={"#" + href}>전체 {n} ›</a>}</div>}
+      {title && <div className="card-head">{sub ? <div><h2>{title}</h2><div className="sub">{sub}</div></div> : <h2>{title}</h2>}{!full && n > limit && <a href={"#" + href}>전체 {n} ›</a>}</div>}
       {cat && cat.chips && (
         <div className="tagrow">
           <button className={"chip" + (sel === "all" ? " on" : "")} data-chip={cat.id} data-val="all" onClick={() => pick("all")}>전체<span className="n">{items.length}</span></button>
@@ -239,18 +240,33 @@ export function CatBlock({ cat, items, limit, catId, title, href, full }) {
   );
 }
 
+// 칸 높이에 들어가는 글 수. 홈이 앞 칸에 나온 글을 뒤 칸에서 빼는 데도 쓴다
+export function tileLimit(w, hPx, L) {
+  if (w.id === "dept") return listLimit(hPx, L.myBoards().length ? 150 : 90);
+  if (w.id === "kw") return listLimit(hPx, 80);
+  if (w.cat) return listLimit(hPx, w.cat.chips ? 130 : 80);
+  return 0;
+}
+
+const LAYER = { 1: "모두에게 필요한 것", 2: "내 학과와 가까운 것", 3: "그 밖" };
+
 export function TileBody({ w, hPx, used }) {
-  const { L, P } = useApp();
+  const { D, L, P } = useApp();
   switch (w.id) {
     case "cal": return <CalTile hPx={hPx} />;
     case "urgent": return <UrgentTile />;
     case "count": return <CountTile />;
     case "meal": return <MealTile hPx={hPx} />;
     case "next": return <NextTile hPx={hPx} />;
-    case "dept": return <div className="t-list"><DeptBlock limit={listLimit(hPx, L.myBoards().length ? 150 : 90)} /></div>;
-    case "kw": return <div className="t-list"><CatBlock items={L.kwItems(used)} limit={listLimit(hPx, 80)} catId="kw" title={"내 키워드 · " + P.kwIn.join(", ")} href="c-kw" /></div>;
+    case "dept": return <div className="t-list"><DeptBlock limit={tileLimit(w, hPx, L)} /></div>;
+    case "kw": return <div className="t-list"><CatBlock items={L.kwItems(used)} limit={tileLimit(w, hPx, L)} catId="kw" title={"내 키워드 · " + P.kwIn.join(", ")} href="c-kw" /></div>;
     default:
-      if (w.cat) return <div className="t-list"><CatBlock cat={w.cat} items={L.catItems(w.cat, used)} limit={listLimit(hPx, w.cat.chips ? 130 : 80)} catId={w.cat.id} title={w.cat.label} href={"c-" + w.cat.id} /></div>;
+      if (w.cat) {
+        // 칸 위에 어느 층(모두에게 필요한 것 …)인지, 학과 계열 추천이면 어느 단과대 추천인지 (옛 판의 층 제목·추천 줄)
+        const rec = recommendedBy(D, P)[w.cat.id];
+        const sub = [LAYER[w.cat.layer], rec && rec.join("·") + " 추천"].filter(Boolean).join(" · ");
+        return <div className="t-list"><CatBlock cat={w.cat} items={L.catItems(w.cat, used)} limit={tileLimit(w, hPx, L)} catId={w.cat.id} title={w.cat.label} sub={sub} href={"c-" + w.cat.id} /></div>;
+      }
       return null;
   }
 }

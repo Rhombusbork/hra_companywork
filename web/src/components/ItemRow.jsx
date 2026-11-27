@@ -35,6 +35,7 @@ export function ItemRow({ it, catId }) {
           {multi && <span className="badge tag">{it._who}</span>}
           {tag && <span className="badge tag">{tag.label}</span>}
           <span className="src">{src}</span>
+          {it._note && <span className="src note">{it._note}</span>}
           {it.attachments && it.attachments.length > 0 && <span className="att-n" title={it.attachments.map((a) => a.name).join(", ")}><Clip />{it.attachments.length}</span>}
         </div>
       </div>

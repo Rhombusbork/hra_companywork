@@ -6,7 +6,7 @@ import { useMemo, useRef, useState, useEffect, useCallback } from "react";
 import { Responsive, WidthProvider } from "react-grid-layout";
 import { useApp } from "./ctx.js";
 import { catalog, mergedLayouts, BREAKPOINTS, COLS, ROW, GAP, px, SIZES, TONES, SHAPES } from "../lib/layout.js";
-import { TileBody } from "./Tiles.jsx";
+import { TileBody, tileLimit } from "./Tiles.jsx";
 import { Header, Catbar, StaleNote, Footer, SampleNote } from "./Chrome.jsx";
 import { Grid as GridIcon, Dots, Minus, Plus } from "./icons.jsx";
 
@@ -28,8 +28,23 @@ export function Home() {
   const layouts = useMemo(() => mergedLayouts(widgets, home.layouts, home.hidden), [widgets, home.layouts, home.hidden]);
   const shown = widgets.filter((w) => !home.hidden.includes(w.id));
   const hiddenW = widgets.filter((w) => home.hidden.includes(w.id));
-  // 학과 칸에 이미 나온 글은 분류 칸에서 빼서 같은 글이 두 번 안 보이게
-  const used = useMemo(() => new Set(home.hidden.includes("dept") ? [] : L.deptItems().map((it) => it.id)), [L, home.hidden]);
+  const cur = layouts[bp] || [];
+  // 같은 글이 두 칸에 안 보이게 (옛 판과 같음): 학과·키워드 칸의 글은 모두, 분류 칸은 그 칸에 보이는 만큼을 뒤 칸에서 뺀다.
+  // 순서는 칸 목록 순서(학과 → 키워드 → 모두에게 필요한 것 → 가까운 것 → 그 밖)
+  const usedFor = useMemo(() => {
+    const out = {}, used = new Set();
+    for (const w of shown) {
+      if (w.id !== "dept" && w.id !== "kw" && !w.cat) continue;
+      out[w.id] = new Set(used);
+      if (w.id === "dept") L.deptItems().forEach((it) => used.add(it.id));
+      else if (w.id === "kw") L.kwItems(out[w.id]).forEach((it) => used.add(it.id));
+      else {
+        const l = cur.find((x) => x.i === w.id);
+        L.catItems(w.cat, out[w.id]).slice(0, tileLimit(w, px(l ? l.h : w.def[bp][1]), L)).forEach((it) => used.add(it.id));
+      }
+    }
+    return out;
+  }, [L, shown, cur, bp]);
 
   const saveLayouts = (all) => update((p) => { p.home = { ...p.home, layouts: strip(all) }; });
   // 사용자가 끌기·크기 바꾸기를 마쳤을 때만 저장한다 (화면이 스스로 다시 맞출 때는 저장하지 않음 → '기본으로'가 유지됨)
@@ -67,7 +82,6 @@ export function Home() {
     return () => document.removeEventListener("keydown", k);
   }, [editing, menu]);
 
-  const cur = layouts[bp] || [];
   const lookOf = (id) => ({ tone: "auto", shape: "round", ...(home.look[id] || {}) });
 
   return (
@@ -125,7 +139,7 @@ export function Home() {
             return (
               <div key={w.id} className="g-item" onPointerDown={onDown} onPointerMove={cancelPress} onPointerUp={cancelPress} onPointerCancel={cancelPress}>
                 <section className={`b-tile tile-${w.cat ? "cat" : w.id} tone-${tone} shape-${lk.shape}${list ? " is-list" : ""}${w.id === "dept" ? " is-main" : ""} w${l.w}`} aria-label={w.title}>
-                  <TileBody w={w} hPx={px(l.h)} used={used} />
+                  <TileBody w={w} hPx={px(l.h)} used={usedFor[w.id]} />
                 </section>
                 {editing && <div className="edit-cover" aria-hidden="true" />}
                 {editing && (

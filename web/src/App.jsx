@@ -88,7 +88,12 @@ export default function App() {
     hideSource: (src) => { setSheet(null); update((p) => { p.hidden = [...new Set(p.hidden.concat(src))]; }); },
     goDay: (d) => { setUi({ selDay: d, calMonth: d.slice(0, 7) }); if (route() !== "schedule") location.hash = "schedule"; },
     saveDept: () => { const p = clone(P); p.depts = draft.depts.slice(); fitDepts(D, p); savePrefs(p); setP(p); setDraft(clone(p)); go("home"); },
-    saveSetup: () => { const p = { ...clone(draft), done: true, home: { ...P.home, hidden: (draft.home && draft.home.hidden) || P.home.hidden } }; savePrefs(p); setP(p); go("home"); },
+    // 코드로 불러온 설정이면 홈 배치·색도 그 코드의 것을 쓴다 ("홈 칸 배치도 같이 옮겨져요")
+    saveSetup: () => {
+      const { _imported, ...d } = clone(draft);
+      const home = _imported && d.home ? d.home : { ...P.home, hidden: (d.home && d.home.hidden) || P.home.hidden };
+      const p = { ...d, done: true, home }; savePrefs(p); setP(p); go("home");
+    },
     resetAll: () => { clearPrefs(); const p = applyDefaults(D, blankPrefs()); setP(p); setDraft(clone(p)); setUi({ obStep: 0 }); go("home"); },
     finishOnboarding: () => { const p = { ...clone(draft), done: true }; fitDepts(D, p); p.cats = draft.cats.slice(); savePrefs(p); setP(p); setDraft(clone(p)); go("home"); },
     skipOnboarding: () => { const p = quickPrefs(D); p.depts = draft.depts.slice(); if (p.depts.length) fitDepts(D, p); savePrefs(p); setP(p); setDraft(clone(p)); go("home"); },

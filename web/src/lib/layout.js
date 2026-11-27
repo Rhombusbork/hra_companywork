@@ -49,6 +49,8 @@ export function catalog(D, P, L) {
     hint: "키울수록 글이 더 보여요.", min: { w: 1, h: 4 }, def: { sm: [2, 12], lg: [4, 12] } });
   if (P.kwIn.length) w.push({ id: "kw", title: "내 키워드", size: "추천 넓게 2×7", desc: "고른 키워드가 제목에 든 글", min: { w: 1, h: 3 }, def: { sm: [2, 7], lg: [2, 7] } });
   for (const c of L.shownCats()) {
+    // 글도 칩도 없는 분류는 칸을 만들지 않는다 (옛 판과 같음)
+    if (!c.chips && !L.catItems(c).length) continue;
     const h = c.chips ? 8 : 7;
     w.push({ id: "c-" + c.id, cat: c, title: c.label, size: `추천 넓게 2×${h}`, desc: c.desc, hint: "키울수록 글이 더 보여요.", min: { w: 1, h: 3 }, def: { sm: [2, h], lg: [2, h] } });
   }

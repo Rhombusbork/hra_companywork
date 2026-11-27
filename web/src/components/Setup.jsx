@@ -4,7 +4,7 @@ import { useApp } from "./ctx.js";
 import { Header, Back } from "./Chrome.jsx";
 import { deptMatch, clone } from "../lib/util.js";
 import { defaultsFor, recommendedBy, applyDefaults } from "../lib/logic.js";
-import { blankPrefs } from "../lib/prefs.js";
+import { blankPrefs, upgrade } from "../lib/prefs.js";
 import { CategoryCards, RestaurantCards, TileCards } from "./Cards.jsx";
 
 function DeptPicker({ which }) {
@@ -184,13 +184,13 @@ export function SetupView() {
   const [codeIn, setCodeIn] = useState("");
   const [confirm, setConfirm] = useState(false);
   const say = (k) => (m) => setMsgs((x) => ({ ...x, [k]: m }));
-  const code = (() => { try { return btoa(unescape(encodeURIComponent(JSON.stringify({ ...draft, touched: true })))); } catch (e) { return ""; } })();
+  const code = (() => { try { return btoa(unescape(encodeURIComponent(JSON.stringify({ ...draft, touched: true, _imported: undefined })))); } catch (e) { return ""; } })();
   const link = draft.depts[0] ? location.origin + location.pathname + "?dept=" + encodeURIComponent(draft.depts[0]) : null;
   const doImport = () => {
     try {
       const p = JSON.parse(decodeURIComponent(escape(atob(codeIn.trim()))));
       if (!Array.isArray(p.depts)) throw new Error("bad");
-      setDraft({ ...blankPrefs(), ...p, done: true });
+      setDraft({ ...upgrade({ ...blankPrefs(), ...p, done: true }), _imported: true });
       say("imp")("불러왔어요. 아래 '저장하고 홈으로'를 누르세요.");
     } catch (err) { say("imp")("코드를 읽지 못했어요. 처음부터 끝까지 다 복사했는지 확인해 주세요."); }
   };
