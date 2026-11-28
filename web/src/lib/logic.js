@@ -66,6 +66,18 @@ export function makeLogic(D, P) {
   const pinnable = (it) => !!P.bm[it.id] && !(it.deadline && diffDays(it.deadline, TODAY) < 0);
   const pinBm = (arr) => [...arr.filter(pinnable), ...arr.filter((it) => !pinnable(it))];
 
+  // 분류 화면 안 거르기 (11/28): 낱말(제목·게시판·부서, 띄어 쓴 낱말 모두) · 마감 남은 것만 · 새 글만
+  function secFilter(ui) {
+    const words = (ui.secQ || "").toLowerCase().split(/\s+/).filter(Boolean);
+    return (it) => {
+      if (words.length && !words.every((w) => [it.title, it.source_name, it.dept || "", it._who || ""].join(" ").toLowerCase().includes(w))) return false;
+      if (ui.secOpen && !(it.deadline && diffDays(it.deadline, TODAY) >= 0)) return false;
+      if (ui.secNew && !isNew(it)) return false;
+      return true;
+    };
+  }
+  const secActive = (ui) => !!((ui.secQ || "").trim() || ui.secOpen || ui.secNew);
+
   let _dept = null;
   function deptItems() {
     // 내 학과 게시판 글 + 내 학과가 다시 올린 본부 글 + (교직 이수면) 교직 글 + 졸업요건·자격 글
@@ -171,7 +183,7 @@ export function makeLogic(D, P) {
   return {
     TODAY, T, depById, catById, deptTags, inCat, visible, myBoards, sortItems, deptItems, catItems, kwItems, shownCats,
     myItems, isNew, soonList, srcOf, events, eventsOn, dotKinds, isLong, kindOrder, weekDays, acadUpcoming, chipSel, chipHit,
-    todayMeals, findItem, visitedBefore: !!lv, pinBm,
+    todayMeals, findItem, visitedBefore: !!lv, pinBm, secFilter, secActive,
   };
 }
 

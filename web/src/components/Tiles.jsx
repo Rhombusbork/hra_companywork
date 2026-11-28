@@ -140,9 +140,21 @@ export function NextTile({ hPx }) {
 }
 
 // 내 학과: 학과 게시판 글 + 칩(졸업·학사, 장학 …)
+// 분류 화면에서 거른 결과가 없을 때: 전체 검색으로 넘기기
+export function NoMatch() {
+  const { ui, setUi } = useApp();
+  const q = (ui.secQ || "").trim();
+  return (
+    <p className="empty">이 분류에서 맞는 글이 없어요.
+      {q && <> <a href="#search" onClick={() => setUi({ searchQ: q })}>‘{q}’ 전체에서 찾기 ›</a></>}
+    </p>
+  );
+}
+
 export function DeptBlock({ limit, full }) {
-  const { D, P, L, update } = useApp();
-  const items = L.deptItems();
+  const { D, P, L, update, ui } = useApp();
+  const allItems = L.deptItems();
+  const items = full ? allItems.filter(L.secFilter(ui)) : allItems;
   const boards = L.myBoards();
   const tagSel = L.chipSel("dept");
   const name = boards.length ? boards.map((b) => b.label).join(" · ") : "학과를 아직 고르지 않았어요";
@@ -156,6 +168,7 @@ export function DeptBlock({ limit, full }) {
   const pick = (id) => update((p) => { p.chips = { ...(p.chips || {}), dept: id }; });
   let empty = null;
   if (!boards.length) empty = <p className="empty">설정에서 학과를 고르면 학과 게시판 글을 여기에 모아 보여 드려요. <a href="#dept">학과 넣기</a></p>;
+  else if (!shown.length && full && L.secActive(ui) && allItems.length) empty = <NoMatch />;
   else if (!shown.length) empty = <p className="empty">최근 글이 없어요. 아직 수집하지 않는 학과일 수 있어요. {boards.map((b, i) => <span key={b.id}>{i > 0 && " · "}{b.board ? <a href={b.board} target="_blank" rel="noopener">{b.label} 게시판</a> : b.label}</span>)}</p>;
   return (
     <>
@@ -178,18 +191,22 @@ export function DeptBlock({ limit, full }) {
 }
 
 // 분류 하나 (학사·장학 …). 학사처럼 칩이 있는 분류는 칩으로 나눠 본다
-export function CatBlock({ cat, items, limit, catId, title, sub, href, full }) {
-  const { L, update } = useApp();
+export function CatBlock({ cat, items: allItems, limit, catId, title, sub, href, full }) {
+  const { L, update, ui } = useApp();
+  const fil = full && L.secActive(ui);
+  const items = fil ? allItems.filter(L.secFilter(ui)) : allItems;
   const sel = cat && cat.chips ? L.chipSel(cat.id) : "all";
   const ch = sel !== "all" && cat && cat.chips.find((x) => x.id === sel);
   let n, body;
   if (ch && ch.academic) {
-    const ev = L.acadUpcoming(); n = ev.length;
-    body = <ul className="items">{ev.slice(0, limit).map((e, i) => <AcadRow key={i} e={e} />)}</ul>;
+    const q = full ? (ui.secQ || "").trim().toLowerCase() : "";
+    const ev = L.acadUpcoming().filter((e) => !q || e.title.toLowerCase().includes(q)); n = ev.length;
+    body = ev.length ? <ul className="items">{ev.slice(0, limit).map((e, i) => <AcadRow key={i} e={e} />)}</ul> : <NoMatch />;
   } else {
     const picked = ch ? items.filter((it) => L.chipHit(ch, it, cat)) : items; n = picked.length;
     const shown = full ? L.pinBm(picked) : picked;
-    body = shown.length ? <ul className="items">{shown.slice(0, limit).map((it) => <ItemRow key={it.id} it={it} catId={catId} />)}</ul> : <p className="empty">{cat && cat.chips ? "이 유형의 글이 없어요." : "글이 없어요."}</p>;
+    body = shown.length ? <ul className="items">{shown.slice(0, limit).map((it) => <ItemRow key={it.id} it={it} catId={catId} />)}</ul>
+      : fil ? <NoMatch /> : <p className="empty">{cat && cat.chips ? "이 유형의 글이 없어요." : "글이 없어요."}</p>;
   }
   const pick = (v) => update((p) => { p.chips = { ...(p.chips || {}), [cat.id]: v }; });
   return (

@@ -625,3 +625,15 @@ input[type="search"]:focus, input[type="text"]:focus, textarea:focus { border-co
 .sub-rss { font-size: 14px; }
 .btn.link.inline { padding: 0; font-size: inherit; }
 .due-att { font-size: 12px; color: var(--muted); border: 1px dashed var(--line); border-radius: 4px; padding: 0 5px; line-height: 1.6; }
+
+/* 분류 화면 우상단 거르기 (11/28) */
+.view-head { flex-wrap: wrap; }
+.sec-bar { margin-left: auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 6px; min-width: 0; }
+.sec-q { width: min(220px, 100%); min-width: 0; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--fg); padding: 7px 14px; font: inherit; font-size: 13.5px; }
+.sec-q:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.sec-toggles { display: inline-flex; gap: 6px; }
+.sec-toggles .chip { padding: 5px 11px; font-size: 12.5px; }
+@media (max-width: 520px) { .sec-bar { margin-left: 0; width: 100%; justify-content: flex-start; } .sec-q { flex: 1 1 160px; width: auto; } }
+.sec-bar .sec-q { width: 220px; height: 36px; padding: 0 14px; font-size: 13.5px; border-radius: 999px; flex: 0 1 220px; }
+@media (min-width: 521px) { .sec-bar { flex-wrap: nowrap; } }
+@media (max-width: 520px) { .sec-bar .sec-q { flex: 1 1 160px; width: auto; } }

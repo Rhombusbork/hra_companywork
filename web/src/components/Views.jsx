@@ -88,10 +88,26 @@ export function Schedule() {
   );
 }
 
+// 분류 화면 우상단: 이 분류에서 찾기 + 마감 남은 것만 + 새 글만 (11/28). 화면을 옮기면 비워진다.
+function SecBar({ items }) {
+  const { ui, setUi } = useApp();
+  const hasDue = items.some((it) => it.deadline);
+  return (
+    <div className="sec-bar">
+      <input type="search" id="sec-q" className="sec-q" placeholder="이 분류에서 찾기" aria-label="이 분류에서 찾기" value={ui.secQ} autoComplete="off" enterKeyHint="search"
+        onChange={(e) => setUi({ secQ: e.target.value })} />
+      <span className="sec-toggles">
+        {hasDue && <button className={"chip" + (ui.secOpen ? " on" : "")} aria-pressed={ui.secOpen} onClick={() => setUi({ secOpen: !ui.secOpen })}>마감 남은 것만</button>}
+        <button className={"chip" + (ui.secNew ? " on" : "")} aria-pressed={ui.secNew} onClick={() => setUi({ secNew: !ui.secNew })}>새 글만</button>
+      </span>
+    </div>
+  );
+}
+
 export function ListView({ id }) {
   const { L, P } = useApp();
   if (id === "dept") {
-    return (<><Header /><Catbar current="c-dept" /><Back /><div className="stack"><section className="card main"><DeptBlock limit={999} full /></section></div><Footer /></>);
+    return (<><Header /><Catbar current="c-dept" /><Back><h2>내 학과</h2><SecBar items={L.deptItems()} /></Back><div className="stack"><section className="card main"><DeptBlock limit={999} full /></section></div><Footer /></>);
   }
   let title, items, extra = null, cat = null;
   if (id === "kw") { title = "내 키워드 · " + P.kwIn.join(", "); items = L.kwItems(); }
@@ -102,7 +118,7 @@ export function ListView({ id }) {
   return (
     <>
       <Header /><Catbar current={"c-" + id} />
-      <Back><h2>{title}</h2></Back>{extra}
+      <Back><h2>{title}</h2><SecBar items={items} /></Back>{extra}
       <div className="list-card"><CatBlock cat={cat} items={items} limit={999} catId={id} full /></div>
       <Footer />
     </>

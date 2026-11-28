@@ -21,7 +21,7 @@ export default function App() {
   const [r, setR] = useState(route());
   const [sheet, setSheet] = useState(null);         // null | {type:"item", id} | {type:"bm"}
   const [sheetReturn, setSheetReturn] = useState(null);
-  const [ui, setUiState] = useState({ searchQ: "", deptQuery: "", deptQuery2: "", open2: false, selDay: null, calMonth: null, obStep: 0 });
+  const [ui, setUiState] = useState({ searchQ: "", secQ: "", secOpen: false, secNew: false, deptQuery: "", deptQuery2: "", open2: false, selDay: null, calMonth: null, obStep: 0 });
   const setUi = useCallback((patch) => setUiState((u) => ({ ...u, ...patch })), []);
   const pRef = useRef(null);
   pRef.current = P;
@@ -55,6 +55,7 @@ export default function App() {
     const on = () => {
       const nr = route();
       setR(nr); setSheet(null); setSheetReturn(null);
+      setUi({ secQ: "", secOpen: false, secNew: false });
       if ((nr === "setup" || nr === "dept") && pRef.current) { setDraft(clone(pRef.current)); setUi({ open2: false, deptQuery: "", deptQuery2: "" }); }
       window.scrollTo(0, 0);
     };
