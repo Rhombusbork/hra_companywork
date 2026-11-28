@@ -1,0 +1,316 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//jnu-moa//KO
+CALSCALE:GREGORIAN
+X-WR-CALNAME:제주대 모아보기 마감·학사일정
+X-WR-TIMEZONE:Asia/Seoul
+REFRESH-INTERVAL;VALUE=DURATION:PT6H
+BEGIN:VEVENT
+UID:dl-jnu:283732@jnu-moa
+DTSTAMP:20261128T035428Z
+DTSTART;VALUE=DATE:20261204
+DTEND;VALUE=DATE:20261205
+SUMMARY:[마감] 【교수학습지원센터】 2026학년도 「AI 활용 학문적 의사소통 동계 캠프」 참여자 모집 안내 (~12/4)
+URL:https://www.jejunu.ac.kr/ara/noticesurvey/outEvent.htm?act=view&seq=283732
+DESCRIPTION:원문에서 꼭 확인하세요. https://www.jejunu.ac.kr/ara/noticesurvey/outEvent.htm?act=view&seq=283732
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT15H
+DESCRIPTION:[마감] 【교수학습지원센터】 2026학년도 「AI 활용 학문적 의사소통 동계 캠프」 참여자 모집 안내 (~12/4)
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:dl-jnu:283648@jnu-moa
+DTSTAMP:20261128T035428Z
+DTSTART;VALUE=DATE:20261206
+DTEND;VALUE=DATE:20261207
+SUMMARY:[마감] 【교수학습지원센터】 2026학년도 「AI 바이브코딩 챌린지 공모전」참여자 모집 안내 (~12/6)
+URL:https://www.jejunu.ac.kr/ara/noticesurvey/outEvent.htm?act=view&seq=283648
+DESCRIPTION:원문에서 꼭 확인하세요. https://www.jejunu.ac.kr/ara/noticesurvey/outEvent.htm?act=view&seq=283648
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT15H
+DESCRIPTION:[마감] 【교수학습지원센터】 2026학년도 「AI 바이브코딩 챌린지 공모전」참여자 모집 안내 (~12/6)
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:dl-dormitory:283595@jnu-moa
+DTSTAMP:20261128T035428Z
+DTSTART;VALUE=DATE:20270107
+DTEND;VALUE=DATE:20270108
+SUMMARY:[마감] [11.24.~1.7.]2027년 1학기 국가장학금 1차 신청 안내
+URL:https://dormitory.jejunu.ac.kr/dormitory/notice/notice.htm?act=view&seq=283595
+DESCRIPTION:원문에서 꼭 확인하세요. https://dormitory.jejunu.ac.kr/dormitory/notice/notice.htm?act=view&seq=283595
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT15H
+DESCRIPTION:[마감] [11.24.~1.7.]2027년 1학기 국가장학금 1차 신청 안내
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:dl-youth:1316@jnu-moa
+DTSTAMP:20261128T035428Z
+DTSTART;VALUE=DATE:20261129
+DTEND;VALUE=DATE:20261130
+SUMMARY:[마감] 제주사회적경제네트워크 / 2026년 지역 돌봄 공동체 인큐베이팅 사업 참가팀 모집(~11.29.)
+URL:https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id=1316
+DESCRIPTION:원문에서 꼭 확인하세요. https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id=1316
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT15H
+DESCRIPTION:[마감] 제주사회적경제네트워크 / 2026년 지역 돌봄 공동체 인큐베이팅 사업 참가팀 모집(~11.29.)
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:dl-youth:1315@jnu-moa
+DTSTAMP:20261128T035428Z
+DTSTART;VALUE=DATE:20261214
+DTEND;VALUE=DATE:20261215
+SUMMARY:[마감] SK행복나눔재단 / 2027년 SK 뉴스쿨 신입생 모집(~12.14.)
+URL:https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id=1315
+DESCRIPTION:원문에서 꼭 확인하세요. https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id=1315
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT15H
+DESCRIPTION:[마감] SK행복나눔재단 / 2027년 SK 뉴스쿨 신입생 모집(~12.14.)
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:dl-youth:1314@jnu-moa
+DTSTAMP:20261128T035428Z
+DTSTART;VALUE=DATE:20261214
+DTEND;VALUE=DATE:20261215
+SUMMARY:[마감] 제주신용보증재단 / 2026 창업아카데미 11기(~12.14.)
+URL:https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id=1314
+DESCRIPTION:원문에서 꼭 확인하세요. https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id=1314
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT15H
+DESCRIPTION:[마감] 제주신용보증재단 / 2026 창업아카데미 11기(~12.14.)
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:dl-library:7156@jnu-moa
+DTSTAMP:20261128T035428Z
+DTSTART;VALUE=DATE:20261130
+DTEND;VALUE=DATE:20261201
+SUMMARY:[마감] [BK21]2026 대학원생을 위한 연구윤리 교육: 신청기간('26.11.23.(월)~11.30.(월))
+URL:https://lib.jejunu.ac.kr/
+DESCRIPTION:원문에서 꼭 확인하세요. https://lib.jejunu.ac.kr/
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT15H
+DESCRIPTION:[마감] [BK21]2026 대학원생을 위한 연구윤리 교육: 신청기간('26.11.23.(월)~11.30.(월))
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:dl-youth:1311@jnu-moa
+DTSTAMP:20261128T035428Z
+DTSTART;VALUE=DATE:20261128
+DTEND;VALUE=DATE:20261129
+SUMMARY:[마감] 아라종합사회복지관 / 나의 반려 먼지 만들기 원데이클래스(~11.28.)
+URL:https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id=1311
+DESCRIPTION:원문에서 꼭 확인하세요. https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id=1311
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT15H
+DESCRIPTION:[마감] 아라종합사회복지관 / 나의 반려 먼지 만들기 원데이클래스(~11.28.)
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:dl-youth:1310@jnu-moa
+DTSTAMP:20261128T035428Z
+DTSTART;VALUE=DATE:20261207
+DTEND;VALUE=DATE:20261208
+SUMMARY:[마감] 스타트업베이 / 2027년 서귀포시 스타트업베이 입주기업 9기 모집(~12.7.)
+URL:https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id=1310
+DESCRIPTION:원문에서 꼭 확인하세요. https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id=1310
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT15H
+DESCRIPTION:[마감] 스타트업베이 / 2027년 서귀포시 스타트업베이 입주기업 9기 모집(~12.7.)
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:dl-youth:1305@jnu-moa
+DTSTAMP:20261128T035428Z
+DTSTART;VALUE=DATE:20261202
+DTEND;VALUE=DATE:20261203
+SUMMARY:[마감] 제주신용보증재단 / 2026 디지털전환(마케팅) 교육 실시(~12.2.)
+URL:https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id=1305
+DESCRIPTION:원문에서 꼭 확인하세요. https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id=1305
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT15H
+DESCRIPTION:[마감] 제주신용보증재단 / 2026 디지털전환(마케팅) 교육 실시(~12.2.)
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:dl-youth:1302@jnu-moa
+DTSTAMP:20261128T035428Z
+DTSTART;VALUE=DATE:20261204
+DTEND;VALUE=DATE:20261205
+SUMMARY:[마감] 제주곶자왈공유화재단 / 2026년 제2차 신입직원 정규직 채용 공고(~12.4. 17:00)
+URL:https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id=1302
+DESCRIPTION:원문에서 꼭 확인하세요. https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id=1302
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT15H
+DESCRIPTION:[마감] 제주곶자왈공유화재단 / 2026년 제2차 신입직원 정규직 채용 공고(~12.4. 17:00)
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:dl-jedaero:PRM_000000000873@jnu-moa
+DTSTAMP:20261128T035428Z
+DTSTART;VALUE=DATE:20261130
+DTEND;VALUE=DATE:20261201
+SUMMARY:[마감] [4-1] 성인학습자 생애주기별 평생교육 프로그램 (2단계)
+URL:https://jedaero.jejunu.ac.kr/Platform/prm/list/total.do
+DESCRIPTION:원문에서 꼭 확인하세요. https://jedaero.jejunu.ac.kr/Platform/prm/list/total.do
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT15H
+DESCRIPTION:[마감] [4-1] 성인학습자 생애주기별 평생교육 프로그램 (2단계)
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:dl-youth:1186@jnu-moa
+DTSTAMP:20261128T035428Z
+DTSTART;VALUE=DATE:20261231
+DTEND;VALUE=DATE:20270101
+SUMMARY:[마감] 제주특별자치도 / 빛나는 제주 청년희망 대출 3.0 이자 지원사업 알림(~12.31.)
+URL:https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id=1186
+DESCRIPTION:원문에서 꼭 확인하세요. https://jejuyouth.com/bbs/board.php?bo_table=1_2_2_1&wr_id=1186
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT15H
+DESCRIPTION:[마감] 제주특별자치도 / 빛나는 제주 청년희망 대출 3.0 이자 지원사업 알림(~12.31.)
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ac-2026-10-26-ed2f8281@jnu-moa
+DTSTAMP:20261128T035428Z
+DTSTART;VALUE=DATE:20261026
+DTEND;VALUE=DATE:20261208
+SUMMARY:[학사] (대학원) 2학기 논문심사 및 공개발표 기간
+URL:https://www.jejunu.ac.kr/admission/eduguide/degree/academyschedule/academic.htm?year=2026
+DESCRIPTION:원문에서 꼭 확인하세요. https://www.jejunu.ac.kr/admission/eduguide/degree/academyschedule/academic.htm?year=2026
+END:VEVENT
+BEGIN:VEVENT
+UID:ac-2026-12-08-413b5101@jnu-moa
+DTSTAMP:20261128T035428Z
+DTSTART;VALUE=DATE:20261208
+DTEND;VALUE=DATE:20261215
+SUMMARY:[학사] 2학기 보강수업 기간
+URL:https://www.jejunu.ac.kr/admission/eduguide/degree/academyschedule/academic.htm?year=2026
+DESCRIPTION:원문에서 꼭 확인하세요. https://www.jejunu.ac.kr/admission/eduguide/degree/academyschedule/academic.htm?year=2026
+END:VEVENT
+BEGIN:VEVENT
+UID:ac-2026-12-15-d491f42d@jnu-moa
+DTSTAMP:20261128T035428Z
+DTSTART;VALUE=DATE:20261215
+DTEND;VALUE=DATE:20261222
+SUMMARY:[학사] 2학기 기말시험 기간
+URL:https://www.jejunu.ac.kr/admission/eduguide/degree/academyschedule/academic.htm?year=2026
+DESCRIPTION:원문에서 꼭 확인하세요. https://www.jejunu.ac.kr/admission/eduguide/degree/academyschedule/academic.htm?year=2026
+END:VEVENT
+BEGIN:VEVENT
+UID:ac-2026-12-18-c39faea4@jnu-moa
+DTSTAMP:20261128T035428Z
+DTSTART;VALUE=DATE:20261218
+DTEND;VALUE=DATE:20261225
+SUMMARY:[학사] (대학원) 학·석사연계과정 신청기간
+URL:https://www.jejunu.ac.kr/admission/eduguide/degree/academyschedule/academic.htm?year=2026
+DESCRIPTION:원문에서 꼭 확인하세요. https://www.jejunu.ac.kr/admission/eduguide/degree/academyschedule/academic.htm?year=2026
+END:VEVENT
+BEGIN:VEVENT
+UID:ac-2026-12-21-675153f2@jnu-moa
+DTSTAMP:20261128T035428Z
+DTSTART;VALUE=DATE:20261221
+DTEND;VALUE=DATE:20261222
+SUMMARY:[학사] 2학기 종강
+URL:https://www.jejunu.ac.kr/admission/eduguide/degree/academyschedule/academic.htm?year=2026
+DESCRIPTION:원문에서 꼭 확인하세요. https://www.jejunu.ac.kr/admission/eduguide/degree/academyschedule/academic.htm?year=2026
+END:VEVENT
+BEGIN:VEVENT
+UID:ac-2026-12-28-9f9d1cd9@jnu-moa
+DTSTAMP:20261128T035428Z
+DTSTART;VALUE=DATE:20261228
+DTEND;VALUE=DATE:20270119
+SUMMARY:[학사] 동기계절수업 개강
+URL:https://www.jejunu.ac.kr/admission/eduguide/degree/academyschedule/academic.htm?year=2026
+DESCRIPTION:원문에서 꼭 확인하세요. https://www.jejunu.ac.kr/admission/eduguide/degree/academyschedule/academic.htm?year=2026
+END:VEVENT
+BEGIN:VEVENT
+UID:ac-2027-01-04-17cf15d7@jnu-moa
+DTSTAMP:20261128T035428Z
+DTSTART;VALUE=DATE:20270104
+DTEND;VALUE=DATE:20270107
+SUMMARY:[학사] (대학원) 2학기 석·박사학위논문 제출
+URL:https://www.jejunu.ac.kr/admission/eduguide/degree/academyschedule/academic.htm?year=2026
+DESCRIPTION:원문에서 꼭 확인하세요. https://www.jejunu.ac.kr/admission/eduguide/degree/academyschedule/academic.htm?year=2026
+END:VEVENT
+BEGIN:VEVENT
+UID:ac-2027-01-05-bd5c6fc5@jnu-moa
+DTSTAMP:20261128T035428Z
+DTSTART;VALUE=DATE:20270105
+DTEND;VALUE=DATE:20270109
+SUMMARY:[학사] 2027학년도 전과 신청 기간
+URL:https://www.jejunu.ac.kr/admission/eduguide/degree/academyschedule/academic.htm?year=2026
+DESCRIPTION:원문에서 꼭 확인하세요. https://www.jejunu.ac.kr/admission/eduguide/degree/academyschedule/academic.htm?year=2026
+END:VEVENT
+BEGIN:VEVENT
+UID:ac-2027-01-06-81ec9afc@jnu-moa
+DTSTAMP:20261128T035428Z
+DTSTART;VALUE=DATE:20270106
+DTEND;VALUE=DATE:20270114
+SUMMARY:[학사] 2027학년도 1학기 재입학 신청 기간
+URL:https://www.jejunu.ac.kr/admission/eduguide/degree/academyschedule/academic.htm?year=2026
+DESCRIPTION:원문에서 꼭 확인하세요. https://www.jejunu.ac.kr/admission/eduguide/degree/academyschedule/academic.htm?year=2026
+END:VEVENT
+BEGIN:VEVENT
+UID:ac-2027-01-18-6d134487@jnu-moa
+DTSTAMP:20261128T035428Z
+DTSTART;VALUE=DATE:20270118
+DTEND;VALUE=DATE:20270119
+SUMMARY:[학사] 동기계절수업 종강
+URL:https://www.jejunu.ac.kr/admission/eduguide/degree/academyschedule/academic.htm?year=2026
+DESCRIPTION:원문에서 꼭 확인하세요. https://www.jejunu.ac.kr/admission/eduguide/degree/academyschedule/academic.htm?year=2026
+END:VEVENT
+BEGIN:VEVENT
+UID:ac-2027-02-02-cb4bf5d2@jnu-moa
+DTSTAMP:20261128T035428Z
+DTSTART;VALUE=DATE:20270202
+DTEND;VALUE=DATE:20270205
+SUMMARY:[학사] 2027학년도 1학기 희망과목담기 기간(재학생)
+URL:https://www.jejunu.ac.kr/admission/eduguide/degree/academyschedule/academic.htm?year=2026
+DESCRIPTION:원문에서 꼭 확인하세요. https://www.jejunu.ac.kr/admission/eduguide/degree/academyschedule/academic.htm?year=2026
+END:VEVENT
+BEGIN:VEVENT
+UID:ac-2027-02-10-0f3d57bb@jnu-moa
+DTSTAMP:20261128T035428Z
+DTSTART;VALUE=DATE:20270210
+DTEND;VALUE=DATE:20270213
+SUMMARY:[학사] 2027학년도 1학기 수강신청 기간(재학생)
+URL:https://www.jejunu.ac.kr/admission/eduguide/degree/academyschedule/academic.htm?year=2026
+DESCRIPTION:원문에서 꼭 확인하세요. https://www.jejunu.ac.kr/admission/eduguide/degree/academyschedule/academic.htm?year=2026
+END:VEVENT
+BEGIN:VEVENT
+UID:ac-2027-02-19-2392c63d@jnu-moa
+DTSTAMP:20261128T035428Z
+DTSTART;VALUE=DATE:20270219
+DTEND;VALUE=DATE:20270220
+SUMMARY:[학사] 2026학년도 전기 학위수여식(제71회)
+URL:https://www.jejunu.ac.kr/admission/eduguide/degree/academyschedule/academic.htm?year=2026
+DESCRIPTION:원문에서 꼭 확인하세요. https://www.jejunu.ac.kr/admission/eduguide/degree/academyschedule/academic.htm?year=2026
+END:VEVENT
+BEGIN:VEVENT
+UID:ac-2027-02-24-3ad3a01f@jnu-moa
+DTSTAMP:20261128T035428Z
+DTSTART;VALUE=DATE:20270224
+DTEND;VALUE=DATE:20270227
+SUMMARY:[학사] 2027학년도 1학기 수강신청 기간(신입생)
+URL:https://www.jejunu.ac.kr/admission/eduguide/degree/academyschedule/academic.htm?year=2026
+DESCRIPTION:원문에서 꼭 확인하세요. https://www.jejunu.ac.kr/admission/eduguide/degree/academyschedule/academic.htm?year=2026
+END:VEVENT
+END:VCALENDAR
