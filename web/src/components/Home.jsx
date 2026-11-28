@@ -155,7 +155,7 @@ export function Home() {
             return (
               <div key={w.id} className="g-item" onPointerDown={onDown} onPointerMove={cancelPress} onPointerUp={cancelPress} onPointerCancel={cancelPress}>
                 <section className={`b-tile tile-${w.cat ? "cat" : w.id} tone-${tone} shape-${lk.shape}${list ? " is-list" : ""}${w.id === "dept" ? " is-main" : ""} w${l.w}`} aria-label={w.title}>
-                  <TileBody w={w} hPx={px(l.h)} used={usedFor[w.id]} />
+                  <TileBody w={w} hPx={px(l.h)} used={usedFor[w.id]} look={lk} />
                 </section>
                 {editing && <div className="edit-cover" aria-hidden="true" />}
                 {editing && (
@@ -173,6 +173,14 @@ export function Home() {
                         <button key={s.id} className={l.w === Math.min(s.w, COLS[bp]) && l.h === s.h ? "on" : ""} onClick={() => setSize(w.id, s)}>{s.label}</button>
                       ))}
                     </div></div>
+                    {w.id === "cal" && (
+                      <div className="tm-row"><span>아래 칸</span><div className="tm-opts">
+                        {[["week", "이번 주"], ["due", "마감 임박 (D-3)"]].map(([v, lbl]) => (
+                          <button key={v} className={(lk.calMode || "week") === v ? "on" : ""} onClick={() => setLook(w.id, "calMode", v)}>{lbl}</button>
+                        ))}
+                      </div></div>
+                    )}
+                    {w.id === "cal" && (lk.calMode === "due") && <p className="tm-hint">마감 임박을 고르면 왼쪽이 줄고 달력이 커져요. 3일 안 마감만 보여요(기본 크기 2줄, 길게 하면 3줄).</p>}
                     <div className="tm-row"><span>색</span><div className="tm-opts">
                       {TONES.map((t) => <button key={t.id} className={lk.tone === t.id ? "on" : ""} onClick={() => setLook(w.id, "tone", t.id)}><i className={"sw sw-" + (t.id === "auto" ? AUTO_TONE[w.id] || "white" : t.id)} />{t.label}</button>)}
                     </div></div>
