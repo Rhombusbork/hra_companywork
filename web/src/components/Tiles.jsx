@@ -148,7 +148,8 @@ export function DeptBlock({ limit, full }) {
   const name = boards.length ? boards.map((b) => b.label).join(" · ") : "학과를 아직 고르지 않았어요";
   const counts = {};
   items.forEach((it) => it._tags.forEach((t) => (counts[t] = (counts[t] || 0) + 1)));
-  const shown = tagSel !== "all" ? items.filter((it) => it._tags.includes(tagSel)) : items;
+  const picked = tagSel !== "all" ? items.filter((it) => it._tags.includes(tagSel)) : items;
+  const shown = full ? L.pinBm(picked) : picked;
   const tags = D.cfg.dept_tags.filter((t) => counts[t.id] || (t.id === "teach" && P.teach));
   const got = new Set(D.meta.dept_boards || []);
   const notYet = D.meta.dept_boards ? boards.filter((b) => b.board && !got.has(b.board)) : [];
@@ -186,7 +187,8 @@ export function CatBlock({ cat, items, limit, catId, title, sub, href, full }) {
     const ev = L.acadUpcoming(); n = ev.length;
     body = <ul className="items">{ev.slice(0, limit).map((e, i) => <AcadRow key={i} e={e} />)}</ul>;
   } else {
-    const shown = ch ? items.filter((it) => L.chipHit(ch, it, cat)) : items; n = shown.length;
+    const picked = ch ? items.filter((it) => L.chipHit(ch, it, cat)) : items; n = picked.length;
+    const shown = full ? L.pinBm(picked) : picked;
     body = shown.length ? <ul className="items">{shown.slice(0, limit).map((it) => <ItemRow key={it.id} it={it} catId={catId} />)}</ul> : <p className="empty">{cat && cat.chips ? "이 유형의 글이 없어요." : "글이 없어요."}</p>;
   }
   const pick = (v) => update((p) => { p.chips = { ...(p.chips || {}), [cat.id]: v }; });

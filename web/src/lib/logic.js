@@ -61,6 +61,11 @@ export function makeLogic(D, P) {
     });
   }
 
+  // 분류 화면 안(전체 목록)에서만: 북마크한 글을 맨 위로. 마감이 지난 북마크는 올리지 않는다(11/28).
+  // 홈 칸은 순서를 바꾸지 않는다(새 글이 밀려나지 않게).
+  const pinnable = (it) => !!P.bm[it.id] && !(it.deadline && diffDays(it.deadline, TODAY) < 0);
+  const pinBm = (arr) => [...arr.filter(pinnable), ...arr.filter((it) => !pinnable(it))];
+
   let _dept = null;
   function deptItems() {
     // 내 학과 게시판 글 + 내 학과가 다시 올린 본부 글 + (교직 이수면) 교직 글 + 졸업요건·자격 글
@@ -166,7 +171,7 @@ export function makeLogic(D, P) {
   return {
     TODAY, T, depById, catById, deptTags, inCat, visible, myBoards, sortItems, deptItems, catItems, kwItems, shownCats,
     myItems, isNew, soonList, srcOf, events, eventsOn, dotKinds, isLong, kindOrder, weekDays, acadUpcoming, chipSel, chipHit,
-    todayMeals, findItem, visitedBefore: !!lv,
+    todayMeals, findItem, visitedBefore: !!lv, pinBm,
   };
 }
 
