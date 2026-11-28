@@ -1,6 +1,6 @@
 {
  "_note": "collector/collect.py 가 학교 식단 페이지에서 만든 데이터.",
- "generated_at": "2026-11-28T06:58:18+09:00",
+ "generated_at": "2026-11-28T12:54:28+09:00",
  "week": "2026-11-23",
  "restaurants": {
   "baekdu": {
@@ -174,8 +174,7 @@
      }
     ]
    },
-   "updated": "2026-11-27T21:19:31+09:00",
-   "error": "ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+   "updated": "2026-11-28T12:54:28+09:00"
   },
   "six": {
    "label": "6호관",
@@ -504,7 +503,7 @@
      }
     ]
    },
-   "updated": "2026-11-28T06:58:18+09:00"
+   "updated": "2026-11-28T12:54:28+09:00"
   },
   "one": {
    "label": "1호관",
@@ -538,14 +537,6 @@
        "핫바",
        "나랑드사이다"
       ]
-     },
-     {
-      "meal": "석식",
-      "menu": [
-       "족발덮밥"
-      ],
-      "note": "인스타 글",
-      "url": "https://www.instagram.com/p/DgCVfZyD7lJ/"
      }
     ],
     "2026-11-23": [
@@ -771,6 +762,16 @@
       "url": "https://www.instagram.com/p/DgPMI2QD7yT/"
      }
     ],
+    "2026-11-28": [
+     {
+      "meal": "중식",
+      "menu": [
+       "제육볶음, 볶음밥, 짜장라면"
+      ],
+      "note": "인스타 글",
+      "url": "https://www.instagram.com/p/DgRIxOsD0qJ/"
+     }
+    ],
     "2026-11-29": [
      {
       "meal": "조식(천원의 아침밥)",
@@ -946,7 +947,7 @@
      }
     ]
    },
-   "updated": "2026-11-28T06:58:18+09:00",
+   "updated": "2026-11-28T12:54:28+09:00",
    "got": [
     "아침",
     "인스타"
@@ -1077,7 +1078,7 @@
      }
     ]
    },
-   "updated": "2026-11-28T06:58:18+09:00"
+   "updated": "2026-11-28T12:54:28+09:00"
   }
  }
 }
