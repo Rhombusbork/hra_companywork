@@ -17,44 +17,7 @@ function listLimit(hPx, overhead) { return Math.max(1, Math.floor((hPx - overhea
 //   크게(높이 6줄~): + 이번 주 7일 줄
 //   길게(높이 9줄~): + 이번 주 일정 목록
 const KIND_LBL = { due: "마감", acad: "학사", bm: "북마크" };
-// 칸 옵션 '아래 칸'(11/28): week = 이번 주 줄(기본) / due = 왼쪽을 줄이고 달력을 키운 뒤 아래에 마감 임박(D-3 안쪽, 3줄)
-const DUE_DAYS = 3, DUE_ROWS = 3;
-function DueStrip({ rows = DUE_ROWS }) {
-  const { L, openItem } = useApp();
-  const open = L.sortItems(L.myItems().filter((it) => it.deadline && diffDays(it.deadline, L.TODAY) >= 0))
-    .sort((a, b) => (a.deadline < b.deadline ? -1 : a.deadline > b.deadline ? 1 : 0));
-  const near = open.filter((it) => diffDays(it.deadline, L.TODAY) <= DUE_DAYS);
-  const after = open.find((it) => diffDays(it.deadline, L.TODAY) > DUE_DAYS);
-  const go = (it) => (e) => { e.preventDefault(); openItem(it.id); };
-  return (
-    <div className="cal-due">
-      <div className="b-head"><span className="b-k"><span className="mono">DUE</span> 마감 임박<small>{near.length ? `${DUE_DAYS}일 안 ${near.length}건` : `${DUE_DAYS}일 안 마감 없음`}</small></span><a href="#schedule">일정 ›</a></div>
-      {near.length > 0 && (
-        <ul className="cd-list">
-          {near.slice(0, rows).map((it) => {
-            const d = diffDays(it.deadline, L.TODAY);
-            return (
-              <li key={it.id}>
-                <span className={"cd-d mono" + (d <= 1 ? " hot" : "")}>{dLabel(d)}</span>
-                <a href={it.url} data-open={it.id} onClick={go(it)}>{cleanTitle(it.title)}</a>
-                <span className="cd-src">{L.srcOf(it)}</span>
-              </li>
-            );
-          })}
-        </ul>
-      )}
-      {(near.length > rows || after) && (
-        <p className="cd-foot">
-          {near.length > rows && <>외 {near.length - rows}건</>}
-          {near.length > rows && after && " · "}
-          {after && <>그다음: <a href={after.url} data-open={after.id} onClick={go(after)}>{dLabel(diffDays(after.deadline, L.TODAY))} {cleanTitle(after.title)}</a></>}
-        </p>
-      )}
-    </div>
-  );
-}
-
-export function CalTile({ hPx, mode = "week" }) {
+export function CalTile({ hPx }) {
   const { L, goDay } = useApp();
   const t = L.T, [y, m, d] = t.split("-").map(Number), wd = weekday(t);
   const todayEv = L.eventsOn(t);
@@ -66,13 +29,10 @@ export function CalTile({ hPx, mode = "week" }) {
   const week = L.weekDays();
   const weekEv = week.flatMap((day) => L.eventsOn(day).filter((e) => !L.isLong(e) || e.date === day).map((e) => ({ ...e, day })))
     .filter((e, i, arr) => arr.findIndex((x) => x.title === e.title && x.kind === e.kind) === i);
-  const dueMode = mode === "due";
-  const showWeek = !dueMode && hPx >= 340, showAgenda = !dueMode && hPx >= 440, showDue = dueMode && hPx >= 300;
-  // 칸 높이에 맞춰 줄 수를 정한다 (기본 크게 2×7 이면 2줄, 길게 2×9 부터 3줄)
-  const dueRows = Math.max(1, Math.min(DUE_ROWS, Math.floor((hPx - 40 - 200 - 12 - 28 - 18) / 24)));
+  const showWeek = hPx >= 340, showAgenda = hPx >= 440;
   const agendaN = Math.max(0, Math.floor((hPx - 380) / 30));
   return (
-    <div className={"t-cal" + (dueMode ? " mode-due" : "")}>
+    <div className="t-cal">
       <div className="cal-top">
         <div className="cal-today">
           <span className="ct-wd">{WD[wd]}요일</span>
@@ -116,7 +76,6 @@ export function CalTile({ hPx, mode = "week" }) {
           </div>
         </div>
       )}
-      {showDue && <DueStrip rows={dueRows} />}
       {showAgenda && agendaN > 0 && (
         <ul className="cal-agenda">
           {weekEv.slice(0, agendaN).map((e, i) => (
@@ -257,10 +216,10 @@ export function tileLimit(w, hPx, L) {
 
 const LAYER = { 1: "모두에게 필요한 것", 2: "내 학과와 가까운 것", 3: "그 밖" };
 
-export function TileBody({ w, hPx, used, look }) {
+export function TileBody({ w, hPx, used }) {
   const { D, L, P } = useApp();
   switch (w.id) {
-    case "cal": return <CalTile hPx={hPx} mode={(look && look.calMode) || "week"} />;
+    case "cal": return <CalTile hPx={hPx} />;
     case "urgent": return <UrgentTile />;
     case "count": return <CountTile />;
     case "meal": return <MealTile hPx={hPx} />;

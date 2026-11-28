@@ -373,22 +373,3 @@
 .fav-btn { align-self: flex-start; border: 1.5px solid var(--line-2); background: var(--surface); border-radius: 999px; padding: 5px 12px; font: inherit; font-size: 13px; font-weight: 700; color: var(--muted); cursor: pointer; }
 .fav-btn.on { border-color: var(--star); color: var(--star); background: transparent; }
 .pick-hint { margin: -6px 2px var(--s3); }
-
-/* 오늘·달력 칸 '아래 칸: 마감 임박' (11/28): 왼쪽을 줄이고 달력을 키운 뒤 아래에 D-3 안쪽 마감 3줄 */
-.t-cal.mode-due { gap: var(--s3); }
-.t-cal.mode-due .cal-top { grid-template-columns: minmax(0, 1fr) minmax(0, 2.2fr); height: min(100%, 200px); }
-.t-cal.mode-due .cm-d { height: 25px; font-size: 13px; }
-.t-cal.mode-due .cm-d.today { width: 25px; }
-.t-cal.mode-due .cm-dot { width: 5px; height: 5px; margin-left: -2.5px; bottom: -1px; }
-.t-cal.mode-due .cm-wd span { font-size: 11.5px; }
-.cal-due { border-top: 1px solid var(--line); padding-top: var(--s2); flex: none; min-width: 0; }
-.cal-due .b-head small { margin-left: 6px; font-size: 11.5px; font-weight: 500; color: var(--muted); }
-.cd-list { list-style: none; margin: 4px 0 0; padding: 0; }
-.cd-list li { display: grid; grid-template-columns: 3.2em minmax(0, 1fr) auto; gap: 8px; align-items: center; padding: 3px 0; font-size: 12.5px; min-width: 0; }
-.cd-d { text-align: center; font-size: 11px; font-weight: 700; border-radius: 6px; padding: 1px 0; background: var(--due-soft); color: var(--due); }
-.cd-d.hot { background: var(--due-dot); color: #1b0e05; }
-.cd-list a, .cd-foot a { color: inherit; text-decoration: none; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
-.cd-list a:hover, .cd-foot a:hover { text-decoration: underline; }
-.cd-src { font-size: 11.5px; color: var(--muted); white-space: nowrap; }
-.cd-foot { margin: 2px 0 0; font-size: 11.5px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-@container (max-width: 380px) { .t-cal.mode-due .cal-top { grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); } .cd-src { display: none; } }
