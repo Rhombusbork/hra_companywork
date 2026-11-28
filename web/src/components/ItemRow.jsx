@@ -36,6 +36,7 @@ export function ItemRow({ it, catId }) {
           {tag && <span className="badge tag">{tag.label}</span>}
           <span className="src">{src}</span>
           {it._note && <span className="src note">{it._note}</span>}
+          {!it.deadline && it.attachments && it.attachments.length > 0 && P.marks.dueOn && !marksOff && it.source !== "library" && <span className="due-att" title="제목·게시판 칸에 마감일이 없어요. 대개 첨부 공고문에 있어요">마감일은 첨부에서</span>}
           {it.attachments && it.attachments.length > 0 && <span className="att-n" title={it.attachments.map((a) => a.name).join(", ")}><Clip />{it.attachments.length}</span>}
         </div>
       </div>

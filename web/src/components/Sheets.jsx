@@ -12,11 +12,13 @@ function useFocusClose() {
 export function DetailSheet({ id }) {
   const { L, P, toggleBm, closeSheet, update, hideSource } = useApp();
   const ref = useFocusClose();
+  const [shareMsg, setShareMsg] = useState("");
   const it = L.findItem(id);
   if (!it) return null;
   const bm = P.bm[it.id];
   const srcLabel = { field: "게시판의 접수 마감 칸", title: "제목에 적힌 날짜", ai: "AI 추정 · 첨부 문서에서 읽음, 원문에서 꼭 확인" }[it.deadline_src] || "";
-  let due = "알 수 없음 (제목·칸에 없음)";
+  const hasAtt = it.attachments && it.attachments.length > 0;
+  let due = hasAtt ? <>첨부에서 확인<small>제목·게시판 칸에 없어요. 마감일은 대개 첨부 공고문에 있어요</small></> : "알 수 없음 (제목·칸에 없음)";
   if (it.deadline) {
     const d = diffDays(it.deadline, L.TODAY);
     due = <>{mdw(it.deadline)} · {d < 0 ? "마감됨" : d === 0 ? "오늘 마감" : "D-" + d}<small>{srcLabel}</small></>;
@@ -40,12 +42,29 @@ export function DetailSheet({ id }) {
         )}
         <div className="actions">
           <button className={"btn" + (bm ? " on" : "")} data-bm={it.id} aria-pressed={!!bm} onClick={() => toggleBm(it.id)}>{bm ? "★ 북마크함" : "☆ 북마크"}</button>
+          <button className="btn" data-act="share" onClick={() => shareLink(it, setShareMsg)}>공유</button>
           <a className="btn primary" href={it.url} target="_blank" rel="noopener">원문 열기 ↗</a>
         </div>
+        {shareMsg && <p className="hint share-msg" role="status">{shareMsg}</p>}
         {it.source !== "dept" && <button className="btn link" data-hide={it.source} onClick={() => hideSource(it.source)}>{it.source_name} 글 숨기기</button>}
       </section>
     </>
   );
+}
+
+// 공유: 학교 원문 링크를 보낸다 (11/28 사용자 결정). 휴대폰은 공유 창, 아니면 복사.
+function shareLink(it, setMsg) {
+  const text = `${it.title}\n${it.url}`;
+  if (navigator.share) {
+    navigator.share({ title: it.title, url: it.url }).then(() => setMsg(""), (e) => { if (e && e.name !== "AbortError") copy(); });
+    return;
+  }
+  copy();
+  function copy() {
+    try {
+      navigator.clipboard.writeText(text).then(() => setMsg("제목과 원문 링크를 복사했어요. 단톡방에 붙여 넣으세요."), () => setMsg("복사가 막혔어요. 원문 열기에서 주소를 복사해 주세요."));
+    } catch (e) { setMsg("복사가 막혔어요. 원문 열기에서 주소를 복사해 주세요."); }
+  }
 }
 
 function icsFile(D, P) {
@@ -65,8 +84,19 @@ function icsFile(D, P) {
   return lines.join("\r\n");
 }
 
+// 구독 주소 (북마크 창에서만 보여 준다. 예전엔 바닥글에 따로 있었다)
+export function subLinks(D, L) {
+  const base = new URL("data/feeds/", location.href).href;
+  const got = new Set(D.meta.dept_boards || []);
+  const mine = L.myBoards().find((b) => b.board && got.has(b.board));
+  const rss = [[base + "all.xml", "전체"], [base + "scholar.xml", "장학"]];
+  if (mine) rss.push([base + "dept-" + mine.board.replace(/^https?:\/\/([^./]+).*/, "$1") + ".xml", mine.label]);
+  return { cal: base.replace(/^https?:/, "webcal:") + "deadlines.ics", rss };
+}
+
 export function BmDrawer() {
   const { D, P, L, closeSheet, toggleBm, openItem } = useApp();
+  const subs = subLinks(D, L);
   const ref = useFocusClose();
   const [msg, setMsg] = useState("");
   const byId = new Map(D.items.map((it) => [it.id, it]));
@@ -104,10 +134,17 @@ export function BmDrawer() {
             {noDate.length > 0 && <><h3 className="bm-sub">날짜 없는 북마크 {noDate.length}</h3><p className="hint">제목을 눌러 달력에 넣을 날짜를 고를 수 있어요.</p><ul className="bm-list">{noDate.map(li)}</ul></>}
           </>
         ) : <p className="empty">글의 ☆ 를 누르면 여기에 모여요.</p>}
-        <div className="drawer-actions">
-          <button className="btn" data-act="ics" disabled={!withDate.length} onClick={ics}>휴대폰 캘린더에 추가 (.ics)</button>
-          <p className="hint ics-msg">{msg || `날짜가 있는 북마크 ${withDate.length}개를 파일로 받아요. 미리보기 링크에서는 내려받기가 막혀 있어요.`}</p>
-        </div>
+        <section className="drawer-actions subs" id="subs" aria-labelledby="subs-title">
+          <h3 className="bm-sub" id="subs-title">캘린더·피드로 받기</h3>
+          <ul className="sub-list">
+            <li><button className="btn" data-act="ics" disabled={!withDate.length} onClick={ics}>내 북마크 → 휴대폰 캘린더 (.ics)</button>
+              <small>{msg || `날짜가 있는 북마크 ${withDate.length}개를 파일로 한 번 받아요. 하루 전 알림이 와요.`}</small></li>
+            <li><a className="btn" href={subs.cal}>장학·마감·학사일정 → 캘린더 구독</a>
+              <small>구독하면 하루 4번 갱신될 때마다 캘린더가 알아서 따라와요.</small></li>
+            <li><span className="sub-rss">RSS: {subs.rss.map(([href, label], i) => <span key={href}>{i > 0 && " · "}<a href={href} target="_blank" rel="noopener">{label}</a></span>)}</span>
+              <small>RSS 앱으로 새 글을 받아 봐요.</small></li>
+          </ul>
+        </section>
         <nav className="drawer-nav"><a href="#schedule">일정 탭에서 달력으로 보기</a><a href="#setup">설정</a></nav>
       </aside>
     </>

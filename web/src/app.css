@@ -609,3 +609,19 @@ input[type="search"]:focus, input[type="text"]:focus, textarea:focus { border-co
 :focus-visible { outline-color: var(--accent); }
 .pill { background: var(--sky-soft); color: var(--ink); }
 .b-urgent { min-height: 210px; }
+
+/* ---------- 11/28: 새 글 요약 줄, 공유, 구독 메뉴, 마감일은 첨부에서 ---------- */
+.new-since { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px var(--s3); font-size: 13.5px; margin: 0 0 var(--s3); padding: var(--s3) var(--s4); background: var(--acad-soft); border-radius: var(--r-s); min-width: 0; }
+.new-since b { color: var(--acad); font-weight: 700; }
+.new-since.quiet { background: none; padding: 0 2px; color: var(--muted); font-size: 12.5px; }
+.ns-item { border: 0; background: none; padding: 0; color: var(--fg); font: inherit; text-align: left; cursor: pointer; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.ns-item:hover { text-decoration: underline; }
+.ns-more { color: var(--muted); font-size: 12.5px; }
+.share-msg { margin: 6px 0 0; }
+.subs .sub-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--s3); }
+.subs .sub-list li { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; }
+.subs .sub-list small { color: var(--muted); font-size: 12.5px; }
+.subs .sub-list a.btn { text-decoration: none; }
+.sub-rss { font-size: 14px; }
+.btn.link.inline { padding: 0; font-size: inherit; }
+.due-att { font-size: 12px; color: var(--muted); border: 1px dashed var(--line); border-radius: 4px; padding: 0 5px; line-height: 1.6; }

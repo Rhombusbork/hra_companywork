@@ -542,11 +542,24 @@ def parse_academic(text, year):
 SITE_URL = "https://rhombusbork.github.io/hra_companywork/"
 
 
-def cat_match(cat, it):
+def general_reclass(cfg, it):
+    """학교가 '일반'으로 올린 본부 글을 제목으로 다시 나눈다 (화면 web/src/lib/logic.js reclass 와 같은 규칙)."""
+    if it["source"] != "jnu" or it.get("category") != "일반":
+        return None
+    for r in cfg.get("general_rules", []):
+        if any(k.lower() in it["title"].lower() for k in r["keywords"]):
+            return r["to"]
+    return None
+
+
+def cat_match(cat, it, cfg=None):
     """화면(app.js inCat)과 같은 규칙으로 분류 카드에 드는지."""
     m = cat.get("match", {})
     if it["source"] == "dept":
         return False
+    rc = general_reclass(cfg, it) if cfg else None
+    if rc:
+        return cat["id"] == rc
     if it["source"] in m.get("source", []):
         return True
     if it["source"] == "jnu" and it.get("category") in m.get("source_category", []):
@@ -578,7 +591,7 @@ def write_feeds(items, academic, cfg, deps):
     made = [("all", "전체")]
     rss("all", "전체", by_seen)
     for c in cfg["categories"]:
-        its = [i for i in by_seen if cat_match(c, i)]
+        its = [i for i in by_seen if cat_match(c, i, cfg)]
         if its:
             rss(c["id"], c["label"], its)
             made.append((c["id"], c["label"]))

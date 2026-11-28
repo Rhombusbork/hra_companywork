@@ -16,6 +16,21 @@ const strip = (ls) => Object.fromEntries(Object.entries(ls).map(([bp, l]) => [bp
 // 칸마다 기본 색: 마감은 파랑, 이번 주 수는 연하늘, 나머지는 흰색
 const AUTO_TONE = { urgent: "blue", count: "sky" };
 
+// 다시 왔을 때: 지난번 들어온 뒤 새로 올라온 글이 몇 건인지 한 줄로 (내가 고른 것 안에서만)
+function NewSince() {
+  const { L, openItem } = useApp();
+  if (!L.visitedBefore) return null;
+  const fresh = L.sortItems(L.myItems().filter((it) => L.isNew(it)));
+  if (!fresh.length) return <p className="new-since quiet">지난번 들어온 뒤 새 글은 없어요.</p>;
+  return (
+    <p className="new-since" role="status">
+      <b>지난번 들어온 뒤 새 글 {fresh.length}건</b>
+      {fresh.slice(0, 2).map((it) => <button key={it.id} className="ns-item" onClick={() => openItem(it.id)}>{it.title}</button>)}
+      {fresh.length > 2 && <span className="ns-more">외 {fresh.length - 2}건은 아래 칸의 초록 점</span>}
+    </p>
+  );
+}
+
 export function Home() {
   const { D, P, L, update } = useApp();
   const [editing, setEditing] = useState(false);
@@ -89,6 +104,7 @@ export function Home() {
       <Header />
       <StaleNote />
       <Catbar current="home" />
+      <NewSince />
       {!P.depts.length && <div className="dept-banner"><span>내 학과를 넣으면 학과 공지가 맨 위에 떠요</span><a className="btn primary" href="#dept">학과 넣기</a></div>}
 
       <div className={"edit-bar" + (editing ? " on" : "")}>

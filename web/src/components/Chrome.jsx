@@ -72,21 +72,13 @@ export function StaleNote() {
 }
 
 export function Footer() {
-  const { D, L } = useApp();
+  const { D, openBm } = useApp();
+  const openSubs = () => { openBm(); setTimeout(() => { const el = document.getElementById("subs"); if (el) el.scrollIntoView({ block: "start" }); }, 60); };
   const at = (iso) => (iso ? `${md(iso)} ${iso.slice(11, 16)}` : "아직 없음");
-  const base = new URL("data/feeds/", location.href).href;
-  const cal = base.replace(/^https?:/, "webcal:") + "deadlines.ics";
-  const got = new Set(D.meta.dept_boards || []);
-  const mine = L.myBoards().find((b) => b.board && got.has(b.board));
-  const slug = mine ? "dept-" + mine.board.replace(/^https?:\/\/([^./]+).*/, "$1") : null;
   return (
     <footer className="foot">
       <span>제주대학교 공식 서비스가 아닙니다. 글 제목과 날짜만 모으고, 내용은 모두 원문 게시판 링크로 봅니다.</span>
-      <span className="sub-links">
-        구독: <a href={cal}>휴대폰 캘린더(마감·학사일정)</a> · <a href={base + "all.xml"} target="_blank" rel="noopener">RSS 전체</a>
-        {slug && <> · <a href={base + slug + ".xml"} target="_blank" rel="noopener">RSS {mine.label}</a></>}
-        {" · "}<a href={base + "scholar.xml"} target="_blank" rel="noopener">RSS 장학</a>
-      </span>
+      <span className="sub-links">구독(캘린더·RSS): <button className="btn link inline" onClick={openSubs}>북마크 창에서 받기</button></span>
       <span className="src">정보원별 갱신: {Object.values(D.meta.sources).map((s) => `${s.name} ${at(s.updated)}`).join(" · ")}</span>
       {FEEDBACK_URL && <a className="feedback" href={FEEDBACK_URL} target="_blank" rel="noopener">의견 보내기</a>}
     </footer>

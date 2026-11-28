@@ -1,7 +1,7 @@
 // 제주대 모아보기 (React 판). 서버·로그인 없음: data/*.json 을 받아 브라우저에서 거르고, 설정은 이 브라우저에만 둔다.
 import { useEffect, useMemo, useState, useCallback, useRef } from "react";
 import { Ctx } from "./components/ctx.js";
-import { makeLogic, quickPrefs, fitDepts, urlDept, applyDefaults } from "./lib/logic.js";
+import { makeLogic, quickPrefs, fitDepts, urlDept, applyDefaults, reclass } from "./lib/logic.js";
 import { loadPrefs, savePrefs, clearPrefs, markVisit, upgrade, blankPrefs } from "./lib/prefs.js";
 import { clone } from "./lib/util.js";
 import { Home } from "./components/Home.jsx";
@@ -30,6 +30,7 @@ export default function App() {
   useEffect(() => {
     Promise.all(NAMES.map((n) => fetch(`data/${n}.json`).then((res) => { if (!res.ok) throw new Error(n); return res.json(); })))
       .then(([cfg, deps, items, meals, academic]) => {
+        items.items.forEach((it) => { it._rc = reclass(cfg, it); });
         const data = { cfg, deps, items: items.items, meals, academic, meta: items };
         let p = loadPrefs();
         p = p ? upgrade(p) : null;

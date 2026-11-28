@@ -3,10 +3,19 @@
 import { diffDays, has, addDays, weekday } from "./util.js";
 import { blankPrefs, lastVisit } from "./prefs.js";
 
+// 학교가 '일반'(203)으로 올린 본부 글을 제목으로 다시 나눈다. 처음 맞는 규칙 하나 (collect.py general_reclass 와 같음).
+// 불러올 때 한 번 계산해 it._rc 에 둔다 (App.jsx).
+export function reclass(cfg, it) {
+  if (it.source !== "jnu" || it.category !== "일반") return null;
+  for (const r of cfg.general_rules || []) if (has(it.title, r.keywords)) return r.to;
+  return null;
+}
+
 // 분류에 드는 글인지 (설정과 상관없이)
 export function inCatAny(cat, it) {
   const m = cat.match;
   if (it.source === "dept") return false;
+  if (it._rc) return cat.id === it._rc;
   if (m.source && m.source.includes(it.source)) return true;
   if (m.source_category && it.source === "jnu" && m.source_category.includes(it.category)) return true;
   if (m.keywords && has(it.title, m.keywords)) return true;
@@ -31,6 +40,7 @@ export function makeLogic(D, P) {
   function inCat(cat, it) {
     const m = cat.match;
     if (it.source === "dept") return false;
+    if (it._rc) return cat.id === it._rc;
     if (m.source && m.source.includes(it.source)) return true;
     if (m.source_category && it.source === "jnu" && m.source_category.includes(it.category)) return true;
     if (m.keywords && has(it.title, m.keywords)) return true;
@@ -156,7 +166,7 @@ export function makeLogic(D, P) {
   return {
     TODAY, T, depById, catById, deptTags, inCat, visible, myBoards, sortItems, deptItems, catItems, kwItems, shownCats,
     myItems, isNew, soonList, srcOf, events, eventsOn, dotKinds, isLong, kindOrder, weekDays, acadUpcoming, chipSel, chipHit,
-    todayMeals, findItem,
+    todayMeals, findItem, visitedBefore: !!lv,
   };
 }
 
