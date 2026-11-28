@@ -373,3 +373,8 @@
 .fav-btn { align-self: flex-start; border: 1.5px solid var(--line-2); background: var(--surface); border-radius: 999px; padding: 5px 12px; font: inherit; font-size: 13px; font-weight: 700; color: var(--muted); cursor: pointer; }
 .fav-btn.on { border-color: var(--star); color: var(--star); background: transparent; }
 .pick-hint { margin: -6px 2px var(--s3); }
+
+/* 화면 모드 고르기 (홈 편집 줄, 11/28) */
+.theme-seg { display: inline-flex; border: 1px solid var(--line-2, var(--line)); border-radius: 999px; overflow: hidden; flex: none; }
+.theme-seg button { border: 0; background: var(--surface); color: var(--fg); padding: 6px 14px; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }
+.theme-seg button.on { background: var(--ink, var(--accent)); color: var(--surface); }

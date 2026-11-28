@@ -9,6 +9,7 @@ import { catalog, mergedLayouts, BREAKPOINTS, COLS, ROW, GAP, px, SIZES, TONES, 
 import { TileBody, tileLimit } from "./Tiles.jsx";
 import { Header, Catbar, StaleNote, Footer, SampleNote } from "./Chrome.jsx";
 import { Grid as GridIcon, Dots, Minus, Plus } from "./icons.jsx";
+import { currentTheme, setTheme } from "../lib/theme.js";
 
 const RGL = WidthProvider(Responsive);
 const strip = (ls) => Object.fromEntries(Object.entries(ls).map(([bp, l]) => [bp, l.map(({ i, x, y, w, h }) => ({ i, x, y, w, h }))]));
@@ -37,6 +38,7 @@ export function Home() {
   const [menu, setMenu] = useState(null);      // 옵션을 연 칸 id
   const [adding, setAdding] = useState(false); // 숨긴 칸 꺼내기 창
   const [bp, setBp] = useState("sm");
+  const [theme, setThemeState] = useState(currentTheme);
   const home = P.home || { layouts: null, hidden: [], look: {} };
 
   const widgets = useMemo(() => catalog(D, P, L), [D, P, L]);
@@ -112,6 +114,11 @@ export function Home() {
           <>
             <span className="edit-msg">칸을 끌어 옮기고, 오른쪽 아래 모서리를 끌어 크기를 바꿔요</span>
             <span className="edit-acts">
+              <span className="theme-seg" role="group" aria-label="화면 모드">
+                {[["light", "일반"], ["dark", "다크"]].map(([v, lbl]) => (
+                  <button key={v} className={theme === v ? "on" : ""} aria-pressed={theme === v} onClick={() => { setTheme(v); setThemeState(v); }}>{lbl}</button>
+                ))}
+              </span>
               <button className="btn" onClick={() => setAdding((v) => !v)} aria-expanded={adding}><Plus /> 칸 추가{hiddenW.length ? ` ${hiddenW.length}` : ""}</button>
               <button className="btn link" onClick={reset}>기본으로</button>
               <button className="btn primary" onClick={() => setEditing(false)}>완료</button>
